@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>MusicPlayerOnline</AssemblyName>
+    <RootNamespace>MusicPlayerOnline</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\1.png" />
+    <None Remove="Images\2.png" />
+    <None Remove="Images\3.png" />
+    <None Remove="Images\icon.png" />
+    <None Remove="Images\Themes\Dark\close.png" />
+    <None Remove="Images\Themes\Dark\horizontal_line.png" />
+    <None Remove="Images\Themes\Dark\maximize.png" />
+    <None Remove="Images\Themes\Dark\restore.png" />
+    <None Remove="Images\Themes\Dark\search.png" />
+    <None Remove="Images\Themes\Dark\settings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
+    <ProjectReference Include="..\MusicPlayerOnline.Network\MusicPlayerOnline.Network.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\icon.png" />
+    <Resource Include="Images\Themes\Dark\close.png" />
+    <Resource Include="Images\Themes\Dark\horizontal_line.png" />
+    <Resource Include="Images\Themes\Dark\maximize.png" />
+    <Resource Include="Images\Themes\Dark\restore.png" />
+    <Resource Include="Images\Themes\Dark\search.png" />
+    <Resource Include="Images\Themes\Dark\settings.png" />
+  </ItemGroup>
+
+</Project>

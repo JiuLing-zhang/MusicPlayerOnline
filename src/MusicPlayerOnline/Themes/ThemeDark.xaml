@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Title" Color="#2D2D30"></SolidColorBrush>
+    <SolidColorBrush x:Key="Body" Color="#222222"></SolidColorBrush>
+    <SolidColorBrush x:Key="Bottom" Color="#333333"></SolidColorBrush>
+    <SolidColorBrush x:Key="FontColor" Color="#E6E6E6"></SolidColorBrush>
+
+    <BitmapImage x:Key="ImgSettings" UriSource="/Images/Themes/Dark/settings.png" />
+    <BitmapImage x:Key="ImgMinimize" UriSource="/Images/Themes/Dark/horizontal_line.png" />
+    <BitmapImage x:Key="ImgMaximize" UriSource="/Images/Themes/Dark/maximize.png" />
+    <BitmapImage x:Key="ImgRestore" UriSource="/Images/Themes/Dark/restore.png" />
+    <BitmapImage x:Key="ImgClose" UriSource="/Images/Themes/Dark/close.png" /> 
+
+
+</ResourceDictionary>
