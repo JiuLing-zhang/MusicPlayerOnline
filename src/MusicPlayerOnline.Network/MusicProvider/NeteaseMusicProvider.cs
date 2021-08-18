@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using JiuLing.CommonLibs.Model;
 using JiuLing.CommonLibs.Net;
 using MusicPlayerOnline.Model;
+using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Netease;
 
 namespace MusicPlayerOnline.Network.MusicProvider
@@ -12,6 +13,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
     public class NeteaseMusicProvider : IMusicProvider
     {
         private readonly HttpClientHelper _http = new HttpClientHelper();
+        private const PlatformEnum Platform = PlatformEnum.Netease;
+
         public async Task<JsonResult<List<MusicInfo>>> Search(string keyword)
         {
             string url = $"{UrlBase.Netease.Search}{keyword}";
@@ -50,7 +53,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
                     ArtistName = artistName,
                     AlbumName = song.album.name,
                     Duration = song.duration,
-                    DurationString = $"{ts.Minutes}:{ts.Seconds}"
+                    DurationString = $"{ts.Minutes}:{ts.Seconds:D2}",
+                    Platform = Platform
                 };
                 musics.Add(music);
             }

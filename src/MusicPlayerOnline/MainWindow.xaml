@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MusicPlayer"
+        xmlns:musicPlayerOnline="clr-namespace:MusicPlayerOnline"
         mc:Ignorable="d"
         Title="在线音乐助手" Height="650" Width="1000" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
@@ -12,22 +12,9 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <Style x:Key="ButtonTransparentIsMouseOver" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Transparent" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+
+        <musicPlayerOnline:PlatformFormatValueConverter x:Key="PlatformFormatValueConverter"/>
+
         <Style x:Key="ChangeButtonIsMouseOver" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -56,13 +43,109 @@
                             </ScrollViewer>
                         </Grid>
                     </ControlTemplate>
-                 </Setter.Value>
+                </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="Placeholder" TargetType="TextBlock">
+
+        <Style x:Key="SearchPlaceholder" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Text, ElementName=TxtKeyword}" Value="">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SearchResultHead" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Foreground" Value="{DynamicResource FontColor}"></Setter>
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="Height" Value="35"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                        <Grid Background="{DynamicResource Body}">
+                            <Border Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Left" Margin="4,5,0,0"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SearchResultItem" TargetType="ListViewItem">
+            <Setter Property="Foreground" Value="{DynamicResource MusicSearchResultOther}"/>
+            <Setter Property="Background" Value="{DynamicResource Body}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="ListBoxItemRoot" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1,0" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="2" 
+                                Uid="Border_57">
+                            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
+                                                  Content="{TemplateBinding Content}" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  Margin="{TemplateBinding Padding}" 
+                                                  Uid="GridViewRowPresenter_1" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"></VisualState>
+                                    <VisualState x:Name="Disabled"></VisualState>
+                                    <VisualState x:Name="MouseOver"></VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Selected"></VisualState>
+                                    <VisualState x:Name="Unselected"></VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource MusicSearchResultSelected}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource MusicSearchResultMouseOver}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                        <Condition Property="IsSelected" Value="False" />
+                        <Condition Property="IsMouseOver" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource MusicSearchResultAlternation}" />
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SearchResultTools" TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsMouseOver}" Value="True">
                     <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
             </Style.Triggers>
@@ -75,7 +158,7 @@
             <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
         <!-- 标题栏 -->
-        <Grid Grid.Row="0" Background="{DynamicResource Title}">
+        <Grid Grid.Row="0" Background="{DynamicResource Top}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -87,28 +170,37 @@
                     <TextBlock Foreground="{DynamicResource FontColor}" Margin="5,0,0,0" VerticalAlignment="Center">在线音乐助手</TextBlock>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Column="1" Margin="10,10,0,10">
-                <StackPanel Orientation="Horizontal" >
-                    <Image Grid.Column="0" Width="24" Height="24" Panel.ZIndex="2" Source="/Images/Themes/Dark/search.png"/>
-                    <TextBox x:Name="TxtKeyword" Width="200" Height="24" 
-                              VerticalContentAlignment="Center"
-                              Padding="33,0,0,0" Margin="-28,0,0,0" 
-                              WindowChrome.IsHitTestVisibleInChrome="True" 
-                              Style="{StaticResource RadiusTextBox}"></TextBox>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Margin="-260,0,0,0" 
-                        Style="{StaticResource Placeholder}"
-                        Opacity="0.6"
-                        >
-                        <Button Click="ReadyToSearch_Click" 
-                                BorderThickness="0" Background="Transparent" 
-                                Style="{StaticResource ButtonTransparentIsMouseOver}"
-                                WindowChrome.IsHitTestVisibleInChrome="True" >
-                            歌曲名、歌手
-                        </Button>
-                    </TextBlock>
+            <Grid Grid.Column="1" Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                    <Image Grid.Column="0" Width="24" Height="24" Panel.ZIndex="2" Source="/Images/Themes/Dark/search.png" Opacity="0.6"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource PlatformFormatValueConverter}, Path=Strings}"
+                              SelectedItem="{Binding SearchPlatform, Converter={StaticResource PlatformFormatValueConverter}}"
+                              WindowChrome.IsHitTestVisibleInChrome="True"
+                              Width="52"
+                              Panel.ZIndex="3"
+                              Background="Transparent"
+                              BorderBrush="Red"
+                              BorderThickness="0"
+                              Height="20"
+                              Opacity="0.8"
+                    />
+                    <TextBox x:Name="TxtKeyword"  PreviewKeyDown="TxtKeyword_PreviewKeyDown" Width="250" Height="24" 
+                             Text="{Binding SearchKeyword,UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Padding="85,0,0,0" Margin="-80,0,0,0" 
+                             WindowChrome.IsHitTestVisibleInChrome="True" 
+                             Style="{StaticResource RadiusTextBox}"></TextBox>
+                    <Button Click="ReadyToSearch_Click" 
+                            BorderThickness="0" Background="Transparent" 
+                            Style="{StaticResource SearchPlaceholder}"
+                            WindowChrome.IsHitTestVisibleInChrome="True" 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="-215,0,0,0"  
+                            Opacity="0.6" 
+                            >
+                        请输入歌曲名、歌手
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="2" Margin="0,0,10,0">
@@ -126,10 +218,151 @@
                         <Image Source="{StaticResource ImgClose}"></Image>
                     </Button>
                 </StackPanel>
+
             </Grid>
         </Grid>
         <!-- 主区域 -->
-        <Grid Grid.Row="1" Background="{DynamicResource Body}"></Grid>
+        <Grid Grid.Row="1" Background="{DynamicResource Body}">
+            <Border BorderBrush="{DynamicResource TopBorder}" BorderThickness="0,1,0,0" Panel.ZIndex="2"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!-- 播放列表 -->
+                <Grid Grid.Column="0">
+                    <Border BorderBrush="{StaticResource BodyBorder}" BorderThickness="0,0,1,0"/>
+                    <DockPanel LastChildFill="True" Margin="10,10,0,10">
+                        <TextBlock 
+                            DockPanel.Dock="Top" 
+                            FontSize="14" 
+                            Foreground="{DynamicResource FontColor}"
+                            Margin="0,4,0,10"
+                            >播放列表</TextBlock>
+                        <ListBox Name="ListBoxPlayList" ItemsSource="{Binding}" Background="Transparent" BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock 
+                                            VerticalAlignment="Center" 
+                                            Text="{Binding Name}"
+                                            FontSize="13"
+                                            Width="160"
+                                            Foreground="{DynamicResource FontColor}"
+                                            />
+                                        <Button Width="18" Height="18" Background="Transparent" 
+                                                Style="{StaticResource ChangeButtonIsMouseOver}"
+                                                ToolTip="删除"
+                                                >
+                                            <Image Source="{StaticResource ImgDelete}"></Image>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Grid>
+
+                <!-- 搜索结果 -->
+                <Grid Grid.Column="1" Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*"></ColumnDefinition>
+                            <ColumnDefinition Width="35*"></ColumnDefinition>
+                            <ColumnDefinition Width="20*"></ColumnDefinition>
+                            <ColumnDefinition Width="25*"></ColumnDefinition>
+                            <ColumnDefinition Width="10*"></ColumnDefinition>
+                            <ColumnDefinition Width="4*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" x:Name="Col0"></Grid>
+                        <Grid Grid.Column="1" x:Name="Col1"></Grid>
+                        <Grid Grid.Column="2" x:Name="Col2"></Grid>
+                        <Grid Grid.Column="3" x:Name="Col3"></Grid>
+                        <Grid Grid.Column="4" x:Name="Col4"></Grid>
+                        <Grid Grid.Column="5" x:Name="Col5"></Grid>
+                    </Grid>
+                    <ListView x:Name="ListViewMusicSearchResult" 
+                              Background="{DynamicResource  MusicSearchResultBackground}" 
+                              BorderThickness="0"
+                              SelectionMode="Single" 
+                              ItemContainerStyle="{StaticResource SearchResultItem}"
+                              AlternationCount="2"
+                              >
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource SearchResultHead}">
+                                <GridViewColumn 
+                                    Width="{Binding ElementName=Col0,Path=ActualWidth}"
+                                    Header="">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="-10,0,2,0" Style="{StaticResource SearchResultTools}">
+                                                <Button Width="24" Height="24" Background="Transparent" 
+                                                        Style="{StaticResource ChangeButtonIsMouseOver}"
+                                                        ToolTip="播放"
+                                                        >
+                                                    <Image Source="{StaticResource ImgPlay}"></Image>
+                                                </Button>
+                                                <Button Width="24" Height="24" Background="Transparent" 
+                                                        Style="{StaticResource ChangeButtonIsMouseOver}"
+                                                        ToolTip="添加到播放列表"
+                                                        >
+                                                    <Image Source="{StaticResource ImgAdd}"></Image>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn 
+                                    Width="{Binding ElementName=Col1,Path=ActualWidth}"
+                                    Header="歌曲名">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border BorderBrush="{DynamicResource FontColor}" 
+                                                        BorderThickness="1"
+                                                        Margin="0,0,8,0"
+                                                        Padding="4,1,4,1"
+                                                        CornerRadius="5" 
+                                                        Opacity="0.7"
+                                                        >
+                                                    <TextBlock 
+                                                        Text="{Binding Platform}" 
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource MusicSearchResultSource}"
+                                                    />
+                                                </Border>
+                                                <TextBlock Text="{Binding Name}" 
+                                                           ToolTip="{Binding Name}"
+                                                           Foreground="{DynamicResource MusicSearchResultName}"
+                                                           />
+                                                <TextBlock Text="{Binding Alias}" 
+                                                           ToolTip="{Binding Alias}"
+                                                           Foreground="{DynamicResource MusicSearchResultOther}"
+                                                           />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn
+                                    DisplayMemberBinding="{Binding Artist}"
+                                    Width="{Binding ElementName=Col2,Path=ActualWidth}" 
+                                    Header="歌手" ></GridViewColumn>
+                                <GridViewColumn 
+                                    DisplayMemberBinding="{Binding Album}"
+                                    Width="{Binding ElementName=Col3,Path=ActualWidth}" 
+                                    Header="专辑" ></GridViewColumn>
+                                <GridViewColumn 
+                                    DisplayMemberBinding="{Binding Duration}"
+                                    Width="{Binding ElementName=Col4,Path=ActualWidth}" 
+                                    Header="时长" ></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Grid>
+            <Border BorderBrush="{DynamicResource BodyBorder}" BorderThickness="0,0,0,1" Panel.ZIndex="2"/>
+        </Grid>
         <!-- 底部 -->
         <Grid Grid.Row="2" Background="{DynamicResource Bottom}"></Grid>
     </Grid>
