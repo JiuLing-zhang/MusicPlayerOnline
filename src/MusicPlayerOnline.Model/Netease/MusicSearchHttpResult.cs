@@ -1,6 +1,5 @@
 ﻿namespace MusicPlayerOnline.Model.Netease
 {
-    //todo 更名
     public class MusicSearchHttpResult
     {
         public Song[] songs { get; set; }

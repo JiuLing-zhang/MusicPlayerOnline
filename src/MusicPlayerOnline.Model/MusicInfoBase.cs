@@ -1,6 +1,5 @@
 ﻿namespace MusicPlayerOnline.Model
 {
-    //todo 更名
     public class MusicInfoBase
     {
         public int Id { get; set; }
