@@ -9,8 +9,8 @@ namespace MusicPlayerOnline.Model.ViewModel
     {
         public MainWindowViewModel()
         {
-            MusicSearchResult = new ObservableCollection<MusicInfoModel>();
-            PlayList = new ObservableCollection<MusicInfoModel>();
+            MusicSearchResult = new ObservableCollection<SearchResultViewModel>();
+            Playlist = new ObservableCollection<PlaylistViewModel>();
         }
 
         private PlatformEnum _searchPlatform;
@@ -49,11 +49,11 @@ namespace MusicPlayerOnline.Model.ViewModel
             }
         }
 
-        private ObservableCollection<MusicInfoModel> _musicSearchResult;
+        private ObservableCollection<SearchResultViewModel> _musicSearchResult;
         /// <summary>
         /// 搜索到的结果列表
         /// </summary>
-        public ObservableCollection<MusicInfoModel> MusicSearchResult
+        public ObservableCollection<SearchResultViewModel> MusicSearchResult
         {
             get => _musicSearchResult;
             set
@@ -63,11 +63,11 @@ namespace MusicPlayerOnline.Model.ViewModel
             }
         }
 
-        private ObservableCollection<MusicInfoModel> _playList;
+        private ObservableCollection<PlaylistViewModel> _playList;
         /// <summary>
         /// 播放列表
         /// </summary>
-        public ObservableCollection<MusicInfoModel> PlayList
+        public ObservableCollection<PlaylistViewModel> Playlist
         {
             get => _playList;
             set

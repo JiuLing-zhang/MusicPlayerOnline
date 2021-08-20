@@ -1,10 +1,9 @@
-﻿
-using MusicPlayerOnline.Model.Enum;
-
-namespace MusicPlayerOnline.Model
+﻿namespace MusicPlayerOnline.Model
 {
-    public class MusicInfo
+    //todo 更名
+    public class MusicInfoBase
     {
+        public int Id { get; set; }
         /// <summary>
         /// 歌曲名称
         /// </summary>
@@ -25,13 +24,6 @@ namespace MusicPlayerOnline.Model
         /// 歌曲时长（毫秒）
         /// </summary>
         public int Duration { get; set; }
-        /// <summary>
-        /// 歌曲时长，格式为“分:秒”，例如：05:44
-        /// </summary>
-        public string DurationString { get; set; }
-        /// <summary>
-        /// 平台
-        /// </summary>
-        public PlatformEnum Platform { get; set; }
+
     }
 }

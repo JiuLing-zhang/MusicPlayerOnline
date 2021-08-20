@@ -88,6 +88,7 @@
         </Style>
 
         <Style x:Key="SearchResultItem" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="SearchResult_MouseDoubleClick"/>
             <Setter Property="Foreground" Value="{DynamicResource MusicSearchResultOther}"/>
             <Setter Property="Background" Value="{DynamicResource Body}" />
             <Setter Property="FontSize" Value="14" />
@@ -99,13 +100,11 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="1,0" 
                                 Background="{TemplateBinding Background}" 
-                                CornerRadius="2" 
-                                Uid="Border_57">
+                                CornerRadius="2" >
                             <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
                                                   Content="{TemplateBinding Content}" 
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                   Margin="{TemplateBinding Padding}" 
-                                                  Uid="GridViewRowPresenter_1" 
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -150,6 +149,90 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="PlaylistHead" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Foreground" Value="{DynamicResource PlaylistHeadFore}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="FontSize" Value="13"></Setter>
+            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                        <Grid Background="{DynamicResource Body}">
+                            <Border Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Left" Margin="-2,5,0,0"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PlaylistItem" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="Playlist_MouseDoubleClick"/>
+            <Setter Property="Background" Value="{DynamicResource Body}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="ListBoxItemRoot" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="2">
+                            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
+                                                  Content="{TemplateBinding Content}" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  Margin="{TemplateBinding Padding}"  
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"></VisualState>
+                                    <VisualState x:Name="Disabled"></VisualState>
+                                    <VisualState x:Name="MouseOver"></VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Selected"></VisualState>
+                                    <VisualState x:Name="Unselected"></VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource MusicSearchResultMouseOver}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PlayingImage" TargetType="{x:Type Image}">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPlaying}" Value="true">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PlayingTextBlock" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource PlaylistName}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPlaying}" Value="true">
+                    <Setter Property="Foreground" Value="{DynamicResource PlaylistPlaying}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PlaylistTools" TargetType="Button" BasedOn="{StaticResource ChangeButtonIsMouseOver}">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsMouseOver}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -172,7 +255,7 @@
             </Grid>
             <Grid Grid.Column="1" Margin="10,0,0,0">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                    <Image Grid.Column="0" Width="24" Height="24" Panel.ZIndex="2" Source="/Images/Themes/Dark/search.png" Opacity="0.6"/>
+                    <Image Grid.Column="0" Width="24" Height="24" Panel.ZIndex="2" Source="{DynamicResource ImgSearch}" Opacity="0.6"/>
                     <ComboBox ItemsSource="{Binding Source={StaticResource PlatformFormatValueConverter}, Path=Strings}"
                               SelectedItem="{Binding SearchPlatform, Converter={StaticResource PlatformFormatValueConverter}}"
                               WindowChrome.IsHitTestVisibleInChrome="True"
@@ -184,7 +267,7 @@
                               Height="20"
                               Opacity="0.8"
                     />
-                    <TextBox x:Name="TxtKeyword"  PreviewKeyDown="TxtKeyword_PreviewKeyDown" Width="250" Height="24" 
+                    <TextBox x:Name="TxtKeyword" PreviewKeyDown="TxtKeyword_PreviewKeyDown" Width="250" Height="24" 
                              Text="{Binding SearchKeyword,UpdateSourceTrigger=PropertyChanged}"
                              VerticalContentAlignment="Center"
                              Padding="85,0,0,0" Margin="-80,0,0,0" 
@@ -229,38 +312,54 @@
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-
+                <Border BorderBrush="{DynamicResource PlaylistBorder}" BorderThickness="0,0,1,0" Panel.ZIndex="5" />
                 <!-- 播放列表 -->
                 <Grid Grid.Column="0">
-                    <Border BorderBrush="{StaticResource BodyBorder}" BorderThickness="0,0,1,0"/>
-                    <DockPanel LastChildFill="True" Margin="10,10,0,10">
-                        <TextBlock 
-                            DockPanel.Dock="Top" 
-                            FontSize="14" 
-                            Foreground="{DynamicResource FontColor}"
-                            Margin="0,4,0,10"
-                            >播放列表</TextBlock>
-                        <ListBox Name="ListBoxPlayList" ItemsSource="{Binding}" Background="Transparent" BorderThickness="0">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock 
-                                            VerticalAlignment="Center" 
-                                            Text="{Binding Name}"
-                                            FontSize="13"
-                                            Width="160"
-                                            Foreground="{DynamicResource FontColor}"
-                                            />
-                                        <Button Width="18" Height="18" Background="Transparent" 
-                                                Style="{StaticResource ChangeButtonIsMouseOver}"
-                                                ToolTip="删除"
-                                                >
-                                            <Image Source="{StaticResource ImgDelete}"></Image>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                    <DockPanel LastChildFill="True"  Background="{DynamicResource PlaylistBackground}">
+                        <ListView x:Name="ListViewPlaylist" 
+                              Background="Transparent" 
+                              BorderThickness="0"
+                              SelectionMode="Single" 
+                              ItemContainerStyle="{StaticResource PlaylistItem}"
+                              Margin="0,10,0,0"
+                        >
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource PlaylistHead}">
+                                    <GridViewColumn Width="20" Header="">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Width="14" Height="14" Margin="-5,0,0,0"
+                                                       Source="{StaticResource ImgPlaying}" 
+                                                       Style="{StaticResource PlayingImage}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn 
+                                        Header="播放列表" Width="168">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding MusicText}" 
+                                                               ToolTip="{Binding MusicToolTip}"
+                                                               Margin="-8,0,0,0"
+                                                               Width="150"
+                                                               Style="{StaticResource PlayingTextBlock}"
+                                                    />
+                                                    <Button Width="14" Height="14" Background="Transparent" 
+                                                            Tag="{Binding Id}"
+                                                            Style="{StaticResource  PlaylistTools}"
+                                                            ToolTip="删除"
+                                                            Click="BtnDeletePlaylist_Click"
+                                                    >
+                                                        <Image Source="{StaticResource ImgDelete}"></Image>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                     </DockPanel>
                 </Grid>
 
@@ -297,13 +396,15 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="-10,0,2,0" Style="{StaticResource SearchResultTools}">
-                                                <Button Width="24" Height="24" Background="Transparent" 
+                                                <Button Click="BtnPlay_Click" Width="24" Height="24" Background="Transparent" 
+                                                        Tag="{Binding}"
                                                         Style="{StaticResource ChangeButtonIsMouseOver}"
                                                         ToolTip="播放"
                                                         >
                                                     <Image Source="{StaticResource ImgPlay}"></Image>
                                                 </Button>
-                                                <Button Width="24" Height="24" Background="Transparent" 
+                                                <Button Click="BtnAddPlaylist_Click" Width="24" Height="24" Background="Transparent" 
+                                                        Tag="{Binding}"
                                                         Style="{StaticResource ChangeButtonIsMouseOver}"
                                                         ToolTip="添加到播放列表"
                                                         >
@@ -364,6 +465,61 @@
             <Border BorderBrush="{DynamicResource BodyBorder}" BorderThickness="0,0,0,1" Panel.ZIndex="2"/>
         </Grid>
         <!-- 底部 -->
-        <Grid Grid.Row="2" Background="{DynamicResource Bottom}"></Grid>
+        <Grid Grid.Row="2" Background="{DynamicResource Bottom}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"></Grid>
+            <Grid Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="65*"></RowDefinition>
+                        <RowDefinition Height="35*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Button Width="20" Background="Transparent" 
+                                    Style="{StaticResource ChangeButtonIsMouseOver}" >
+                                <Image Source="{StaticResource ImgShuffle}"></Image>
+                            </Button>
+                            <Button Width="30" Background="Transparent" 
+                                    Style="{StaticResource ChangeButtonIsMouseOver}" 
+                                    Margin="10,0,0,0">
+                                <Image Source="{StaticResource ImgPrevious64}"></Image>
+                            </Button>
+                            <Button Width="50" Background="Transparent"
+                                    Style="{StaticResource ChangeButtonIsMouseOver}" 
+                                    Margin="10,0,10,0">
+                                <Image Source="{StaticResource ImgPlay64}"></Image>
+                            </Button>
+                            <Button Width="30" Background="Transparent"
+                                    Style="{StaticResource ChangeButtonIsMouseOver}" 
+                                    Margin="0,0,10,0">
+                                <Image Source="{StaticResource ImgNext64}"></Image>
+                            </Button>
+                            <Button Width="20" Background="Transparent"
+                                    Style="{StaticResource ChangeButtonIsMouseOver}" >
+                                <Image Source="{StaticResource ImgPuzzled}"></Image>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Slider Minimum="0" Maximum="1" Value="0.5" Background="{DynamicResource FontColor}" Margin="0,5,0,0"
+                                Width="300" Height="2" />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Width="22" Source="{StaticResource ImgVoice}"></Image>
+                    <Slider Minimum="0" Maximum="100" Value="0" Background="{DynamicResource FontColor}" 
+                            Width="100" Height="2" />
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

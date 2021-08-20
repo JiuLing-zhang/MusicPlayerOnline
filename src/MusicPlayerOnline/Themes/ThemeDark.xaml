@@ -16,12 +16,29 @@
     <SolidColorBrush x:Key="MusicSearchResultMouseOver" Color="#3E3E3E"></SolidColorBrush>
     <SolidColorBrush x:Key="MusicSearchResultSelected" Color="#2D2D2D"></SolidColorBrush>
 
+
+    <SolidColorBrush x:Key="PlaylistBorder" Color="#3E3E3E"></SolidColorBrush>
+    <SolidColorBrush x:Key="PlaylistBackground" Color="#222222"></SolidColorBrush>
+    <SolidColorBrush x:Key="PlaylistName" Color="#E6E6E6"></SolidColorBrush>
+    <SolidColorBrush x:Key="PlaylistPlaying" Color="#F38B76"></SolidColorBrush>
+    <SolidColorBrush x:Key="PlaylistHeadFore" Color="#7AC1FF"></SolidColorBrush>
+    
+
     <BitmapImage x:Key="ImgSettings" UriSource="/Images/Themes/Dark/settings.png" />
     <BitmapImage x:Key="ImgMinimize" UriSource="/Images/Themes/Dark/horizontal_line.png" />
     <BitmapImage x:Key="ImgMaximize" UriSource="/Images/Themes/Dark/maximize.png" />
     <BitmapImage x:Key="ImgRestore" UriSource="/Images/Themes/Dark/restore.png" />
     <BitmapImage x:Key="ImgClose" UriSource="/Images/Themes/Dark/close.png" />
+    <BitmapImage x:Key="ImgSearch" UriSource="/Images/Themes/Dark/search.png" />
     <BitmapImage x:Key="ImgPlay" UriSource="/Images/Themes/Dark/play.png" />
+    <BitmapImage x:Key="ImgPlaying" UriSource="/Images/Themes/Dark/playing.png" />
     <BitmapImage x:Key="ImgAdd" UriSource="/Images/Themes/Dark/add.png" />
     <BitmapImage x:Key="ImgDelete" UriSource="/Images/Themes/Dark/delete.png" />
+
+    <BitmapImage x:Key="ImgPlay64" UriSource="/Images/Themes/Dark/play_64px.png" />
+    <BitmapImage x:Key="ImgPrevious64" UriSource="/Images/Themes/Dark/previous_64px.png" />
+    <BitmapImage x:Key="ImgNext64" UriSource="/Images/Themes/Dark/next_64px.png" />
+    <BitmapImage x:Key="ImgShuffle" UriSource="/Images/Themes/Dark/shuffle.png" />
+    <BitmapImage x:Key="ImgPuzzled" UriSource="/Images/Themes/Dark/puzzled.png" />
+    <BitmapImage x:Key="ImgVoice" UriSource="/Images/Themes/Dark/voice.png" />
 </ResourceDictionary>

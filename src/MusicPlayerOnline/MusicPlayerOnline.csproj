@@ -18,10 +18,19 @@
     <None Remove="Images\Themes\Dark\delete.png" />
     <None Remove="Images\Themes\Dark\horizontal_line.png" />
     <None Remove="Images\Themes\Dark\maximize.png" />
+    <None Remove="Images\Themes\Dark\next_64px.png" />
     <None Remove="Images\Themes\Dark\play.png" />
+    <None Remove="Images\Themes\Dark\playing.png" />
+    <None Remove="Images\Themes\Dark\play_64px.png" />
+    <None Remove="Images\Themes\Dark\previous_64px.png" />
+    <None Remove="Images\Themes\Dark\puzzled.png" />
+    <None Remove="Images\Themes\Dark\repeat.png" />
+    <None Remove="Images\Themes\Dark\repeat_one.png" />
     <None Remove="Images\Themes\Dark\restore.png" />
     <None Remove="Images\Themes\Dark\search.png" />
     <None Remove="Images\Themes\Dark\settings.png" />
+    <None Remove="Images\Themes\Dark\shuffle.png" />
+    <None Remove="Images\Themes\Dark\voice.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +45,23 @@
     <Resource Include="Images\Themes\Dark\delete.png" />
     <Resource Include="Images\Themes\Dark\horizontal_line.png" />
     <Resource Include="Images\Themes\Dark\maximize.png" />
+    <Resource Include="Images\Themes\Dark\next_64px.png" />
     <Resource Include="Images\Themes\Dark\play.png" />
+    <Resource Include="Images\Themes\Dark\playing.png" />
+    <Resource Include="Images\Themes\Dark\play_64px.png" />
+    <Resource Include="Images\Themes\Dark\previous_64px.png" />
+    <Resource Include="Images\Themes\Dark\puzzled.png" />
+    <Resource Include="Images\Themes\Dark\repeat.png" />
+    <Resource Include="Images\Themes\Dark\repeat_one.png" />
     <Resource Include="Images\Themes\Dark\restore.png" />
     <Resource Include="Images\Themes\Dark\search.png" />
     <Resource Include="Images\Themes\Dark\settings.png" />
+    <Resource Include="Images\Themes\Dark\shuffle.png" />
+    <Resource Include="Images\Themes\Dark\voice.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Player\" />
   </ItemGroup>
 
 </Project>
