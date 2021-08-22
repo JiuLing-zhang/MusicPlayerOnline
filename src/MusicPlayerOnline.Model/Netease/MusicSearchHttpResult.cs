@@ -32,6 +32,7 @@
     public class Album
     {
         public string name { get; set; }
+        public string picUrl { get; set; }
     }
 
     public class Artist

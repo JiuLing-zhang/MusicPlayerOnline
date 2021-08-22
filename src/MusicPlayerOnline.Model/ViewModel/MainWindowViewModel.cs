@@ -76,5 +76,19 @@ namespace MusicPlayerOnline.Model.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private string _currentMusicInfo;
+        /// <summary>
+        /// 当前播放的信息
+        /// </summary>
+        public string CurrentMusicInfo
+        {
+            get => _currentMusicInfo;
+            set
+            {
+                _currentMusicInfo = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

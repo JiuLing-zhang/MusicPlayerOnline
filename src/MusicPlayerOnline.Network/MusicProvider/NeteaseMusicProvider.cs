@@ -63,6 +63,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
                     Alias = alia,
                     ArtistName = artistName,
                     AlbumName = song.al.name,
+                    PicUrl = song.al.picUrl,
                     Duration = song.dt,
                     DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
                     Fee = song.fee

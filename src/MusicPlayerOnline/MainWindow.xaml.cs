@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Common;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
-using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Network.MusicProvider;
 using MusicPlayerOnline.Player;
 
@@ -28,7 +25,7 @@ namespace MusicPlayerOnline
         //todo 工厂方式创建
         readonly IMusicProvider _myMusicProvider = new NeteaseMusicProvider();
         private readonly IPlayerProvider _player = new PlayerProvider();
-        private PlayModeEnum _playMode = PlayModeEnum.RepeatList;
+        private readonly PlayerStateModel _playerState = new PlayerStateModel();
 
         public MainWindow()
         {
@@ -37,36 +34,11 @@ namespace MusicPlayerOnline
             LoadingAppConfig();
             BindingDataForUI();
 
-            SetPlayMode();
-            _player.PlaylistChanged += Player_PlaylistChanged;
-        }
-
-        private void Player_PlaylistChanged(object sender)
-        {
-            var playlist = sender as List<PlaylistModel>;
-            if (playlist == null)
-            {
-                Messages.ShowWarning("更新播放列表失败");
-                return;
-            }
-
-            _myModel.Playlist.Clear();
-            foreach (var item in playlist)
-            {
-                string toolTip = "";
-                if (item.Alias.IsNotEmpty())
-                {
-                    toolTip = $"别名：（{item.Alias}）{Environment.NewLine}";
-                }
-                toolTip = $"{toolTip}歌手：{item.ArtistName}{Environment.NewLine}专辑：{item.AlbumName}";
-                _myModel.Playlist.Add(new PlaylistViewModel()
-                {
-                    Id = item.Id,
-                    IsPlaying = item.IsPlaying,
-                    MusicText = $"{item.Name} - {item.ArtistName}",
-                    MusicToolTip = toolTip
-                });
-            }
+            _playerState.IsPlaying = false;
+            SetPlayerPlayMode();
+            SetPlayOrPause();
+            SetPlayerMute();
+            SetPlayer();
         }
         private void LoadingAppConfig()
         {
@@ -86,7 +58,7 @@ namespace MusicPlayerOnline
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // this.DragMove();
+            this.DragMove();
         }
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
@@ -161,6 +133,7 @@ namespace MusicPlayerOnline
                             Name = musicInfo.Name,
                             Alias = musicInfo.Alias == "" ? "" : $"（{musicInfo.Alias}）",
                             Artist = musicInfo.ArtistName,
+                            PicUrl = musicInfo.PicUrl,
                             Album = musicInfo.AlbumName,
                             Duration = musicInfo.DurationText,
                             Fee = musicInfo.Fee
@@ -252,7 +225,11 @@ namespace MusicPlayerOnline
                 Messages.ShowError("删除，读取信息异常");
                 return;
             }
-            _player.RemoveFromPlaylist((int)btn.Tag);
+
+            int musicId = (int)btn.Tag;
+            var music = _myModel.Playlist.FirstOrDefault(x => x.Id == musicId);
+            _myModel.Playlist.Remove(music);
+            _player.RemoveFromPlaylist(musicId);
         }
 
         private void Playlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -284,7 +261,20 @@ namespace MusicPlayerOnline
                 });
                 return;
             }
-      
+
+            string toolTip = "";
+            if (music.Alias.IsNotEmpty())
+            {
+                toolTip = $"别名：（{music.Alias}）{Environment.NewLine}";
+            }
+            toolTip = $"{toolTip}歌手：{music.Artist}{Environment.NewLine}专辑：{music.Album}";
+            _myModel.Playlist.Add(new PlaylistViewModel()
+            {
+                Id = music.Id,
+                MusicText = $"{music.Name} - {music.Artist}",
+                MusicToolTip = toolTip
+            });
+
             var data = new PlaylistModel()
             {
                 Id = music.Id,
@@ -292,50 +282,136 @@ namespace MusicPlayerOnline
                 Alias = music.Alias,
                 ArtistName = music.Artist,
                 AlbumName = music.Album,
-                PlayUrl = result.Data
+                PlayUrl = result.Data,
+                PicUrl = music.PicUrl
             };
             _player.AddToPlaylist(data);
         }
         private void Play(int musicId)
         {
-            _player.Play(musicId);
+            _player.PlayNew(musicId);
         }
 
         private void BtnChangePlayMode_Click(object sender, RoutedEventArgs e)
         {
-            if (_playMode == PlayModeEnum.RepeatOne)
+            if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
             {
-                _playMode = PlayModeEnum.RepeatList;
+                _playerState.PlayMode = PlayModeEnum.RepeatList;
             }
-            else if (_playMode == PlayModeEnum.RepeatList)
+            else if (_playerState.PlayMode == PlayModeEnum.RepeatList)
             {
-                _playMode = PlayModeEnum.Shuffle;
+                _playerState.PlayMode = PlayModeEnum.Shuffle;
             }
-            else if (_playMode == PlayModeEnum.Shuffle)
+            else if (_playerState.PlayMode == PlayModeEnum.Shuffle)
             {
-                _playMode = PlayModeEnum.RepeatOne;
+                _playerState.PlayMode = PlayModeEnum.RepeatOne;
             }
-            SetPlayMode();
+            SetPlayerPlayMode();
+        }
+        private void SoundOff_Click(object sender, RoutedEventArgs e)
+        {
+            _playerState.IsMute = !_playerState.IsMute;
+            SetPlayerMute();
+        }
+        private void SetPlayerMute()
+        {
+            if (_playerState.IsMute == true)
+            {
+                this.ImgSoundOff.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/mute.png"));
+            }
+            else
+            {
+                this.ImgSoundOff.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/voice.png"));
+            }
+
+            _player.IsMuted = _playerState.IsMute;
+        }
+        private void PlayOrPause_Click(object sender, RoutedEventArgs e)
+        {
+            _playerState.IsPlaying = !_playerState.IsPlaying;
+            SetPlayOrPause();
+        }
+        private void SetPlayOrPause()
+        {
+            if (_playerState.IsPlaying == true)
+            {
+                this.ImgPlayOrPause.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/pause64px.png"));
+                _player.Play();
+            }
+            else
+            {
+                this.ImgPlayOrPause.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/play_64px.png"));
+                _player.Pause();
+            }
         }
 
-        private void SetPlayMode()
+        private void SetPlayerPlayMode()
         {
-            if (_playMode == PlayModeEnum.RepeatOne)
+            if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
             {
                 this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/repeat_one.png"));
                 this.ImgPlayMode.ToolTip = "当前状态：单曲循环";
             }
-            else if (_playMode == PlayModeEnum.RepeatList)
+            else if (_playerState.PlayMode == PlayModeEnum.RepeatList)
             {
                 this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/repeat.png"));
                 this.ImgPlayMode.ToolTip = "当前状态：列表循环";
             }
-            else if (_playMode == PlayModeEnum.Shuffle)
+            else if (_playerState.PlayMode == PlayModeEnum.Shuffle)
             {
                 this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/shuffle.png"));
                 this.ImgPlayMode.ToolTip = "当前状态：随机播放";
             }
-            _player.SetPlayMode(_playMode);
+            _player.PlayMode= _playerState.PlayMode;
         }
+
+        private void SetPlayer()
+        {
+            _player.MusicStarted += _player_MusicStarted;
+        }
+
+        private void _player_MusicStarted(PlaylistModel music)
+        {
+            foreach (var item in _myModel.Playlist)
+            {
+                if (item.IsPlaying == true)
+                {
+                    item.IsPlaying = false;
+                    break;
+                }
+            }
+            var playlistMusic = _myModel.Playlist.FirstOrDefault(x => x.Id == music.Id);
+            if (playlistMusic != null)
+            {
+                playlistMusic.IsPlaying = true;
+            }
+
+            //名称
+            string musicInfo = $"{music.Name}{Environment.NewLine}";
+            //别名
+            if (music.Alias.IsNotEmpty())
+            {
+                musicInfo = $"{musicInfo}{music.Alias}{Environment.NewLine}";
+            }
+            //歌手
+            musicInfo = $"{musicInfo}{music.ArtistName}{Environment.NewLine}";
+            //专辑
+            musicInfo = $"{musicInfo}{music.AlbumName}";
+            _myModel.CurrentMusicInfo = musicInfo;
+            this.ImgCurrentMusic.Source = new BitmapImage(new Uri(music.PicUrl));
+
+            _playerState.IsPlaying = true;
+            SetPlayOrPause();
+        }
+        private void Previous_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Previous();
+        }
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Next();
+        }
+
+    
     }
 }

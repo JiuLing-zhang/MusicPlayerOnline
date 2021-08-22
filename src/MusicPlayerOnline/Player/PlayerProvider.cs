@@ -9,14 +9,23 @@ namespace MusicPlayerOnline.Player
 {
     public class PlayerProvider : IPlayerProvider
     {
+        public event MusicStartedEventHandler MusicStarted;
+        /// <summary>
+        /// 是否静音
+        /// </summary>
+        public bool IsMuted
+        {
+            set => _player.IsMuted = value;
+        }
+
+        public PlayModeEnum PlayMode { get; set; }
+
         private readonly MediaPlayer _player = new MediaPlayer();
         private readonly List<PlaylistModel> _playlist = new List<PlaylistModel>();
         /// <summary>
-        /// 当前播放的索引
+        /// 当前播放的id
         /// </summary>
-        private PlayModeEnum _playMode;
-
-        public event PlaylistChangedEventHandler PlaylistChanged;
+        private int _currentMusicId;
 
         public PlayerProvider()
         {
@@ -54,10 +63,6 @@ namespace MusicPlayerOnline.Player
             }
 
             _playlist.Add(music);
-            if (PlaylistChanged != null)
-            {
-                PlaylistChanged(_playlist);
-            }
         }
 
         public void RemoveFromPlaylist(int musicId)
@@ -69,32 +74,38 @@ namespace MusicPlayerOnline.Player
             }
 
             _playlist.Remove(music);
-            if (PlaylistChanged != null)
-            {
-                PlaylistChanged(_playlist);
-            }
         }
 
         public void ClearPlaylist()
         {
             _playlist.Clear();
-            if (PlaylistChanged != null)
-            {
-                PlaylistChanged(_playlist);
-            }
         }
 
-        public void Play(int musicId)
+        public void PlayNew(int musicId)
+        {
+            PlayById(musicId);
+        }
+
+        private void PlayById(int musicId)
         {
             var music = _playlist.FirstOrDefault(x => x.Id == musicId);
             if (music == null)
             {
                 return;
             }
+            PlayByMusic(music);
+        }
 
+        private void PlayByMusic(PlaylistModel music)
+        {
             _player.Open(new Uri(music.PlayUrl));
             _player.Play();
-
+            _currentMusicId = music.Id;
+            MusicStarted?.Invoke(music);
+        }
+        public void Play()
+        {
+            _player.Play();
         }
 
         public void Pause()
@@ -104,19 +115,90 @@ namespace MusicPlayerOnline.Player
 
         public void Previous()
         {
-            throw new NotImplementedException();
+            if (PlayMode == PlayModeEnum.RepeatOne)
+            {
+                PlayById(_currentMusicId);
+                return;
+            }
+            if (PlayMode == PlayModeEnum.RepeatList)
+            {
+                int nextId = 0;
+                for (int i = 0; i < _playlist.Count; i++)
+                {
+                    if (_playlist[i].Id == _currentMusicId)
+                    {
+                        nextId = i - 1;
+                        break;
+                    }
+                }
+                //列表第一首
+                if (nextId < 0)
+                {
+                    nextId = _playlist.Count - 1;
+                }
+
+                PlayByMusic(_playlist[nextId]);
+                return;
+            }
+            if (PlayMode == PlayModeEnum.Shuffle)
+            {
+                if (_playlist.Count <= 1)
+                {
+                    PlayById(_currentMusicId);
+                    return;
+                }
+
+                PlaylistModel randomMusic = null;
+                do
+                {
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistModel>(_playlist);
+                } while (randomMusic.Id == _currentMusicId);
+                PlayById(randomMusic.Id);
+            }
         }
 
         public void Next()
         {
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// 设置播放方式
-        /// </summary>
-        public void SetPlayMode(PlayModeEnum playMode)
-        {
-            _playMode = playMode;
+            if (PlayMode == PlayModeEnum.RepeatOne)
+            {
+                PlayById(_currentMusicId);
+                return;
+            }
+            if (PlayMode == PlayModeEnum.RepeatList)
+            {
+                int nextId = 0;
+                for (int i = 0; i < _playlist.Count; i++)
+                {
+                    if (_playlist[i].Id == _currentMusicId)
+                    {
+                        nextId = i + 1;
+                        break;
+                    }
+                }
+                //列表最后一首
+                if (_playlist.Count == nextId)
+                {
+                    nextId = 0;
+                }
+
+                PlayByMusic(_playlist[nextId]);
+                return;
+            }
+            if (PlayMode == PlayModeEnum.Shuffle)
+            {
+                if (_playlist.Count <= 1)
+                {
+                    PlayById(_currentMusicId);
+                    return;
+                }
+
+                PlaylistModel randomMusic = null;
+                do
+                {
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistModel>(_playlist);
+                } while (randomMusic.Id == _currentMusicId);
+                PlayById(randomMusic.Id);
+            }
         }
     }
 }

@@ -117,5 +117,21 @@
                 OnPropertyChanged();
             }
         }
+
+
+        private string _picUrl;
+
+        /// <summary>
+        /// 图片地址
+        /// </summary>
+        public string PicUrl
+        {
+            get => _picUrl;
+            set
+            {
+                _picUrl = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

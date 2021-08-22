@@ -495,7 +495,16 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0"></Grid>
+            <Grid Grid.Column="0">
+                <DockPanel Margin="5">
+                    <Image x:Name="ImgCurrentMusic" DockPanel.Dock="Left"  Width="60"></Image>
+                    <TextBlock 
+                        DockPanel.Dock="Top" 
+                        Margin="10,0,0,0" 
+                        Text="{Binding CurrentMusicInfo}"
+                        Foreground="{DynamicResource FontColor}"/>
+                </DockPanel>
+            </Grid>
             <Grid Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -509,22 +518,22 @@
                                     Style="{StaticResource ChangeButtonIsMouseOver}" >
                                 <Image x:Name="ImgPlayMode" Source="{StaticResource ImgShuffle}"></Image>
                             </Button>
-                            <Button Width="30" Background="Transparent" 
+                            <Button Click="Previous_Click" Width="30" Background="Transparent" 
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
                                     Margin="10,0,0,0">
                                 <Image Source="{StaticResource ImgPrevious64}"></Image>
                             </Button>
-                            <Button Width="50" Background="Transparent"
+                            <Button Click="PlayOrPause_Click" Width="50" Background="Transparent"
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
                                     Margin="10,0,10,0">
-                                <Image Source="{StaticResource ImgPlay64}"></Image>
+                                <Image x:Name="ImgPlayOrPause" ></Image>
                             </Button>
-                            <Button Width="30" Background="Transparent"
+                            <Button Click="Next_Click" Width="30" Background="Transparent"
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
                                     Margin="0,0,10,0">
                                 <Image Source="{StaticResource ImgNext64}"></Image>
                             </Button>
-                            <Button Width="20" Background="Transparent"
+                            <Button Width="20" Background="Transparent" ToolTip="占个位，还没想好放啥按钮^_^"
                                     Style="{StaticResource ChangeButtonIsMouseOver}" >
                                 <Image Source="{StaticResource ImgPuzzled}"></Image>
                             </Button>
@@ -538,7 +547,9 @@
             </Grid>
             <Grid Grid.Column="2">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Width="22" Source="{StaticResource ImgVoice}"></Image>
+                    <Button Click="SoundOff_Click" Width="22" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}" >
+                        <Image x:Name="ImgSoundOff"></Image>
+                    </Button>
                     <Slider Minimum="0" Maximum="100" Value="0" Background="{DynamicResource FontColor}" 
                             Width="100" Height="2" />
                 </StackPanel>
