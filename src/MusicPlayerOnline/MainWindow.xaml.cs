@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Common;
+using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Network;
@@ -27,6 +28,7 @@ namespace MusicPlayerOnline
         //todo 工厂方式创建
         readonly IMusicProvider _myMusicProvider = new NeteaseMusicProvider();
         private readonly IPlayerProvider _player = new PlayerProvider();
+        private PlayModeEnum _playMode = PlayModeEnum.RepeatList;
 
         public MainWindow()
         {
@@ -35,6 +37,7 @@ namespace MusicPlayerOnline
             LoadingAppConfig();
             BindingDataForUI();
 
+            SetPlayMode();
             _player.PlaylistChanged += Player_PlaylistChanged;
         }
 
@@ -159,7 +162,8 @@ namespace MusicPlayerOnline
                             Alias = musicInfo.Alias == "" ? "" : $"（{musicInfo.Alias}）",
                             Artist = musicInfo.ArtistName,
                             Album = musicInfo.AlbumName,
-                            Duration = musicInfo.DurationText
+                            Duration = musicInfo.DurationText,
+                            Fee = musicInfo.Fee
                         });
                     }
                 });
@@ -174,6 +178,11 @@ namespace MusicPlayerOnline
                 Messages.ShowError("播放失败：数据选取失败");
                 return;
             }
+            if (music.Fee == 1)
+            {
+                Messages.ShowWarning("暂时不支持VIP音乐的播放");
+                return;
+            }
             AddMusicToPlaylist(music);
             Play(music.Id);
         }
@@ -184,6 +193,11 @@ namespace MusicPlayerOnline
             if (music == null)
             {
                 Messages.ShowError("添加失败：数据选取失败");
+                return;
+            }
+            if (music.Fee == 1)
+            {
+                Messages.ShowWarning("暂时不支持VIP音乐的播放");
                 return;
             }
             AddMusicToPlaylist(music);
@@ -221,6 +235,11 @@ namespace MusicPlayerOnline
                 return;
             }
 
+            if (selectedMusic.Fee == 1)
+            {
+                Messages.ShowWarning("暂时不支持VIP音乐的播放");
+                return;
+            }
             AddMusicToPlaylist(selectedMusic);
             Play(selectedMusic.Id);
         }
@@ -265,7 +284,7 @@ namespace MusicPlayerOnline
                 });
                 return;
             }
-
+      
             var data = new PlaylistModel()
             {
                 Id = music.Id,
@@ -280,6 +299,43 @@ namespace MusicPlayerOnline
         private void Play(int musicId)
         {
             _player.Play(musicId);
+        }
+
+        private void BtnChangePlayMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (_playMode == PlayModeEnum.RepeatOne)
+            {
+                _playMode = PlayModeEnum.RepeatList;
+            }
+            else if (_playMode == PlayModeEnum.RepeatList)
+            {
+                _playMode = PlayModeEnum.Shuffle;
+            }
+            else if (_playMode == PlayModeEnum.Shuffle)
+            {
+                _playMode = PlayModeEnum.RepeatOne;
+            }
+            SetPlayMode();
+        }
+
+        private void SetPlayMode()
+        {
+            if (_playMode == PlayModeEnum.RepeatOne)
+            {
+                this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/repeat_one.png"));
+                this.ImgPlayMode.ToolTip = "当前状态：单曲循环";
+            }
+            else if (_playMode == PlayModeEnum.RepeatList)
+            {
+                this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/repeat.png"));
+                this.ImgPlayMode.ToolTip = "当前状态：列表循环";
+            }
+            else if (_playMode == PlayModeEnum.Shuffle)
+            {
+                this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/shuffle.png"));
+                this.ImgPlayMode.ToolTip = "当前状态：随机播放";
+            }
+            _player.SetPlayMode(_playMode);
         }
     }
 }

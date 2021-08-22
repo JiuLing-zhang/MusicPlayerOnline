@@ -233,6 +233,15 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="VIPMusicBorder" TargetType="{x:Type Border}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Fee}" Value="1">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -433,6 +442,20 @@
                                                         Foreground="{DynamicResource MusicSearchResultSource}"
                                                     />
                                                 </Border>
+                                                <Border BorderBrush="{DynamicResource MusicSearchResultVIP}" 
+                                                        BorderThickness="1"
+                                                        Margin="0,0,8,0"
+                                                        Padding="4,1,4,1"
+                                                        CornerRadius="5" 
+                                                        Opacity="0.7"
+                                                        Style="{StaticResource VIPMusicBorder}"
+                                                >
+                                                    <TextBlock 
+                                                        Text="VIP" 
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource MusicSearchResultVIP}"
+                                                    />
+                                                </Border>
                                                 <TextBlock Text="{Binding Name}" 
                                                            ToolTip="{Binding Name}"
                                                            Foreground="{DynamicResource MusicSearchResultName}"
@@ -482,9 +505,9 @@
 
                     <Grid Grid.Row="0" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                            <Button Width="20" Background="Transparent" 
+                            <Button Click="BtnChangePlayMode_Click" Width="20" Background="Transparent" 
                                     Style="{StaticResource ChangeButtonIsMouseOver}" >
-                                <Image Source="{StaticResource ImgShuffle}"></Image>
+                                <Image x:Name="ImgPlayMode" Source="{StaticResource ImgShuffle}"></Image>
                             </Button>
                             <Button Width="30" Background="Transparent" 
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 

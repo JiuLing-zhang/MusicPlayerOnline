@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 
 namespace MusicPlayerOnline.Player
@@ -10,8 +11,40 @@ namespace MusicPlayerOnline.Player
     {
         private readonly MediaPlayer _player = new MediaPlayer();
         private readonly List<PlaylistModel> _playlist = new List<PlaylistModel>();
+        /// <summary>
+        /// 当前播放的索引
+        /// </summary>
+        private PlayModeEnum _playMode;
 
         public event PlaylistChangedEventHandler PlaylistChanged;
+
+        public PlayerProvider()
+        {
+            _player.MediaOpened += _player_MediaOpened;
+            _player.BufferingStarted += _player_BufferingStarted;
+            _player.BufferingEnded += _player_BufferingEnded;
+            _player.MediaEnded += _player_MediaEnded;
+        }
+
+        private void _player_MediaEnded(object sender, EventArgs e)
+        {
+            Console.WriteLine("播放完成");
+        }
+
+        private void _player_BufferingEnded(object sender, EventArgs e)
+        {
+            Console.WriteLine("缓冲完成");
+        }
+
+        private void _player_BufferingStarted(object sender, EventArgs e)
+        {
+            Console.WriteLine("开始缓冲");
+        }
+
+        private void _player_MediaOpened(object sender, EventArgs e)
+        {
+            Console.WriteLine("媒体打开");
+        }
 
         public void AddToPlaylist(PlaylistModel music)
         {
@@ -29,18 +62,32 @@ namespace MusicPlayerOnline.Player
 
         public void RemoveFromPlaylist(int musicId)
         {
-            throw new NotImplementedException();
+            var music = _playlist.FirstOrDefault(x => x.Id == musicId);
+            if (music == null)
+            {
+                return;
+            }
+
+            _playlist.Remove(music);
+            if (PlaylistChanged != null)
+            {
+                PlaylistChanged(_playlist);
+            }
         }
 
         public void ClearPlaylist()
         {
-            throw new NotImplementedException();
+            _playlist.Clear();
+            if (PlaylistChanged != null)
+            {
+                PlaylistChanged(_playlist);
+            }
         }
 
         public void Play(int musicId)
         {
             var music = _playlist.FirstOrDefault(x => x.Id == musicId);
-            if (music==null)
+            if (music == null)
             {
                 return;
             }
@@ -52,7 +99,7 @@ namespace MusicPlayerOnline.Player
 
         public void Pause()
         {
-            throw new NotImplementedException();
+            _player.Pause();
         }
 
         public void Previous()
@@ -64,6 +111,12 @@ namespace MusicPlayerOnline.Player
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// 设置播放方式
+        /// </summary>
+        public void SetPlayMode(PlayModeEnum playMode)
+        {
+            _playMode = playMode;
+        }
     }
 }

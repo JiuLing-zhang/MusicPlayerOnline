@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 
 namespace MusicPlayerOnline.Player
@@ -15,5 +15,9 @@ namespace MusicPlayerOnline.Player
         void Pause();
         void Previous();
         void Next();
+        /// <summary>
+        /// 设置播放方式
+        /// </summary>
+        void SetPlayMode(PlayModeEnum playMode);
     }
 }

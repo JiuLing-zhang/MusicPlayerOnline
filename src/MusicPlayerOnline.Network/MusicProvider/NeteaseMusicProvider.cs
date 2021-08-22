@@ -64,8 +64,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
                     ArtistName = artistName,
                     AlbumName = song.al.name,
                     Duration = song.dt,
-                    DurationText = $"{ts.Minutes}:{ts.Seconds:D2}"
-
+                    DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
+                    Fee = song.fee
                 };
                 musics.Add(music);
             }

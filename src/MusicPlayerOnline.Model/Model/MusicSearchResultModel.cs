@@ -13,5 +13,9 @@ namespace MusicPlayerOnline.Model.Model
         /// 歌曲时长，格式为“分:秒”，例如：05:44
         /// </summary>
         public string DurationText { get; set; }
+        /// <summary>
+        /// 费用类型
+        /// </summary>
+        public int Fee { get; set; }
     }
 }

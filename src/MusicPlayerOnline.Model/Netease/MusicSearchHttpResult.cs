@@ -23,6 +23,10 @@
         /// 时长
         /// </summary>
         public int dt { get; set; }
+        /// <summary>
+        /// 费用类型
+        /// </summary>
+        public int fee { get; set; }
     }
 
     public class Album

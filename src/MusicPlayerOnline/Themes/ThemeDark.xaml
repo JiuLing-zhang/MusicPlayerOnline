@@ -15,7 +15,7 @@
     <SolidColorBrush x:Key="MusicSearchResultOther" Color="#959595"></SolidColorBrush>
     <SolidColorBrush x:Key="MusicSearchResultMouseOver" Color="#3E3E3E"></SolidColorBrush>
     <SolidColorBrush x:Key="MusicSearchResultSelected" Color="#2D2D2D"></SolidColorBrush>
-
+    <SolidColorBrush x:Key="MusicSearchResultVIP" Color="#FF4D3C"></SolidColorBrush>
 
     <SolidColorBrush x:Key="PlaylistBorder" Color="#3E3E3E"></SolidColorBrush>
     <SolidColorBrush x:Key="PlaylistBackground" Color="#222222"></SolidColorBrush>

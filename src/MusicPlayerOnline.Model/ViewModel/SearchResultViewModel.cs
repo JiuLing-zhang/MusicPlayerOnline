@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace MusicPlayerOnline.Model.ViewModel
 {
-    public class SearchResultViewModel: MusicInfoViewModel
+    public class SearchResultViewModel : MusicInfoViewModel
     {
+        private int _fee;
+        /// <summary>
+        /// 费用类型
+        /// </summary>
+        public int Fee
+        {
+            get => _fee;
+            set
+            {
+                _fee = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
