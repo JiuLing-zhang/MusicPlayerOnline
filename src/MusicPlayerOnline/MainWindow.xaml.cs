@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Common;
 using MusicPlayerOnline.Model.Enum;
@@ -53,6 +54,7 @@ namespace MusicPlayerOnline
             ListViewMusicSearchResult.ItemsSource = _myModel.MusicSearchResult;
             ListViewPlaylist.ItemsSource = _myModel.Playlist;
             DataContext = _myModel;
+            _myModel.VoiceValue = 0.5;
         }
 
 
@@ -252,6 +254,12 @@ namespace MusicPlayerOnline
 
         private void AddMusicToPlaylist(SearchResultViewModel music)
         {
+            if (_myModel.Playlist.Any(x => x.Id == music.Id))
+            {
+                //已在播放列表包含，跳过
+                return;
+            }
+
             var result = _myMusicProvider.GetMusicUrl(music.Id).Result;
             if (result.Code != 0)
             {
@@ -344,7 +352,6 @@ namespace MusicPlayerOnline
                 _player.Pause();
             }
         }
-
         private void SetPlayerPlayMode()
         {
             if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
@@ -362,12 +369,29 @@ namespace MusicPlayerOnline
                 this.ImgPlayMode.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/shuffle.png"));
                 this.ImgPlayMode.ToolTip = "当前状态：随机播放";
             }
-            _player.PlayMode= _playerState.PlayMode;
+            _player.PlayMode = _playerState.PlayMode;
         }
 
+        readonly DispatcherTimer _timer = new DispatcherTimer();
         private void SetPlayer()
         {
             _player.MusicStarted += _player_MusicStarted;
+            _timer.Interval = TimeSpan.FromMilliseconds(1000);
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            var result = _player.GetPosition();
+            if (result.isPlaying == false)
+            {
+                return;
+            }
+
+            _myModel.PlayedTime = $"{result.position.Minutes}:{result.position.Seconds:D2}";
+            _myModel.TotalTime = $"{result.total.Minutes}:{result.total.Seconds:D2}";
+            _myModel.PlayPercent = result.percent;
         }
 
         private void _player_MusicStarted(PlaylistModel music)
@@ -399,7 +423,6 @@ namespace MusicPlayerOnline
             musicInfo = $"{musicInfo}{music.AlbumName}";
             _myModel.CurrentMusicInfo = musicInfo;
             this.ImgCurrentMusic.Source = new BitmapImage(new Uri(music.PicUrl));
-
             _playerState.IsPlaying = true;
             SetPlayOrPause();
         }
@@ -412,6 +435,9 @@ namespace MusicPlayerOnline
             _player.Next();
         }
 
-    
+        private void SliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _player.VoiceValue = _myModel.VoiceValue;
+        }
     }
 }

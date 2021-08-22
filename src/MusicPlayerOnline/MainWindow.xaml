@@ -6,6 +6,8 @@
         xmlns:musicPlayerOnline="clr-namespace:MusicPlayerOnline"
         mc:Ignorable="d"
         Title="在线音乐助手" Height="650" Width="1000" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
+        MinHeight="520"
+        MinWidth="800"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False"  />
@@ -241,6 +243,69 @@
                     <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Rectangle
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Fill="{TemplateBinding Background}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
+            <Grid
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                UseLayoutRounding="True">
+                <Ellipse
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    Fill="{TemplateBinding Foreground}" />
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
+            <Grid Background="Transparent" SnapsToDevicePixels="True">
+                <Border
+                    x:Name="TrackBackground"
+                    Height="2"
+                    VerticalAlignment="center"
+                    Background="{TemplateBinding Background}" />
+
+                <Track x:Name="PART_Track">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton
+                            Height="2"
+                            Background="{TemplateBinding Foreground}"
+                            Style="{StaticResource RepeatButtonTransparent}" />
+                    </Track.DecreaseRepeatButton>
+
+                    <Track.Thumb>
+                        <Thumb
+                            x:Name="Thumb"
+                            Width="{TemplateBinding Height}"
+                            Height="{TemplateBinding Height}"
+                            VerticalAlignment="Center"
+                            Focusable="False"
+                            Foreground="{TemplateBinding Foreground}"
+                            OverridesDefaultStyle="True"
+                            Template="{StaticResource SliderThumbHorizontalDefault}" />
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">   
+            <Setter Property="Template" Value="{StaticResource SliderHorizontal}" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -520,17 +585,17 @@
                             </Button>
                             <Button Click="Previous_Click" Width="30" Background="Transparent" 
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
-                                    Margin="10,0,0,0">
+                                    Margin="20,0,0,0">
                                 <Image Source="{StaticResource ImgPrevious64}"></Image>
                             </Button>
                             <Button Click="PlayOrPause_Click" Width="50" Background="Transparent"
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
-                                    Margin="10,0,10,0">
+                                    Margin="20,0,20,0">
                                 <Image x:Name="ImgPlayOrPause" ></Image>
                             </Button>
                             <Button Click="Next_Click" Width="30" Background="Transparent"
                                     Style="{StaticResource ChangeButtonIsMouseOver}" 
-                                    Margin="0,0,10,0">
+                                    Margin="0,0,20,0">
                                 <Image Source="{StaticResource ImgNext64}"></Image>
                             </Button>
                             <Button Width="20" Background="Transparent" ToolTip="占个位，还没想好放啥按钮^_^"
@@ -540,8 +605,17 @@
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Slider Minimum="0" Maximum="1" Value="0.5" Background="{DynamicResource FontColor}" Margin="0,5,0,0"
-                                Width="300" Height="2" />
+                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                            <TextBlock Text="{Binding PlayedTime}" Foreground="{DynamicResource FontColor}"/>
+                            <Slider Minimum="0" Maximum="1" Value="{Binding PlayPercent}" 
+                                    Background="{DynamicResource PlayProcessBackground}"
+                                    Foreground="{DynamicResource PlayProcessForeground}"
+                                    Margin="10,0,10,0"
+                                    Width="400" Height="8"
+                                    Style="{DynamicResource SliderStyle1}"
+                            />
+                            <TextBlock Text="{Binding TotalTime}" Foreground="{DynamicResource FontColor}"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>
@@ -550,8 +624,13 @@
                     <Button Click="SoundOff_Click" Width="22" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}" >
                         <Image x:Name="ImgSoundOff"></Image>
                     </Button>
-                    <Slider Minimum="0" Maximum="100" Value="0" Background="{DynamicResource FontColor}" 
-                            Width="100" Height="2" />
+                    <Slider x:Name="SliderVoice" 
+                            Minimum="0" Maximum="1" Value="{Binding VoiceValue}" 
+                            Background="{DynamicResource FontColor}" 
+                            Foreground="{DynamicResource VoiceForeground}"
+                            ValueChanged="SliderVoice_ValueChanged"
+                            Style="{DynamicResource SliderStyle1}"
+                            Width="100" Height="10" />
                 </StackPanel>
             </Grid>
         </Grid>

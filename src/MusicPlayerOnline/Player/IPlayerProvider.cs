@@ -1,4 +1,5 @@
-﻿using MusicPlayerOnline.Model.Enum;
+﻿using System;
+using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 
 namespace MusicPlayerOnline.Player
@@ -16,6 +17,16 @@ namespace MusicPlayerOnline.Player
         /// </summary>
         public PlayModeEnum PlayMode { set; }
 
+        /// <summary>
+        /// 声音大小
+        /// </summary>
+        public double VoiceValue { set; }
+
+        /// <summary>
+        /// 是否正在播放
+        /// </summary>
+        public bool IsPlaying { get; set; }
+
         void AddToPlaylist(PlaylistModel music);
         void RemoveFromPlaylist(int musicId);
         void ClearPlaylist();
@@ -24,5 +35,6 @@ namespace MusicPlayerOnline.Player
         void Pause();
         void Previous();
         void Next();
+        (bool isPlaying, TimeSpan position, TimeSpan total, double percent) GetPosition();
     }
 }

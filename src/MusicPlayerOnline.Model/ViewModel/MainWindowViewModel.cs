@@ -90,5 +90,63 @@ namespace MusicPlayerOnline.Model.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private double _voiceValue;
+        /// <summary>
+        /// 声音大小
+        /// </summary>
+        public double VoiceValue
+        {
+            get => _voiceValue;
+            set
+            {
+                _voiceValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private string _playedTime;
+        /// <summary>
+        /// 已播放时长
+        /// </summary>
+        public string PlayedTime
+        {
+            get => _playedTime;
+            set
+            {
+                _playedTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _totalTime;
+        /// <summary>
+        /// 总时长
+        /// </summary>
+        public string TotalTime
+        {
+            get => _totalTime;
+            set
+            {
+                _totalTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private double _playPercent;
+        /// <summary>
+        /// 总时长
+        /// </summary>
+        public double PlayPercent
+        {
+            get => _playPercent;
+            set
+            {
+                _playPercent = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

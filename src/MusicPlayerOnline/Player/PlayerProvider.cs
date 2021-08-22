@@ -10,6 +10,14 @@ namespace MusicPlayerOnline.Player
     public class PlayerProvider : IPlayerProvider
     {
         public event MusicStartedEventHandler MusicStarted;
+
+        private readonly MediaPlayer _player;
+        private readonly List<PlaylistModel> _playlist;
+        /// <summary>
+        /// 当前播放的id
+        /// </summary>
+        private int _currentMusicId;
+
         /// <summary>
         /// 是否静音
         /// </summary>
@@ -20,41 +28,20 @@ namespace MusicPlayerOnline.Player
 
         public PlayModeEnum PlayMode { get; set; }
 
-        private readonly MediaPlayer _player = new MediaPlayer();
-        private readonly List<PlaylistModel> _playlist = new List<PlaylistModel>();
+        public double VoiceValue
+        {
+            set => _player.Volume = value;
+        }
         /// <summary>
-        /// 当前播放的id
+        /// 是否正在播放
         /// </summary>
-        private int _currentMusicId;
+        public bool IsPlaying { get; set; }
 
         public PlayerProvider()
         {
-            _player.MediaOpened += _player_MediaOpened;
-            _player.BufferingStarted += _player_BufferingStarted;
-            _player.BufferingEnded += _player_BufferingEnded;
-            _player.MediaEnded += _player_MediaEnded;
+            _player = new MediaPlayer();
+            _playlist = new List<PlaylistModel>();
         }
-
-        private void _player_MediaEnded(object sender, EventArgs e)
-        {
-            Console.WriteLine("播放完成");
-        }
-
-        private void _player_BufferingEnded(object sender, EventArgs e)
-        {
-            Console.WriteLine("缓冲完成");
-        }
-
-        private void _player_BufferingStarted(object sender, EventArgs e)
-        {
-            Console.WriteLine("开始缓冲");
-        }
-
-        private void _player_MediaOpened(object sender, EventArgs e)
-        {
-            Console.WriteLine("媒体打开");
-        }
-
         public void AddToPlaylist(PlaylistModel music)
         {
             if (_playlist.Any(x => x.Id == music.Id))
@@ -101,16 +88,19 @@ namespace MusicPlayerOnline.Player
             _player.Open(new Uri(music.PlayUrl));
             _player.Play();
             _currentMusicId = music.Id;
+            IsPlaying = true;
             MusicStarted?.Invoke(music);
         }
         public void Play()
         {
             _player.Play();
+            IsPlaying = true;
         }
 
         public void Pause()
         {
             _player.Pause();
+            IsPlaying = false;
         }
 
         public void Previous()
@@ -148,7 +138,7 @@ namespace MusicPlayerOnline.Player
                     return;
                 }
 
-                PlaylistModel randomMusic = null;
+                PlaylistModel randomMusic;
                 do
                 {
                     randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistModel>(_playlist);
@@ -199,6 +189,20 @@ namespace MusicPlayerOnline.Player
                 } while (randomMusic.Id == _currentMusicId);
                 PlayById(randomMusic.Id);
             }
+        }
+
+        public (bool isPlaying, TimeSpan position, TimeSpan total, double percent) GetPosition()
+        {
+            var nd = _player.NaturalDuration;
+            if (IsPlaying == false || nd.HasTimeSpan == false)
+            {
+                return (false, default, default, default);
+            }
+
+            var p = _player.Position;
+            double playedTime = p.TotalSeconds;
+            double totalTime = nd.TimeSpan.TotalSeconds;
+            return (true, p, nd.TimeSpan, playedTime / totalTime);
         }
     }
 }
