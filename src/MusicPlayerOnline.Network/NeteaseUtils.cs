@@ -80,7 +80,7 @@ namespace MusicPlayerOnline.Network
             return dec;
         }
 
-        public static IEnumerable<KeyValuePair<string, string>> GetPostDataForMusicUrl(int musicId)
+        public static IEnumerable<KeyValuePair<string, string>> GetPostDataForMusicUrl(string musicId)
         {
             string searchString = GetUrlString(musicId);
             string num = GetRandom();
@@ -91,7 +91,7 @@ namespace MusicPlayerOnline.Network
             return data;
         }
 
-        private static string GetUrlString(int musicId)
+        private static string GetUrlString(string musicId)
         {
             return "{\"ids\":\"[" + musicId + "]\",\"level\":\"standard\",\"encodeType\":\"aac\",\"csrf_token\":\"\"}";
         }

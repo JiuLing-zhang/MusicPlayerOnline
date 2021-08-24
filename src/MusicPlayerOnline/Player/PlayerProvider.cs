@@ -12,11 +12,11 @@ namespace MusicPlayerOnline.Player
         public event MusicStartedEventHandler MusicStarted;
 
         private readonly MediaPlayer _player;
-        private readonly List<PlaylistModel> _playlist;
+        private readonly List<MusicDetail2> _playlist;
         /// <summary>
         /// 当前播放的id
         /// </summary>
-        private int _currentMusicId;
+        private string _currentMusicId;
 
         /// <summary>
         /// 是否静音
@@ -40,9 +40,9 @@ namespace MusicPlayerOnline.Player
         public PlayerProvider()
         {
             _player = new MediaPlayer();
-            _playlist = new List<PlaylistModel>();
+            _playlist = new List<MusicDetail2>();
         }
-        public void AddToPlaylist(PlaylistModel music)
+        public void AddToPlaylist(MusicDetail2 music)
         {
             if (_playlist.Any(x => x.Id == music.Id))
             {
@@ -52,7 +52,7 @@ namespace MusicPlayerOnline.Player
             _playlist.Add(music);
         }
 
-        public void RemoveFromPlaylist(int musicId)
+        public void RemoveFromPlaylist(string musicId)
         {
             var music = _playlist.FirstOrDefault(x => x.Id == musicId);
             if (music == null)
@@ -68,12 +68,12 @@ namespace MusicPlayerOnline.Player
             _playlist.Clear();
         }
 
-        public void PlayNew(int musicId)
+        public void PlayNew(MusicDetail2 music)
         {
-            PlayById(musicId);
+            PlayById(music.Id);
         }
 
-        private void PlayById(int musicId)
+        private void PlayById(string musicId)
         {
             var music = _playlist.FirstOrDefault(x => x.Id == musicId);
             if (music == null)
@@ -83,7 +83,7 @@ namespace MusicPlayerOnline.Player
             PlayByMusic(music);
         }
 
-        private void PlayByMusic(PlaylistModel music)
+        private void PlayByMusic(MusicDetail2 music)
         {
             _player.Open(new Uri(music.PlayUrl));
             _player.Play();
@@ -101,6 +101,18 @@ namespace MusicPlayerOnline.Player
         {
             _player.Pause();
             IsPlaying = false;
+        }
+
+        public void SetProgress(double percent)
+        {
+            var nd = _player.NaturalDuration;
+            if (IsPlaying == false || nd.HasTimeSpan == false)
+            {
+                return;
+            }
+            double totalTime = nd.TimeSpan.TotalSeconds;
+            var ts = TimeSpan.FromSeconds(totalTime * percent);
+            _player.Position = ts;
         }
 
         public void Previous()
@@ -138,10 +150,10 @@ namespace MusicPlayerOnline.Player
                     return;
                 }
 
-                PlaylistModel randomMusic;
+                MusicDetail2 randomMusic;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistModel>(_playlist);
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail2>(_playlist);
                 } while (randomMusic.Id == _currentMusicId);
                 PlayById(randomMusic.Id);
             }
@@ -182,10 +194,10 @@ namespace MusicPlayerOnline.Player
                     return;
                 }
 
-                PlaylistModel randomMusic = null;
+                MusicDetail2 randomMusic = null;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistModel>(_playlist);
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail2>(_playlist);
                 } while (randomMusic.Id == _currentMusicId);
                 PlayById(randomMusic.Id);
             }

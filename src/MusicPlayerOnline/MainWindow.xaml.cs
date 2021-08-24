@@ -11,7 +11,7 @@ using MusicPlayerOnline.Common;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
-using MusicPlayerOnline.Network.MusicProvider;
+using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Player;
 
 namespace MusicPlayerOnline
@@ -23,11 +23,10 @@ namespace MusicPlayerOnline
     {
 
         private readonly MainWindowViewModel _myModel = new();
-        //todo 工厂方式创建
-        readonly IMusicProvider _myMusicProvider = new NeteaseMusicProvider();
+        readonly MusicNetPlatform _musicNetPlatform = new();
         private readonly IPlayerProvider _player = new PlayerProvider();
-        private readonly PlayerStateModel _playerState = new PlayerStateModel();
-
+        private readonly PlayerStateModel _playerState = new();
+        private readonly DispatcherTimer _timerPlayProgress = new();
         public MainWindow()
         {
             InitializeComponent();
@@ -36,11 +35,24 @@ namespace MusicPlayerOnline
             BindingDataForUI();
 
             _playerState.IsPlaying = false;
+            _myModel.SearchPlatform = 0;
+            foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
+            {
+                _myModel.SearchPlatform = _myModel.SearchPlatform | item;
+            }
             SetPlayerPlayMode();
             SetPlayOrPause();
             SetPlayerMute();
-            SetPlayer();
+            InitializePlayProgressTimer();
         }
+
+        private void InitializePlayProgressTimer()
+        {
+            _player.MusicStarted += _player_MusicStarted;
+            _timerPlayProgress.Interval = TimeSpan.FromMilliseconds(1000);
+            _timerPlayProgress.Tick += _timerPlayProgress_Tick;
+        }
+
         private void LoadingAppConfig()
         {
 
@@ -114,31 +126,31 @@ namespace MusicPlayerOnline
 
             Task.Run(() =>
             {
-                var result = _myMusicProvider.Search(_myModel.SearchKeyword).Result;
-                if (result.Code != 0)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Messages.ShowError(result.Message);
-                    });
-                    return;
-                }
+                var musics = _musicNetPlatform.Search(_myModel.SearchPlatform, _myModel.SearchKeyword).Result;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     _myModel.MusicSearchResult.Clear();
-                    foreach (var musicInfo in result.Data)
+
+                    if (musics.Count == 0)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Messages.ShowError("似乎啥也没找到，要不，您再试试？");
+                        });
+                        return;
+                    }
+
+                    foreach (var musicInfo in musics)
                     {
                         _myModel.MusicSearchResult.Add(new SearchResultViewModel()
                         {
-                            Id = musicInfo.Id,
                             Platform = musicInfo.Platform.GetDescription(),
                             Name = musicInfo.Name,
                             Alias = musicInfo.Alias == "" ? "" : $"（{musicInfo.Alias}）",
-                            Artist = musicInfo.ArtistName,
-                            PicUrl = musicInfo.PicUrl,
-                            Album = musicInfo.AlbumName,
+                            Artist = musicInfo.Artist,
+                            Album = musicInfo.Album,
                             Duration = musicInfo.DurationText,
-                            Fee = musicInfo.Fee
+                            SourceData = musicInfo
                         });
                     }
                 });
@@ -147,35 +159,48 @@ namespace MusicPlayerOnline
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
-            var music = GetMusicInfoFromButtonTag(sender);
-            if (music == null)
+            var selectedMusic = GetMusicInfoFromButtonTag(sender);
+            if (selectedMusic == null)
             {
                 Messages.ShowError("播放失败：数据选取失败");
                 return;
             }
-            if (music.Fee == 1)
+
+            BuildMusicDetail(selectedMusic.SourceData, musicDetail =>
             {
-                Messages.ShowWarning("暂时不支持VIP音乐的播放");
-                return;
-            }
-            AddMusicToPlaylist(music);
-            Play(music.Id);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (musicDetail == null)
+                    {
+                        Messages.ShowError("操作失败，该歌曲的信息似乎没找到~~~");
+                        return;
+                    }
+                    AddAndPlayMusic(musicDetail);
+                });
+            });
         }
 
         private void BtnAddPlaylist_Click(object sender, RoutedEventArgs e)
         {
-            var music = GetMusicInfoFromButtonTag(sender);
-            if (music == null)
+            var selectedMusic = GetMusicInfoFromButtonTag(sender);
+            if (selectedMusic == null)
             {
                 Messages.ShowError("添加失败：数据选取失败");
                 return;
             }
-            if (music.Fee == 1)
+
+            BuildMusicDetail(selectedMusic.SourceData, musicDetail =>
             {
-                Messages.ShowWarning("暂时不支持VIP音乐的播放");
-                return;
-            }
-            AddMusicToPlaylist(music);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (musicDetail == null)
+                    {
+                        Messages.ShowError("操作失败，该歌曲的信息似乎没找到~~~");
+                        return;
+                    }
+                    AddMusicToPlaylist(musicDetail);
+                });
+            });
         }
 
         private SearchResultViewModel GetMusicInfoFromButtonTag(object button)
@@ -210,15 +235,28 @@ namespace MusicPlayerOnline
                 return;
             }
 
-            if (selectedMusic.Fee == 1)
+            BuildMusicDetail(selectedMusic.SourceData, musicDetail =>
             {
-                Messages.ShowWarning("暂时不支持VIP音乐的播放");
-                return;
-            }
-            AddMusicToPlaylist(selectedMusic);
-            Play(selectedMusic.Id);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (musicDetail == null)
+                    {
+                        Messages.ShowError("操作失败，该歌曲的信息似乎没找到~~~");
+                        return;
+                    }
+                    AddAndPlayMusic(musicDetail);
+                });
+            });
         }
 
+        private void BuildMusicDetail(MusicSearchResult music, Action<MusicDetail2> callback)
+        {
+            Task.Run(() =>
+            {
+                var data = _musicNetPlatform.BuildMusicDetail(music).Result;
+                callback(data);
+            });
+        }
         private void BtnDeletePlaylist_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -228,7 +266,7 @@ namespace MusicPlayerOnline
                 return;
             }
 
-            int musicId = (int)btn.Tag;
+            string musicId = btn.Tag.ToString();
             var music = _myModel.Playlist.FirstOrDefault(x => x.Id == musicId);
             _myModel.Playlist.Remove(music);
             _player.RemoveFromPlaylist(musicId);
@@ -249,24 +287,28 @@ namespace MusicPlayerOnline
                 Messages.ShowError("播放失败，数据解析异常");
                 return;
             }
-            Play(selectedMusic.Id);
+
+            PlayMusic(selectedMusic.SourceData);
         }
 
-        private void AddMusicToPlaylist(SearchResultViewModel music)
+        /// <summary>
+        /// 添加到播放列表并播放
+        /// </summary>
+        private void AddAndPlayMusic(MusicDetail2 music)
+        {
+            AddMusicToPlaylist(music);
+            PlayMusic(music);
+        }
+
+        /// <summary>
+        /// 添加到播放列表
+        /// </summary>
+        /// <param name="music"></param>
+        private void AddMusicToPlaylist(MusicDetail2 music)
         {
             if (_myModel.Playlist.Any(x => x.Id == music.Id))
             {
                 //已在播放列表包含，跳过
-                return;
-            }
-
-            var result = _myMusicProvider.GetMusicUrl(music.Id).Result;
-            if (result.Code != 0)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Messages.ShowError(result.Message);
-                });
                 return;
             }
 
@@ -276,28 +318,23 @@ namespace MusicPlayerOnline
                 toolTip = $"别名：（{music.Alias}）{Environment.NewLine}";
             }
             toolTip = $"{toolTip}歌手：{music.Artist}{Environment.NewLine}专辑：{music.Album}";
+            _player.AddToPlaylist(music);
             _myModel.Playlist.Add(new PlaylistViewModel()
             {
                 Id = music.Id,
                 MusicText = $"{music.Name} - {music.Artist}",
-                MusicToolTip = toolTip
+                MusicToolTip = toolTip,
+                SourceData = music
             });
-
-            var data = new PlaylistModel()
-            {
-                Id = music.Id,
-                Name = music.Name,
-                Alias = music.Alias,
-                ArtistName = music.Artist,
-                AlbumName = music.Album,
-                PlayUrl = result.Data,
-                PicUrl = music.PicUrl
-            };
-            _player.AddToPlaylist(data);
         }
-        private void Play(int musicId)
+
+        /// <summary>
+        /// 播放
+        /// </summary>
+        private void PlayMusic(MusicDetail2 music)
         {
-            _player.PlayNew(musicId);
+            _player.PlayNew(music);
+            _timerPlayProgress.Start();
         }
 
         private void BtnChangePlayMode_Click(object sender, RoutedEventArgs e)
@@ -344,11 +381,13 @@ namespace MusicPlayerOnline
             if (_playerState.IsPlaying == true)
             {
                 this.ImgPlayOrPause.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/pause64px.png"));
+                _timerPlayProgress.Start();
                 _player.Play();
             }
             else
             {
                 this.ImgPlayOrPause.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/play_64px.png"));
+                _timerPlayProgress.Stop();
                 _player.Pause();
             }
         }
@@ -371,17 +410,7 @@ namespace MusicPlayerOnline
             }
             _player.PlayMode = _playerState.PlayMode;
         }
-
-        readonly DispatcherTimer _timer = new DispatcherTimer();
-        private void SetPlayer()
-        {
-            _player.MusicStarted += _player_MusicStarted;
-            _timer.Interval = TimeSpan.FromMilliseconds(1000);
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
-        }
-
-        private void _timer_Tick(object sender, EventArgs e)
+        private void _timerPlayProgress_Tick(object sender, EventArgs e)
         {
             var result = _player.GetPosition();
             if (result.isPlaying == false)
@@ -394,7 +423,7 @@ namespace MusicPlayerOnline
             _myModel.PlayPercent = result.percent;
         }
 
-        private void _player_MusicStarted(PlaylistModel music)
+        private void _player_MusicStarted(MusicDetail2 music)
         {
             foreach (var item in _myModel.Playlist)
             {
@@ -418,11 +447,11 @@ namespace MusicPlayerOnline
                 musicInfo = $"{musicInfo}{music.Alias}{Environment.NewLine}";
             }
             //歌手
-            musicInfo = $"{musicInfo}{music.ArtistName}{Environment.NewLine}";
+            musicInfo = $"{musicInfo}{music.Artist}{Environment.NewLine}";
             //专辑
-            musicInfo = $"{musicInfo}{music.AlbumName}";
+            musicInfo = $"{musicInfo}{music.Album}";
             _myModel.CurrentMusicInfo = musicInfo;
-            this.ImgCurrentMusic.Source = new BitmapImage(new Uri(music.PicUrl));
+            this.ImgCurrentMusic.Source = new BitmapImage(new Uri(music.ImageUrl));
             _playerState.IsPlaying = true;
             SetPlayOrPause();
         }
@@ -439,5 +468,17 @@ namespace MusicPlayerOnline
         {
             _player.VoiceValue = _myModel.VoiceValue;
         }
+
+        private void SliderPlayProgress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            _player.SetProgress(_myModel.PlayPercent);
+            _timerPlayProgress.Start();
+        }
+
+        private void SliderPlayProgress_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            _timerPlayProgress.Stop();
+        }
+
     }
 }

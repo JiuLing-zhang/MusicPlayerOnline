@@ -6,15 +6,14 @@
         xmlns:musicPlayerOnline="clr-namespace:MusicPlayerOnline"
         mc:Ignorable="d"
         Title="在线音乐助手" Height="650" Width="1000" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
-        MinHeight="520"
-        MinWidth="800"
+        MinHeight="650"
+        MinWidth="1000"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False"  />
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-
         <musicPlayerOnline:PlatformFormatValueConverter x:Key="PlatformFormatValueConverter"/>
 
         <Style x:Key="ChangeButtonIsMouseOver" TargetType="Button">
@@ -239,8 +238,22 @@
         <Style x:Key="VIPMusicBorder" TargetType="{x:Type Border}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
+                <DataTrigger Binding="{Binding Fee}" Value="0">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding Fee}" Value="1">
                     <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VIPMusicTextBlock" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Fee}" Value="0">
+                    <Setter Property="Text" Value="版权"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Fee}" Value="1">
+                    <Setter Property="Text" Value="VIP"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -304,7 +317,7 @@
             </Grid>
         </ControlTemplate>
 
-        <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">   
+        <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">
             <Setter Property="Template" Value="{StaticResource SliderHorizontal}" />
         </Style>
     </Window.Resources>
@@ -516,7 +529,7 @@
                                                         Style="{StaticResource VIPMusicBorder}"
                                                 >
                                                     <TextBlock 
-                                                        Text="VIP" 
+                                                        Style="{StaticResource VIPMusicTextBlock}"
                                                         FontSize="12"
                                                         Foreground="{DynamicResource MusicSearchResultVIP}"
                                                     />
@@ -607,7 +620,9 @@
                     <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
                             <TextBlock Text="{Binding PlayedTime}" Foreground="{DynamicResource FontColor}"/>
-                            <Slider Minimum="0" Maximum="1" Value="{Binding PlayPercent}" 
+                            <Slider x:Name="SliderPlayProgress" Minimum="0" Maximum="1" Value="{Binding PlayPercent}" 
+                                    Thumb.DragStarted="SliderPlayProgress_DragStarted"
+                                    Thumb.DragCompleted="SliderPlayProgress_DragCompleted"
                                     Background="{DynamicResource PlayProcessBackground}"
                                     Foreground="{DynamicResource PlayProcessForeground}"
                                     Margin="10,0,10,0"

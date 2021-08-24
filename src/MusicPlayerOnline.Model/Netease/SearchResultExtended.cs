@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicPlayerOnline.Model.Model
+namespace MusicPlayerOnline.Model.Netease
 {
-    public class PlaylistModel : MusicBase
+    public class SearchResultExtended
     {
-        public bool IsPlaying { get; set; }
+        public int Fee { get; set; }
     }
 }

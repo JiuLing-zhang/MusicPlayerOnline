@@ -9,10 +9,26 @@ namespace MusicPlayerOnline
 {
     public class PlatformFormatValueConverter : IValueConverter
     {
+        private const string AllName = "全部";
+        private readonly PlatformEnum _allPlatform;
+        public PlatformFormatValueConverter()
+        {
+            _allPlatform = 0;
+            foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
+            {
+                _allPlatform = _allPlatform | item;
+            }
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is PlatformEnum platform)
             {
+                if (platform == _allPlatform)
+                {
+                    return AllName;
+                }
+
                 return GetString(platform);
             }
 
@@ -23,6 +39,10 @@ namespace MusicPlayerOnline
         {
             if (value is string s)
             {
+                if (s == AllName)
+                {
+                    return _allPlatform;
+                }
                 return Enum.Parse(typeof(PlatformEnum), s.Substring(s.IndexOf(':') + 1));
             }
             return null;
@@ -30,11 +50,11 @@ namespace MusicPlayerOnline
 
         public string[] Strings => GetStrings();
 
-        public static string GetString(PlatformEnum platform)
+        private static string GetString(PlatformEnum platform)
         {
             return $"{GetDescription(platform)}:{platform}";
         }
-        public static string GetDescription(PlatformEnum platform)
+        private static string GetDescription(PlatformEnum platform)
         {
             return platform.GetDescription();
 
@@ -43,6 +63,7 @@ namespace MusicPlayerOnline
         public static string[] GetStrings()
         {
             List<string> list = new List<string>();
+            list.Add(AllName);
             foreach (PlatformEnum platform in Enum.GetValues(typeof(PlatformEnum)))
             {
                 list.Add(GetString(platform));

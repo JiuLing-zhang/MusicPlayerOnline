@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MusicPlayerOnline.Model.Model;
 
 namespace MusicPlayerOnline.Model.ViewModel
 {
     public class PlaylistViewModel : ViewModelBase
     {
 
-        private int _id;
+        private string _id;
         /// <summary>
         /// id
         /// </summary>
-        public int Id
+        public string Id
         {
             get => _id;
             set
@@ -62,6 +63,20 @@ namespace MusicPlayerOnline.Model.ViewModel
             set
             {
                 _isPlaying = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private MusicDetail2 _sourceData;
+        /// <summary>
+        /// 源数据，对应的MusicSearchResult
+        /// </summary>
+        public MusicDetail2 SourceData
+        {
+            get => _sourceData;
+            set
+            {
+                _sourceData = value;
                 OnPropertyChanged();
             }
         }

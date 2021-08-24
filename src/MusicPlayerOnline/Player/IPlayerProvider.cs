@@ -4,7 +4,7 @@ using MusicPlayerOnline.Model.Model;
 
 namespace MusicPlayerOnline.Player
 {
-    public delegate void MusicStartedEventHandler(PlaylistModel music);
+    public delegate void MusicStartedEventHandler(MusicDetail2 music);
     public interface IPlayerProvider
     {
         event MusicStartedEventHandler MusicStarted;
@@ -27,12 +27,13 @@ namespace MusicPlayerOnline.Player
         /// </summary>
         public bool IsPlaying { get; set; }
 
-        void AddToPlaylist(PlaylistModel music);
-        void RemoveFromPlaylist(int musicId);
+        void AddToPlaylist(MusicDetail2 music);
+        void RemoveFromPlaylist(string musicId);
         void ClearPlaylist();
-        void PlayNew(int musicId);
+        void PlayNew(MusicDetail2 music);
         void Play();
         void Pause();
+        void SetProgress(double percent);
         void Previous();
         void Next();
         (bool isPlaying, TimeSpan position, TimeSpan total, double percent) GetPosition();

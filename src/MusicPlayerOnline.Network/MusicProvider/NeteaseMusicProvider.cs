@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using JiuLing.CommonLibs.Model;
-using JiuLing.CommonLibs.Net;
+using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.Netease;
@@ -13,32 +12,32 @@ namespace MusicPlayerOnline.Network.MusicProvider
 {
     public class NeteaseMusicProvider : IMusicProvider
     {
-        private readonly HttpClient _http = new HttpClient();
+        private readonly HttpClient _httpClient = new();
         private const PlatformEnum Platform = PlatformEnum.Netease;
 
-        public async Task<JsonResult<List<MusicSearchResultModel>>> Search(string keyword)
+        public async Task<(bool IsSucceed, string ErrMsg, List<MusicSearchResult> musics)> Search(string keyword)
         {
             string url = $"{UrlBase.Netease.Search}";
 
             var postData = NeteaseUtils.GetPostDataForSearch(keyword);
             var form = new FormUrlEncodedContent(postData);
-            var response = await _http.PostAsync(url, form).ConfigureAwait(false);
+            var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             var result = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicSearchHttpResult>>(json);
             if (result == null)
             {
-                return new JsonResult<List<MusicSearchResultModel>>() { Code = -1, Message = "请求服务器失败" };
+                return (false, "请求服务器失败", null);
             }
             if (result.code != 200)
             {
-                return new JsonResult<List<MusicSearchResultModel>>() { Code = result.code, Message = result.msg };
+                return (false, result.msg, null);
             }
 
-            var musics = new List<MusicSearchResultModel>();
+            var musics = new List<MusicSearchResult>();
             if (result.result.songCount == 0)
             {
-                return new JsonResult<List<MusicSearchResultModel>>() { Code = 0, Data = new List<MusicSearchResultModel>() };
+                return (true, "", new List<MusicSearchResult>());
             }
             foreach (var song in result.result.songs)
             {
@@ -55,49 +54,67 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 {
                     artistName = string.Join("、", song.ar.Select(x => x.name).ToList());
                 }
-                var music = new MusicSearchResultModel()
+                var music = new MusicSearchResult()
                 {
                     Platform = Platform,
-                    Id = song.id,
+                    PlatformId = song.id.ToString(),
                     Name = song.name,
                     Alias = alia,
-                    ArtistName = artistName,
-                    AlbumName = song.al.name,
-                    PicUrl = song.al.picUrl,
+                    Artist = artistName,
+                    Album = song.al.name,
+                    ImageUrl = song.al.picUrl,
                     Duration = song.dt,
                     DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
-                    Fee = song.fee
+                    PlatformData = new SearchResultExtended()
+                    {
+                        Fee = song.fee
+                    }
                 };
                 musics.Add(music);
             }
-            return new JsonResult<List<MusicSearchResultModel>>() { Code = 0, Data = musics };
+            return (true, "", musics);
         }
 
-        public async Task<JsonResult<string>> GetMusicUrl(int id)
+        public async Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic)
         {
             string url = $"{UrlBase.Netease.GetMusicUrl}";
-
-            var postData = NeteaseUtils.GetPostDataForMusicUrl(id);
+            var postData = NeteaseUtils.GetPostDataForMusicUrl(sourceMusic.PlatformId);
 
             var form = new FormUrlEncodedContent(postData);
-            var response = await _http.PostAsync(url, form).ConfigureAwait(false);
+            var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var result = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicUrlHttpResult>>(json);
-            if (result == null)
+            var httpResult = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicUrlHttpResult>>(json);
+            if (httpResult == null)
             {
-                return new JsonResult<string>() { Code = -1, Message = "获取歌曲真实地址失败" };
+                return null;
             }
-            if (result.code != 200)
+            if (httpResult.code != 200)
             {
-                return new JsonResult<string>() { Code = result.code, Message = result.msg };
+                return null;
             }
 
-            if (result.data.Count == 0)
+            if (httpResult.data.Count == 0)
             {
-                return new JsonResult<string>() { Code = -1, Message = "服务器未返回歌曲真实地址" };
+                return null;
             }
-            return new JsonResult<string>() { Code = 0, Data = result.data[0].url };
+
+            string playUrl = httpResult.data[0].url;
+            if (playUrl.IsEmpty())
+            {
+                return null;
+            }
+            return new MusicDetail2()
+            {
+                Id = sourceMusic.Id,
+                Name = sourceMusic.Name,
+                Alias = sourceMusic.Alias,
+                Artist = sourceMusic.Artist,
+                Album = sourceMusic.Album,
+                Duration = sourceMusic.Duration,
+                ImageUrl = sourceMusic.ImageUrl,
+                PlayUrl = playUrl
+            };
         }
     }
 }
