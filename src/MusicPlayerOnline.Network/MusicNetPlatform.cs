@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Network.BuildMusicDetail;
+using MusicPlayerOnline.Network.MusicProvider;
 using MusicPlayerOnline.Network.SearchMusic;
 
 namespace MusicPlayerOnline.Network
@@ -12,6 +13,7 @@ namespace MusicPlayerOnline.Network
         //搜索链
         private readonly SearchHandler _neteaseSearcher = new NeteaseSearcher(PlatformEnum.Netease);
         private readonly SearchHandler _kuGouSearcher = new KuGouSearcher(PlatformEnum.KuGou);
+        private readonly SearchHandler _miGuSearcher = new MiGuSearcher(PlatformEnum.MiGu);
 
         //构建详情链
         private readonly BuildHandler _neteaseBuilder = new NeteaseBuilder(PlatformEnum.Netease);
@@ -20,6 +22,7 @@ namespace MusicPlayerOnline.Network
         {
             //搜索
             _neteaseSearcher.SetNextHandler(_kuGouSearcher);
+            _kuGouSearcher.SetNextHandler(_miGuSearcher);
             //详情
             _neteaseBuilder.SetNextHandler(_kuGouBuilder);
         }

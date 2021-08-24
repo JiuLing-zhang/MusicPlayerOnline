@@ -19,5 +19,10 @@ namespace MusicPlayerOnline.Network
             public const string Search = "https://complexsearch.kugou.com/v2/search/song";
             public const string GetMusicUrl = "https://wwwapi.kugou.com/yy/index.php";
         }
+
+        public class MiGu
+        {
+            public const string Search = "https://www.migu.cn/search.html";
+        }
     }
 }

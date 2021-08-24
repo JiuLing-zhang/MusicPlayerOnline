@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
@@ -7,12 +9,12 @@ using MusicPlayerOnline.Network.MusicProvider;
 
 namespace MusicPlayerOnline.Network.SearchMusic
 {
-    public class KuGouSearcher : SearchHandler
+    public class MiGuSearcher : SearchHandler
     {
         private readonly IMusicProvider _myMusicProvider;
-        public KuGouSearcher(PlatformEnum platform) : base(platform)
+        public MiGuSearcher(PlatformEnum platform) : base(platform)
         {
-            _myMusicProvider = new KuGouMusicProvider();
+            _myMusicProvider = new MiGuMusicProvider();
         }
 
         public override async Task DoSearch(string keyword, Action<List<MusicSearchResult>> searchCallback)

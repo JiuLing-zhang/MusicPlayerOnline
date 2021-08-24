@@ -9,6 +9,8 @@ namespace MusicPlayerOnline.Model.Enum
         [Description("网易")]
         Netease = 1,
         [Description("酷狗")]
-        KuGou = 2
+        KuGou = 2,
+        [Description("咪咕")]
+        MiGu = 4
     }
 }
