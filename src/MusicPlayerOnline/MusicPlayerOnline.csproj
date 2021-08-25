@@ -8,12 +8,14 @@
     <AssemblyName>MusicPlayerOnline</AssemblyName>
     <RootNamespace>MusicPlayerOnline</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\1.png" />
     <None Remove="Images\2.png" />
     <None Remove="Images\3.png" />
+    <None Remove="Images\icon.ico" />
     <None Remove="Images\icon.png" />
     <None Remove="Images\Themes\Dark\add.png" />
     <None Remove="Images\Themes\Dark\close.png" />
@@ -47,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\icon.png" />
     <Resource Include="Images\Themes\Dark\add.png" />
     <Resource Include="Images\Themes\Dark\close.png" />
