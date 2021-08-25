@@ -40,6 +40,8 @@ namespace MusicPlayerOnline
             {
                 _myModel.SearchPlatform = _myModel.SearchPlatform | item;
             }
+
+            _myModel.SearchPlatform = PlatformEnum.MiGu;
             SetPlayerPlayMode();
             SetPlayOrPause();
             SetPlayerMute();
