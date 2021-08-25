@@ -41,7 +41,14 @@ namespace MusicPlayerOnline.Player
         {
             _player = new MediaPlayer();
             _playlist = new List<MusicDetail2>();
+            _player.MediaEnded += _player_MediaEnded;
         }
+
+        private void _player_MediaEnded(object sender, EventArgs e)
+        {
+            Next();
+        }
+
         public void AddToPlaylist(MusicDetail2 music)
         {
             if (_playlist.Any(x => x.Id == music.Id))
