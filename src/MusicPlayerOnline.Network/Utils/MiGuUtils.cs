@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MusicPlayerOnline.Model.MiGu;
 
 namespace MusicPlayerOnline.Network.Utils
 {
@@ -13,28 +11,85 @@ namespace MusicPlayerOnline.Network.Utils
             return $"migu_p=h5&pn=1&type=allLobby&_ch=&content={keyword}";
         }
 
-        public static string GetSearchResult(string html)
+        public static bool TryScanSearchResult(string html, out List<HttpMusicSearchResult> musics)
         {
+            musics = new List<HttpMusicSearchResult>();
+
             string pattern = @"<ul class=""list\"">(?<data>[\S\s]*)other-keys";
             var result = JiuLing.CommonLibs.Text.RegexUtils.GetOneGroupInFirstMatch(html, pattern);
             if (result.success == false)
             {
-                return "";
+                return false;
             }
 
             pattern = @"<li class=""default"">[\S\s]*?</li>";
             var musicHtmlList = JiuLing.CommonLibs.Text.RegexUtils.GetAll(result.result, pattern);
             if (musicHtmlList.Count == 0)
             {
-                return "";
+                return false;
             }
 
             foreach (var musicHtml in musicHtmlList)
             {
-                pattern = @"a href=""(?<url>\S*)""[\s\S]*<img src=""(?<imgUrl>\S*)""";
-                result = JiuLing.CommonLibs.Text.RegexUtils.GetOneGroupInFirstMatch(musicHtml, pattern);
+                pattern = @"<span class=""search_type"">【音乐】";
+                if (!JiuLing.CommonLibs.Text.RegexUtils.IsMatch(musicHtml, pattern))
+                {
+                    continue;
+                }
+                pattern = @"a href=""(?<musicPageUrl>\S*)""[\s\S]*<img src=""(?<imageUrl>\S*)""[\s\S]*class=""search_type"">(?<name>[\S\s]*)</h3>[\s\S]*class=""desc"">(?<artist>[\S\s]*)</p>";
+                var groupList = new List<string>() { "musicPageUrl", "imageUrl", "name", "artist" };
+                var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(musicHtml, pattern, groupList);
+
+                if (resultGroup.success == false)
+                {
+                    continue;
+                }
+                pattern = @"<\/?.+?\/?>";
+                var regex = new System.Text.RegularExpressions.Regex(pattern);
+
+                string musicPageUrl = resultGroup.result.musicPageUrl;
+                string imageUrl = resultGroup.result.imageUrl;
+
+                string name = resultGroup.result.name;
+                name = regex.Replace(name, "");
+                name = name.Replace("【音乐】", "");
+                name = name.Trim();
+
+                string artist = resultGroup.result.artist;
+                artist = regex.Replace(artist, "");
+                artist = artist.Replace("歌手：", "");
+                artist = artist.Trim();
+
+                musics.Add(new HttpMusicSearchResult()
+                {
+                    Name = name,
+                    Artist = artist,
+                    ImageUrl = imageUrl,
+                    MusicPageUrl = musicPageUrl
+                });
             }
-            return "";
+            return true;
+        }
+
+        public static (bool success, string id, string type) GetMusicRealArgs(string url)
+        {
+            string pattern = @"id=(?<id>\d*)&type=(?<type>\d*)";
+            var groupList = new List<string>() { "id", "type" };
+            var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(url, pattern, groupList);
+
+            if (resultGroup.success == false)
+            {
+                return (false, "", "");
+            }
+            return (true, resultGroup.result.id, resultGroup.result.type);
+        }
+
+        public static string GetPlayUrlData(string id, string copyrightId)
+        {
+            var time = DateTime.Now;
+            Int64 timestampLast = JiuLing.CommonLibs.Text.TimestampUtils.ConvertToLen13(time.AddSeconds(-1));
+            Int64 timestamp = JiuLing.CommonLibs.Text.TimestampUtils.ConvertToLen13(time);
+            return $"id={id}&copyrightId={copyrightId}&resourceType=2&_={timestampLast}&v={timestamp}";
         }
     }
 }

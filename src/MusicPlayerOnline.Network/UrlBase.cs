@@ -23,6 +23,8 @@ namespace MusicPlayerOnline.Network
         public class MiGu
         {
             public const string Search = "https://www.migu.cn/search.html";
+            public const string GetMusicDetailUrl = "https://c.musicapp.migu.cn/MIGUM2.0/v1.0/content/resourceinfo.do";
+            public const string GetMusicPlayUrl = "https://h5.nf.migu.cn/app/providers/api/v2/song.listen.ask";
         }
     }
 }

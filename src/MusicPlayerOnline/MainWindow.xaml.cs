@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Common;
+using MusicPlayerOnline.Config;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
@@ -30,7 +31,7 @@ namespace MusicPlayerOnline
         public MainWindow()
         {
             InitializeComponent();
-
+           
             LoadingAppConfig();
             BindingDataForUI();
 
@@ -102,7 +103,11 @@ namespace MusicPlayerOnline
 
         private void BtnSetting_Click(object sender, RoutedEventArgs e)
         {
-            Messages.ShowInfo("设置");
+            var about = new SettingWindow
+            {
+                Owner = this
+            };
+            about.ShowDialog();
         }
 
         private void ReadyToSearch_Click(object sender, RoutedEventArgs e)

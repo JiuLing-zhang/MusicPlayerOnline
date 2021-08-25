@@ -44,4 +44,8 @@
     <BitmapImage x:Key="ImgPuzzled" UriSource="/Images/Themes/Dark/puzzled.png" />
     <BitmapImage x:Key="ImgVoice" UriSource="/Images/Themes/Dark/voice.png" />
 
+    <!-- 设置窗口 -->
+    <BitmapImage x:Key="ImgHomePage" UriSource="/Images/Themes/Dark/home_page.png" />
+    <BitmapImage x:Key="ImgGitHub" UriSource="/Images/Themes/Dark/github.png" />
+    <BitmapImage x:Key="ImgSourceCode" UriSource="/Images/Themes/Dark/c_sharp_logo.png" />
 </ResourceDictionary>

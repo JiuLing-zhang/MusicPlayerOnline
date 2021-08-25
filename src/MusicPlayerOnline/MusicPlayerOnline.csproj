@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>MusicPlayerOnline</AssemblyName>
     <RootNamespace>MusicPlayerOnline</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -16,7 +17,10 @@
     <None Remove="Images\icon.png" />
     <None Remove="Images\Themes\Dark\add.png" />
     <None Remove="Images\Themes\Dark\close.png" />
+    <None Remove="Images\Themes\Dark\c_sharp_logo.png" />
     <None Remove="Images\Themes\Dark\delete.png" />
+    <None Remove="Images\Themes\Dark\github.png" />
+    <None Remove="Images\Themes\Dark\home_page.png" />
     <None Remove="Images\Themes\Dark\horizontal_line.png" />
     <None Remove="Images\Themes\Dark\maximize.png" />
     <None Remove="Images\Themes\Dark\mute.png" />
@@ -37,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Config\MusicPlayerOnline.Config.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Network\MusicPlayerOnline.Network.csproj" />
   </ItemGroup>
@@ -45,7 +50,10 @@
     <Resource Include="Images\icon.png" />
     <Resource Include="Images\Themes\Dark\add.png" />
     <Resource Include="Images\Themes\Dark\close.png" />
+    <Resource Include="Images\Themes\Dark\c_sharp_logo.png" />
     <Resource Include="Images\Themes\Dark\delete.png" />
+    <Resource Include="Images\Themes\Dark\github.png" />
+    <Resource Include="Images\Themes\Dark\home_page.png" />
     <Resource Include="Images\Themes\Dark\horizontal_line.png" />
     <Resource Include="Images\Themes\Dark\maximize.png" />
     <Resource Include="Images\Themes\Dark\mute.png" />

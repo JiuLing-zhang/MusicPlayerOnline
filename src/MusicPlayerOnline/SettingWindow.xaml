@@ -1,0 +1,132 @@
+﻿<Window x:Class="MusicPlayerOnline.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPlayerOnline"
+        mc:Ignorable="d"
+        ShowInTaskbar="False" 
+        Title="AboutWindow"
+        WindowStyle="None"
+        Background="Transparent"
+        BorderThickness="24"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterOwner" 
+        MouseDown="Window_MouseDown"
+        Height="520" Width="600"
+>
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="24"  Direction="90" ShadowDepth="3"/>
+    </Window.Effect>
+
+    <Window.Resources>
+        <Style TargetType="Hyperlink">
+            <Setter Property="TextBlock.TextDecorations" Value="{x:Null}"></Setter>
+        </Style>
+
+        <Style x:Key="ChangeButtonIsMouseOver" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TabItemTitle" TargetType="TabItem">
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Width" Value="80"></Setter>
+            <Setter Property="Foreground" Value="{DynamicResource FontColor}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid>
+                            <Border Name="Border" BorderBrush="#E6E6E6" BorderThickness="0,0,0,1" CornerRadius="6,0,0,0">
+                                <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#404040" />
+                                <Setter Property="Foreground" Value="{DynamicResource FontColor}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#2F2F2F" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TabItemStackPanel" TargetType="StackPanel">
+            <Setter Property="Margin" Value="10,0,0,0"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="#333333">
+        <StackPanel Margin="20,10,10,30">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Click="BtnClose_Click" Width="24" Height="24" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}">
+                    <Image Source="{StaticResource ImgClose}"></Image>
+                </Button>
+            </StackPanel>
+            <TabControl  Background="#333333"   VerticalAlignment="Top" TabStripPlacement="Left" Height="300"
+                         Margin="0,20,0,0"
+                         BorderThickness="1,0,0,0" >
+                <TabItem Header="关于" Style="{StaticResource TabItemTitle}" 
+                          FocusVisualStyle="{x:Null}" >
+                    <StackPanel Margin="10,0,0,0">
+                        <StackPanel Orientation="Vertical" Margin="10">
+                            <Image Width="48" Height="48" Source="/Images/icon.png"></Image>
+                            <TextBlock Foreground="{DynamicResource FontColor}" Margin="0,10,0,0" FontSize="22"  TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">在线音乐助手</TextBlock>
+                            <TextBlock Foreground="{DynamicResource FontColor}" FontSize="15" Margin="0,15,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">九零</TextBlock>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,10"   VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock>           
+                                    <Hyperlink NavigateUri="https://jiuling.me" RequestNavigate="GoWebsite_RequestNavigate" >
+                                        <Image ToolTip="博客" Width="24" Source="{StaticResource ImgHomePage}"></Image>
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock Margin="10,0,10,0">           
+                                    <Hyperlink NavigateUri="https://github.com/JiuLing-zhang" RequestNavigate="GoWebsite_RequestNavigate" >
+                                        <Image ToolTip="Github" Width="24" Source="{StaticResource ImgGitHub}"></Image>
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock>           
+                                    <Hyperlink NavigateUri="https://github.com/JiuLing-zhang/MusicPlayerOnline" RequestNavigate="GoWebsite_RequestNavigate">
+                                        <Image ToolTip="源码" Width="24" Source="{StaticResource ImgSourceCode}"></Image>
+                                    </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Version,Mode=OneWay}" Foreground="{DynamicResource FontColor}" FontSize="15" Margin="0,5,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding UpdateMessage,Mode=OneWay}" Foreground="{DynamicResource FontColor}" FontSize="13" Margin="0,28,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <Button Click="BtnCheckUpdate_Click" Width="55" Height="25" FontSize="13" Margin="0,2,0,0" Foreground="{DynamicResource FontColor}" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}">
+                                检查更新
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="常规"  Style="{StaticResource TabItemTitle}" Visibility="Collapsed">
+                    <StackPanel Style="{StaticResource TabItemStackPanel}" Visibility="Collapsed">
+                        <CheckBox x:Name="ChkAutoCheckUpdate" Click="ChkAutoCheckUpdate_Click" Foreground="{DynamicResource FontColor}">自动检查更新</CheckBox>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="播放" Style="{StaticResource TabItemTitle}" Visibility="Collapsed">
+                    <StackPanel Margin="10,0,0,0" Visibility="Collapsed">
+                        <CheckBox x:Name="ChkSavePlaylistToLocal" Click="ChkSavePlaylistToLocal_Click" Foreground="{DynamicResource FontColor}">保存播放列表到本地</CheckBox>
+                    </StackPanel>
+                </TabItem>
+                
+            </TabControl>
+        </StackPanel>
+    </Grid>
+</Window>

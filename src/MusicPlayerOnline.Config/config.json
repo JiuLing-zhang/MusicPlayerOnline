@@ -1,0 +1,8 @@
+{
+  "General": {
+    "IsAutoCheckUpdate": true
+  },
+  "Play": {
+    "IsSavePlaylistToLocal": false
+  }
+}

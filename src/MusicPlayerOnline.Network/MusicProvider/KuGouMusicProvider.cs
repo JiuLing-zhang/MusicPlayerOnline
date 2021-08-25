@@ -66,7 +66,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
         public async Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic)
         {
 
-            if (!(sourceMusic.PlatformData is SearchResultExtended platformData))
+            if (sourceMusic.PlatformData is not SearchResultExtended platformData)
             {
                 throw new ArgumentException("平台数据初始化异常");
             }

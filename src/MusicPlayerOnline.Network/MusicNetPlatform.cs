@@ -18,6 +18,8 @@ namespace MusicPlayerOnline.Network
         //构建详情链
         private readonly BuildHandler _neteaseBuilder = new NeteaseBuilder(PlatformEnum.Netease);
         private readonly BuildHandler _kuGouBuilder = new KuGouBuilder(PlatformEnum.KuGou);
+        private readonly BuildHandler _miGuBuilder = new MiGuBuilder(PlatformEnum.MiGu);
+        
         public MusicNetPlatform()
         {
             //搜索
@@ -25,6 +27,7 @@ namespace MusicPlayerOnline.Network
             _kuGouSearcher.SetNextHandler(_miGuSearcher);
             //详情
             _neteaseBuilder.SetNextHandler(_kuGouBuilder);
+            _kuGouBuilder.SetNextHandler(_miGuBuilder);
         }
 
         public async Task<List<MusicSearchResult>> Search(PlatformEnum platform, string keyword)

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnline.Model.MiGu;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Network.Utils;
 
@@ -12,12 +14,16 @@ namespace MusicPlayerOnline.Network.MusicProvider
 {
     public class MiGuMusicProvider : IMusicProvider
     {
-        private readonly HttpClient _httpClient = new();
+        private readonly HttpClient _httpClient;
         private const PlatformEnum Platform = PlatformEnum.MiGu;
 
         public MiGuMusicProvider()
         {
-            _httpClient.DefaultRequestHeaders.Add("Host", "www.migu.cn");
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            _httpClient = new HttpClient(clientHandler);
+
+
             _httpClient.DefaultRequestHeaders.Add("User-Agent",
                 "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36 Edg/92.0.902.78");
 
@@ -26,14 +32,126 @@ namespace MusicPlayerOnline.Network.MusicProvider
         {
             string args = MiGuUtils.GetSearchData(keyword);
             string url = $"{UrlBase.MiGu.Search}?{args}";
-            string html = await _httpClient.GetStringAsync(url).ConfigureAwait(false);
-            html = MiGuUtils.GetSearchResult(html);
-            return (false, "", null);
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get
+            };
+            request.Headers.Add("Host", "www.migu.cn");
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            string html = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (!MiGuUtils.TryScanSearchResult(html, out var htmlMusics))
+            {
+                return (false, "数据解析失败", null);
+            }
+
+            var musics = new List<MusicSearchResult>();
+            foreach (var htmlMusic in htmlMusics)
+            {
+                musics.Add(new MusicSearchResult()
+                {
+                    Platform = Platform,
+                    Name = htmlMusic.Name,
+                    Alias = "",
+                    Artist = htmlMusic.Artist,
+                    ImageUrl = htmlMusic.ImageUrl,
+                    PlatformData = new SearchResultExtended()
+                    {
+                        MusicPageUrl = htmlMusic.MusicPageUrl
+                    }
+                });
+            }
+            return (true, "", musics);
         }
 
-        public Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic)
+        public async Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic)
         {
-            throw new NotImplementedException();
+            if (sourceMusic.PlatformData is not SearchResultExtended platformData)
+            {
+                throw new ArgumentException("平台数据初始化异常");
+            }
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(platformData.MusicPageUrl),
+                Method = HttpMethod.Get
+            };
+            request.Headers.Add("Host", "www.migu.cn");
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            string html = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (response.StatusCode != HttpStatusCode.NotFound || html.IsNotEmpty())
+            {
+                return null;
+            }
+
+            if (response.RequestMessage == null || response.RequestMessage.RequestUri == null)
+            {
+                return null;
+            }
+
+            var argsResult = MiGuUtils.GetMusicRealArgs(response.RequestMessage.RequestUri.ToString());
+            if (argsResult.success == false)
+            {
+                return null;
+            }
+
+            string url = $"{UrlBase.MiGu.GetMusicDetailUrl}?copyrightId={argsResult.id}&resourceType=2";
+            string json = await _httpClient.GetStringAsync(url).ConfigureAwait(false);
+
+            var result = System.Text.Json.JsonSerializer.Deserialize<HttpMusicDetailResult>(json);
+            if (result == null || result.resource == null || result.resource.Length == 0)
+            {
+                return null;
+            }
+
+            string contentId = result.resource[0].contentId;
+            if (contentId.IsEmpty())
+            {
+                return null;
+            }
+            string args = MiGuUtils.GetPlayUrlData(contentId, argsResult.id);
+            url = $"{UrlBase.MiGu.GetMusicPlayUrl}?{args}";
+
+            request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(url)
+            };
+            response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            html = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (response.StatusCode != HttpStatusCode.Found || html.IsNotEmpty())
+            {
+                return null;
+            }
+
+            string playUrl = response.Headers?.Location?.ToString();
+            if (playUrl.IsEmpty())
+            {
+                return null;
+            }
+
+            string imageUrl = sourceMusic.ImageUrl;
+            if (result.resource[0].albumImgs != null && result.resource[0].albumImgs.Count > 0)
+            {
+                string tmpImageUrl = result.resource[0].albumImgs.FirstOrDefault(x => x.imgSizeType == "02")?.img;
+                if (tmpImageUrl.IsNotEmpty())
+                {
+                    imageUrl = tmpImageUrl;
+                }
+            }
+            return new MusicDetail2()
+            {
+                Id = sourceMusic.Id,
+                Name = sourceMusic.Name,
+                Alias = sourceMusic.Alias,
+                Artist = sourceMusic.Artist,
+                Album = result.resource[0].album,
+                Duration = sourceMusic.Duration,
+                ImageUrl = imageUrl,
+                PlayUrl = playUrl
+            };
         }
     }
 }
