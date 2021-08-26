@@ -8,7 +8,6 @@ using System.Windows.Input;
 using MusicPlayerOnline.Common;
 using MusicPlayerOnline.Config;
 using MusicPlayerOnline.Model.ViewModel;
-using MessageBox = System.Windows.MessageBox;
 
 namespace MusicPlayerOnline
 {
@@ -75,7 +74,7 @@ namespace MusicPlayerOnline
                     var notify = new NotifyIcon
                     {
                         BalloonTipText = $"发现新版本：{version}{System.Environment.NewLine}点击更新",
-                        Icon = new Icon($"{GlobalArgs.AppPath}Images\\icon.ico"),
+                        Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath),
                         Tag = link,
                         Visible = true
                     };
@@ -105,6 +104,7 @@ namespace MusicPlayerOnline
         {
             //常规设置
             ChkAutoCheckUpdate.IsChecked = AppSetting.Setting.General.IsAutoCheckUpdate;
+            ChkHideWindowWhenMinimize.IsChecked = AppSetting.Setting.General.IsHideWindowWhenMinimize;
 
             //播放设置
             ChkSavePlaylistToLocal.IsChecked = AppSetting.Setting.Play.IsSavePlaylistToLocal;
@@ -113,12 +113,14 @@ namespace MusicPlayerOnline
         {
             AppSetting.Setting.General.IsAutoCheckUpdate = Convert.ToBoolean(ChkAutoCheckUpdate.IsChecked);
         }
+        private void ChkHideWindowWhenMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            AppSetting.Setting.General.IsHideWindowWhenMinimize = Convert.ToBoolean(ChkHideWindowWhenMinimize.IsChecked);
+        }
 
         private void ChkSavePlaylistToLocal_Click(object sender, RoutedEventArgs e)
         {
             AppSetting.Setting.Play.IsSavePlaylistToLocal = Convert.ToBoolean(ChkSavePlaylistToLocal.IsChecked);
         }
-
-
     }
 }

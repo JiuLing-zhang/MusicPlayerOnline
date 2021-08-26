@@ -10,5 +10,9 @@
         /// 播放设置
         /// </summary>
         public PlayConfig Play { get; set; }
+        /// <summary>
+        /// 播放器设置
+        /// </summary>
+        public PlayerConfig Player { get; set; }
     }
 }

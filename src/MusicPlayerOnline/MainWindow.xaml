@@ -8,7 +8,7 @@
         Title="在线音乐助手" Height="650" Width="1000" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
         MinHeight="650"
         MinWidth="1000"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" Closed="Window_Closed">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False"  />
     </WindowChrome.WindowChrome>
@@ -639,8 +639,7 @@
                     <Button Click="SoundOff_Click" Width="22" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}" >
                         <Image x:Name="ImgSoundOff"></Image>
                     </Button>
-                    <Slider x:Name="SliderVoice" 
-                            Minimum="0" Maximum="1" Value="{Binding VoiceValue}" 
+                    <Slider Minimum="0" Maximum="1" Value="{Binding VoiceValue}" 
                             Background="{DynamicResource FontColor}" 
                             Foreground="{DynamicResource VoiceForeground}"
                             ValueChanged="SliderVoice_ValueChanged"

@@ -13,7 +13,7 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterOwner" 
         MouseDown="Window_MouseDown"
-        Height="520" Width="600"
+        Height="450" Width="600"
 >
     <Window.Effect>
         <DropShadowEffect BlurRadius="24"  Direction="90" ShadowDepth="3"/>
@@ -42,24 +42,25 @@
         </Style>
 
         <Style x:Key="TabItemTitle" TargetType="TabItem">
-            <Setter Property="Height" Value="30"></Setter>
-            <Setter Property="Width" Value="80"></Setter>
+            <Setter Property="Height" Value="40"></Setter>
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="FontSize" Value="15"></Setter>
             <Setter Property="Foreground" Value="{DynamicResource FontColor}"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabItem}">
                         <Grid>
-                            <Border Name="Border" BorderBrush="#E6E6E6" BorderThickness="0,0,0,1" CornerRadius="6,0,0,0">
+                            <Border Name="Border" BorderBrush="{DynamicResource TabItemBorder}" BorderThickness="0,0,0,1" CornerRadius="6,0,0,0">
                                 <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2"/>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#404040" />
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabItemBackgroundSelected}" />
                                 <Setter Property="Foreground" Value="{DynamicResource FontColor}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
-                                <Setter TargetName="Border" Property="Background" Value="#2F2F2F" />
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabItemBackground}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -70,17 +71,35 @@
         <Style x:Key="TabItemStackPanel" TargetType="StackPanel">
             <Setter Property="Margin" Value="10,0,0,0"></Setter>
         </Style>
+
+        <Style x:Key="SettingChk" TargetType="CheckBox">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource FontColor}"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+
     </Window.Resources>
-    <Grid Background="#333333">
-        <StackPanel Margin="20,10,10,30">
+    <Grid Background="{DynamicResource GridBackground}">
+        <StackPanel Margin="0,10,10,30">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Click="BtnClose_Click" Width="24" Height="24" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}">
                     <Image Source="{StaticResource ImgClose}"></Image>
                 </Button>
             </StackPanel>
-            <TabControl  Background="#333333"   VerticalAlignment="Top" TabStripPlacement="Left" Height="300"
-                         Margin="0,20,0,0"
-                         BorderThickness="1,0,0,0" >
+            <TabControl Background="{DynamicResource TabControlBackground}"   VerticalAlignment="Top" TabStripPlacement="Left" Height="300"
+                        BorderThickness="1,0,0,0" >
+
+                <TabItem Header="常规" Style="{StaticResource TabItemTitle}">
+                    <StackPanel Style="{StaticResource TabItemStackPanel}">
+                        <CheckBox x:Name="ChkAutoCheckUpdate" Click="ChkAutoCheckUpdate_Click" Margin="0" Style="{StaticResource SettingChk}">程序启动时检查更新（更新用的Github，访问不了就不要勾了）</CheckBox>
+                        <CheckBox x:Name="ChkHideWindowWhenMinimize" Click="ChkHideWindowWhenMinimize_Click" Style="{StaticResource SettingChk}">最小化时收缩到系统托盘</CheckBox>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="播放" Style="{StaticResource TabItemTitle}">
+                    <StackPanel Margin="10,0,0,0">
+                        <CheckBox x:Name="ChkSavePlaylistToLocal" Click="ChkSavePlaylistToLocal_Click" Foreground="{DynamicResource FontColor}">保存播放列表到本地</CheckBox>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Header="关于" Style="{StaticResource TabItemTitle}" 
                           FocusVisualStyle="{x:Null}" >
                     <StackPanel Margin="10,0,0,0">
@@ -108,24 +127,13 @@
                             </StackPanel>
 
                             <TextBlock Text="{Binding Version,Mode=OneWay}" Foreground="{DynamicResource FontColor}" FontSize="15" Margin="0,5,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Text="{Binding UpdateMessage,Mode=OneWay}" Foreground="{DynamicResource FontColor}" FontSize="13" Margin="0,28,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding UpdateMessage,Mode=OneWay}" TextWrapping="Wrap" Foreground="{DynamicResource FontColor}" FontSize="13" Margin="0,28,0,0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                             <Button Click="BtnCheckUpdate_Click" Width="55" Height="25" FontSize="13" Margin="0,2,0,0" Foreground="{DynamicResource FontColor}" Background="Transparent" Style="{StaticResource ChangeButtonIsMouseOver}">
                                 检查更新
                             </Button>
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="常规"  Style="{StaticResource TabItemTitle}" Visibility="Collapsed">
-                    <StackPanel Style="{StaticResource TabItemStackPanel}" Visibility="Collapsed">
-                        <CheckBox x:Name="ChkAutoCheckUpdate" Click="ChkAutoCheckUpdate_Click" Foreground="{DynamicResource FontColor}">自动检查更新</CheckBox>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="播放" Style="{StaticResource TabItemTitle}" Visibility="Collapsed">
-                    <StackPanel Margin="10,0,0,0" Visibility="Collapsed">
-                        <CheckBox x:Name="ChkSavePlaylistToLocal" Click="ChkSavePlaylistToLocal_Click" Foreground="{DynamicResource FontColor}">保存播放列表到本地</CheckBox>
-                    </StackPanel>
-                </TabItem>
-                
             </TabControl>
         </StackPanel>
     </Grid>

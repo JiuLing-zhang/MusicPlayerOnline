@@ -15,5 +15,19 @@
                 ConfigHandle.Save();
             }
         }
+
+        private bool _isHideWindowWhenMinimize;
+        /// <summary>
+        /// 关闭时最小化到托盘
+        /// </summary>
+        public bool IsHideWindowWhenMinimize
+        {
+            get => _isHideWindowWhenMinimize;
+            set
+            {
+                _isHideWindowWhenMinimize = value;
+                ConfigHandle.Save();
+            }
+        }
     }
 }

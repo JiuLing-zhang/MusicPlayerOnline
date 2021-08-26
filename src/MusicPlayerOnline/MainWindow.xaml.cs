@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -14,7 +17,10 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Player;
-
+using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using ListViewItem = System.Windows.Controls.ListViewItem;
 namespace MusicPlayerOnline
 {
     /// <summary>
@@ -22,16 +28,16 @@ namespace MusicPlayerOnline
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private readonly MainWindowViewModel _myModel = new();
         readonly MusicNetPlatform _musicNetPlatform = new();
         private readonly IPlayerProvider _player = new PlayerProvider();
         private readonly PlayerStateModel _playerState = new();
         private readonly DispatcherTimer _timerPlayProgress = new();
+        private NotifyIcon _notifyIcon;
         public MainWindow()
         {
             InitializeComponent();
-           
+
             LoadingAppConfig();
             BindingDataForUI();
 
@@ -42,10 +48,42 @@ namespace MusicPlayerOnline
                 _myModel.SearchPlatform = _myModel.SearchPlatform | item;
             }
 
-            SetPlayerPlayMode();
-            SetPlayOrPause();
-            SetPlayerMute();
             InitializePlayProgressTimer();
+            if (AppSetting.Setting.General.IsAutoCheckUpdate)
+            {
+                CheckUpdate();
+            }
+
+            InitializeNotifyIcon();
+        }
+
+        private void InitializeNotifyIcon()
+        {
+            //设置托盘的各个属性
+            _notifyIcon = new NotifyIcon
+            {
+                Text = "在线音乐助手",
+                Visible = true,
+                Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath)
+            };
+            _notifyIcon.MouseClick += _notifyIcon_MouseClick;
+        }
+
+        private void _notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            if (this.Visibility == Visibility.Visible)
+            {
+                this.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.Visibility = Visibility.Visible;
+                this.Activate();
+            }
         }
 
         private void InitializePlayProgressTimer()
@@ -55,11 +93,53 @@ namespace MusicPlayerOnline
             _timerPlayProgress.Tick += _timerPlayProgress_Tick;
         }
 
+        private string _playlistFileName = "playlist.json";
         private void LoadingAppConfig()
         {
+            _playerState.IsMute = AppSetting.Setting.Player.IsSoundOff;
+            _playerState.PlayMode = AppSetting.Setting.Player.PlayMode;
+            _myModel.VoiceValue = AppSetting.Setting.Player.Voice;
 
+            SetPlayerPlayMode();
+            SetPlayOrPause();
+            SetPlayerMute();
+
+            var playlistName = $"{GlobalArgs.AppPath}{_playlistFileName}";
+            if (File.Exists(playlistName))
+            {
+                try
+                {
+                    string json = File.ReadAllText(playlistName);
+                    _myModel.Playlist = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<PlaylistViewModel>>(json);
+                    if (_myModel.Playlist == null)
+                    {
+                        throw new Exception("本地播放列表文件格式错误");
+                    }
+                    foreach (var playlistMusic in _myModel.Playlist)
+                    {
+                        _player.AddToPlaylist(playlistMusic.SourceData);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Messages.ShowError($"读取本地播放列表失败：{ex.Message}");
+                }
+            }
         }
 
+        /// <summary>
+        /// 保存播放列表到本地
+        /// </summary>
+        private void WritePlaylistToLocal()
+        {
+            if (AppSetting.Setting.Play.IsSavePlaylistToLocal == false)
+            {
+                return;
+            }
+            string json = System.Text.Json.JsonSerializer.Serialize(_myModel.Playlist);
+            string playlistName = $"{GlobalArgs.AppPath}{_playlistFileName}";
+            File.WriteAllText(playlistName, json);
+        }
         /// <summary>
         /// UI数据绑定
         /// </summary>
@@ -68,10 +148,38 @@ namespace MusicPlayerOnline
             ListViewMusicSearchResult.ItemsSource = _myModel.MusicSearchResult;
             ListViewPlaylist.ItemsSource = _myModel.Playlist;
             DataContext = _myModel;
-            _myModel.VoiceValue = 0.5;
         }
 
+        private void CheckUpdate()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    var (isNewVersion, version, link) = new CheckForUpdates().Check();
+                    if (isNewVersion == false)
+                    {
+                        return;
+                    }
 
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Messages.ShowInfo($"发现新版本{version}{System.Environment.NewLine}点击确定查看");
+                    });
+                    using Process compiler = new Process();
+                    compiler.StartInfo.FileName = link;
+                    compiler.StartInfo.UseShellExecute = true;
+                    compiler.Start();
+                }
+                catch (Exception ex)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Messages.ShowInfo($"检查自动更新失败：{ex.Message}");
+                    });
+                }
+            });
+        }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -79,7 +187,14 @@ namespace MusicPlayerOnline
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            if (AppSetting.Setting.General.IsHideWindowWhenMinimize)
+            {
+                this.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+            }
         }
         private void BtnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -94,7 +209,10 @@ namespace MusicPlayerOnline
                 this.ImgMaximize.Source = new BitmapImage(new Uri($"pack://application:,,,/Images/Themes/Dark/restore.png"));
             }
         }
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _notifyIcon.Visible = false;
+        }
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -276,6 +394,7 @@ namespace MusicPlayerOnline
             var music = _myModel.Playlist.FirstOrDefault(x => x.Id == musicId);
             _myModel.Playlist.Remove(music);
             _player.RemoveFromPlaylist(musicId);
+            WritePlaylistToLocal();
         }
 
         private void Playlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -332,6 +451,7 @@ namespace MusicPlayerOnline
                 MusicToolTip = toolTip,
                 SourceData = music
             });
+            WritePlaylistToLocal();
         }
 
         /// <summary>
@@ -357,11 +477,13 @@ namespace MusicPlayerOnline
             {
                 _playerState.PlayMode = PlayModeEnum.RepeatOne;
             }
+            AppSetting.Setting.Player.PlayMode = _playerState.PlayMode;
             SetPlayerPlayMode();
         }
         private void SoundOff_Click(object sender, RoutedEventArgs e)
         {
             _playerState.IsMute = !_playerState.IsMute;
+            AppSetting.Setting.Player.IsSoundOff = _playerState.IsMute;
             SetPlayerMute();
         }
         private void SetPlayerMute()
@@ -473,6 +595,7 @@ namespace MusicPlayerOnline
         private void SliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _player.VoiceValue = _myModel.VoiceValue;
+            AppSetting.Setting.Player.Voice = _myModel.VoiceValue;
         }
 
         private void SliderPlayProgress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

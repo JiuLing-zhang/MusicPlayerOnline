@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using MusicPlayerOnline.Common;
 
 namespace MusicPlayerOnline
 {
@@ -9,6 +11,20 @@ namespace MusicPlayerOnline
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            mutex = new System.Threading.Mutex(true, "MusicPlayerOnlineOnlyRun");
+            if (mutex.WaitOne(0, false))
+            {
+                base.OnStartup(e);
+            }
+            else
+            {
+                Messages.ShowError("程序已经运行");
+                this.Shutdown();
+            }
+        }
+        private static System.Threading.Mutex mutex;
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;

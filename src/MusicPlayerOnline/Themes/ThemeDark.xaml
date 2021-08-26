@@ -26,6 +26,12 @@
     <SolidColorBrush x:Key="PlayProcessForeground" Color="#959595"></SolidColorBrush>
     <SolidColorBrush x:Key="VoiceForeground" Color="#4CC2FF"></SolidColorBrush>
 
+    <!-- 设置窗口 -->
+    <SolidColorBrush x:Key="GridBackground" Color="#333333"></SolidColorBrush>
+    <SolidColorBrush x:Key="TabControlBackground" Color="#333333"></SolidColorBrush>
+    <SolidColorBrush x:Key="TabItemBackground" Color="#2F2F2F"></SolidColorBrush>
+    <SolidColorBrush x:Key="TabItemBackgroundSelected" Color="#404040"></SolidColorBrush>
+
     <BitmapImage x:Key="ImgSettings" UriSource="/Images/Themes/Dark/settings.png" />
     <BitmapImage x:Key="ImgMinimize" UriSource="/Images/Themes/Dark/horizontal_line.png" />
     <BitmapImage x:Key="ImgMaximize" UriSource="/Images/Themes/Dark/maximize.png" />

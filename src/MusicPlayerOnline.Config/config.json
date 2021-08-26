@@ -1,8 +1,14 @@
 {
   "General": {
-    "IsAutoCheckUpdate": true
+    "IsAutoCheckUpdate": false,
+    "IsHideWindowWhenMinimize": true
   },
   "Play": {
-    "IsSavePlaylistToLocal": false
+    "IsSavePlaylistToLocal": true
+  },
+  "Player": {
+    "IsSoundOff": false,
+    "Voice": 0.5,
+    "PlayMode": 1
   }
 }
