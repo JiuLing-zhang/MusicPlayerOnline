@@ -373,7 +373,7 @@ namespace MusicPlayerOnline
             });
         }
 
-        private void BuildMusicDetail(MusicSearchResult music, Action<MusicDetail2> callback)
+        private void BuildMusicDetail(MusicSearchResult music, Action<MusicDetail> callback)
         {
             Task.Run(() =>
             {
@@ -419,7 +419,7 @@ namespace MusicPlayerOnline
         /// <summary>
         /// 添加到播放列表并播放
         /// </summary>
-        private void AddAndPlayMusic(MusicDetail2 music)
+        private void AddAndPlayMusic(MusicDetail music)
         {
             AddMusicToPlaylist(music);
             PlayMusic(music);
@@ -429,7 +429,7 @@ namespace MusicPlayerOnline
         /// 添加到播放列表
         /// </summary>
         /// <param name="music"></param>
-        private void AddMusicToPlaylist(MusicDetail2 music)
+        private void AddMusicToPlaylist(MusicDetail music)
         {
             if (_myModel.Playlist.Any(x => x.Id == music.Id))
             {
@@ -457,7 +457,7 @@ namespace MusicPlayerOnline
         /// <summary>
         /// 播放
         /// </summary>
-        private void PlayMusic(MusicDetail2 music)
+        private void PlayMusic(MusicDetail music)
         {
             _player.PlayNew(music);
             _timerPlayProgress.Start();
@@ -551,7 +551,7 @@ namespace MusicPlayerOnline
             _myModel.PlayPercent = result.percent;
         }
 
-        private void _player_MusicStarted(MusicDetail2 music)
+        private void _player_MusicStarted(MusicDetail music)
         {
             foreach (var item in _myModel.Playlist)
             {

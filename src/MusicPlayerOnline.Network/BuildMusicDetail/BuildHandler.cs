@@ -18,7 +18,7 @@ namespace MusicPlayerOnline.Network.BuildMusicDetail
             _nextHandler = nextHandler;
         }
 
-        public async Task<MusicDetail2> Build(MusicSearchResult music)
+        public async Task<MusicDetail> Build(MusicSearchResult music)
         {
             if (music.Platform == _platform)
             {
@@ -32,6 +32,6 @@ namespace MusicPlayerOnline.Network.BuildMusicDetail
 
             throw new Exception("未找到对应的构建工具");
         }
-        public abstract Task<MusicDetail2> DoBuild(MusicSearchResult music);
+        public abstract Task<MusicDetail> DoBuild(MusicSearchResult music);
     }
 }

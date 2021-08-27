@@ -63,7 +63,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             return (true, "", musics);
         }
 
-        public async Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic)
+        public async Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic)
         {
 
             if (sourceMusic.PlatformData is not SearchResultExtended platformData)
@@ -88,7 +88,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 return null;
             }
 
-            return new MusicDetail2()
+            return new MusicDetail()
             {
                 Id = sourceMusic.Id,
                 Name = sourceMusic.Name,

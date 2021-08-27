@@ -7,6 +7,6 @@ namespace MusicPlayerOnline.Network.MusicProvider
     public interface IMusicProvider
     {
         Task<(bool IsSucceed, string ErrMsg, List<MusicSearchResult> musics)> Search(string keyword);
-        Task<MusicDetail2> GetMusicDetail(MusicSearchResult sourceMusic);
+        Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic);
     }
 }

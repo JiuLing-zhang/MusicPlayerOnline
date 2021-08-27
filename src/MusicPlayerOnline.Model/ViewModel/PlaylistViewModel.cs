@@ -67,11 +67,11 @@ namespace MusicPlayerOnline.Model.ViewModel
             }
         }
 
-        private MusicDetail2 _sourceData;
+        private MusicDetail _sourceData;
         /// <summary>
         /// 源数据，对应的MusicSearchResult
         /// </summary>
-        public MusicDetail2 SourceData
+        public MusicDetail SourceData
         {
             get => _sourceData;
             set

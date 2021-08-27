@@ -12,7 +12,7 @@ namespace MusicPlayerOnline.Player
         public event MusicStartedEventHandler MusicStarted;
 
         private readonly MediaPlayer _player;
-        private readonly List<MusicDetail2> _playlist;
+        private readonly List<MusicDetail> _playlist;
         /// <summary>
         /// 当前播放的id
         /// </summary>
@@ -40,7 +40,7 @@ namespace MusicPlayerOnline.Player
         public PlayerProvider()
         {
             _player = new MediaPlayer();
-            _playlist = new List<MusicDetail2>();
+            _playlist = new List<MusicDetail>();
             _player.MediaEnded += _player_MediaEnded;
         }
 
@@ -49,7 +49,7 @@ namespace MusicPlayerOnline.Player
             Next();
         }
 
-        public void AddToPlaylist(MusicDetail2 music)
+        public void AddToPlaylist(MusicDetail music)
         {
             if (_playlist.Any(x => x.Id == music.Id))
             {
@@ -75,7 +75,7 @@ namespace MusicPlayerOnline.Player
             _playlist.Clear();
         }
 
-        public void PlayNew(MusicDetail2 music)
+        public void PlayNew(MusicDetail music)
         {
             PlayById(music.Id);
         }
@@ -90,7 +90,7 @@ namespace MusicPlayerOnline.Player
             PlayByMusic(music);
         }
 
-        private void PlayByMusic(MusicDetail2 music)
+        private void PlayByMusic(MusicDetail music)
         {
             _player.Open(new Uri(music.PlayUrl));
             _player.Play();
@@ -157,10 +157,10 @@ namespace MusicPlayerOnline.Player
                     return;
                 }
 
-                MusicDetail2 randomMusic;
+                MusicDetail randomMusic;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail2>(_playlist);
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail>(_playlist);
                 } while (randomMusic.Id == _currentMusicId);
                 PlayById(randomMusic.Id);
             }
@@ -201,10 +201,10 @@ namespace MusicPlayerOnline.Player
                     return;
                 }
 
-                MusicDetail2 randomMusic = null;
+                MusicDetail randomMusic = null;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail2>(_playlist);
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<MusicDetail>(_playlist);
                 } while (randomMusic.Id == _currentMusicId);
                 PlayById(randomMusic.Id);
             }

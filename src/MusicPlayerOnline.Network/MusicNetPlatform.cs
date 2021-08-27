@@ -35,7 +35,7 @@ namespace MusicPlayerOnline.Network
             return await _neteaseSearcher.Search(platform, keyword);
         }
 
-        public async Task<MusicDetail2> BuildMusicDetail(MusicSearchResult music)
+        public async Task<MusicDetail> BuildMusicDetail(MusicSearchResult music)
         {
             return await _neteaseBuilder.Build(music);
         }

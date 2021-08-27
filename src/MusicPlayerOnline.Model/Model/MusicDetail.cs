@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MusicPlayerOnline.Model.Model
 {
-    public class MusicDetail2 : MusicBase
+    public class MusicDetail : MusicBase
     {
     }
 }

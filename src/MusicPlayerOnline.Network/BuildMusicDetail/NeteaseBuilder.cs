@@ -16,7 +16,7 @@ namespace MusicPlayerOnline.Network.BuildMusicDetail
         {
             _myMusicProvider = new NeteaseMusicProvider();
         }
-        public override async Task<MusicDetail2> DoBuild(MusicSearchResult music)
+        public override async Task<MusicDetail> DoBuild(MusicSearchResult music)
         {
             return await _myMusicProvider.GetMusicDetail(music);
         }
