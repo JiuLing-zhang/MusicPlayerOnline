@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 
@@ -27,21 +28,33 @@ namespace MusicPlayerOnline.Network.SearchMusic
             {
                 await DoSearch(keyword, (musics) =>
                 {
-                    result.AddRange(musics.Select(music => new MusicSearchResult()
+                    foreach (var music in musics)
                     {
-                        Id = Guid.NewGuid().ToString("N"),
-                        Platform = music.Platform,
-                        PlatformId = music.PlatformId,
-                        Name = music.Name,
-                        Alias = music.Alias == "" ? "" : $"（{music.Alias}）",
-                        Artist = music.Artist,
-                        ImageUrl = music.ImageUrl,
-                        Album = music.Album,
-                        Duration = music.Duration,
-                        DurationText = music.DurationText,
-                        PlayUrl = music.PlayUrl,
-                        PlatformData = music.PlatformData
-                    }));
+                        string id = "";
+                        if (music.Id.IsEmpty())
+                        {
+                            id = $"{music.Platform}-{music.Name}";
+                        }
+                        else
+                        {
+                            id = $"{music.Platform}-{music.PlatformId}";
+                        }
+                        result.Add(new MusicSearchResult()
+                        {
+                            Id = id,
+                            Platform = music.Platform,
+                            PlatformId = music.PlatformId,
+                            Name = music.Name,
+                            Alias = music.Alias == "" ? "" : $"（{music.Alias}）",
+                            Artist = music.Artist,
+                            ImageUrl = music.ImageUrl,
+                            Album = music.Album,
+                            Duration = music.Duration,
+                            DurationText = music.DurationText,
+                            PlayUrl = music.PlayUrl,
+                            PlatformData = music.PlatformData
+                        });
+                    }
                 });
             }
             if (_nextHandler != null)

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MusicPlayerOnline.Model.Enum;
 
 namespace MusicPlayerOnline.Model.Model
 {
     public class MusicDetail : MusicBase
     {
+        /// <summary>
+        /// 平台
+        /// </summary>
+        public PlatformEnum Platform { get; set; }
+        /// <summary>
+        /// 对应平台的ID
+        /// </summary>
+        public string PlatformId { get; set; }
     }
 }

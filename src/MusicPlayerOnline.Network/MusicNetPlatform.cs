@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Network.BuildMusicDetail;
-using MusicPlayerOnline.Network.MusicProvider;
 using MusicPlayerOnline.Network.SearchMusic;
+using MusicPlayerOnline.Network.UpdateMusicDetail;
 
 namespace MusicPlayerOnline.Network
 {
@@ -19,7 +19,9 @@ namespace MusicPlayerOnline.Network
         private readonly BuildHandler _neteaseBuilder = new NeteaseBuilder(PlatformEnum.Netease);
         private readonly BuildHandler _kuGouBuilder = new KuGouBuilder(PlatformEnum.KuGou);
         private readonly BuildHandler _miGuBuilder = new MiGuBuilder(PlatformEnum.MiGu);
-        
+
+        //更新歌曲信息
+        private readonly UpdateHandler _neteaseUpdater = new NeteaseUpdater(PlatformEnum.Netease);
         public MusicNetPlatform()
         {
             //搜索
@@ -38,6 +40,11 @@ namespace MusicPlayerOnline.Network
         public async Task<MusicDetail> BuildMusicDetail(MusicSearchResult music)
         {
             return await _neteaseBuilder.Build(music);
+        }
+
+        public async Task<MusicDetail> UpdateMusicDetail(MusicDetail music)
+        {
+            return await _neteaseUpdater.Update(music);
         }
     }
 }

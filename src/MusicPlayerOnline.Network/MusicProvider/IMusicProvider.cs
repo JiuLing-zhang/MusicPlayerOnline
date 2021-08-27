@@ -8,5 +8,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
     {
         Task<(bool IsSucceed, string ErrMsg, List<MusicSearchResult> musics)> Search(string keyword);
         Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic);
+
+        Task<MusicDetail> UpdateMusicDetail(MusicDetail music);
     }
 }

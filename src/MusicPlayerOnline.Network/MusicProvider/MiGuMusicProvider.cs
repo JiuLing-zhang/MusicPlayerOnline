@@ -144,6 +144,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
             return new MusicDetail()
             {
                 Id = sourceMusic.Id,
+                Platform = sourceMusic.Platform,
+                PlatformId = sourceMusic.PlatformId,
                 Name = sourceMusic.Name,
                 Alias = sourceMusic.Alias,
                 Artist = sourceMusic.Artist,
@@ -152,6 +154,11 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 ImageUrl = imageUrl,
                 PlayUrl = playUrl
             };
+        }
+
+        public Task<MusicDetail> UpdateMusicDetail(MusicDetail music)
+        {
+            throw new NotImplementedException();
         }
     }
 }

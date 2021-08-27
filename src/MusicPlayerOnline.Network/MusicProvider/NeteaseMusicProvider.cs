@@ -107,6 +107,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
             return new MusicDetail()
             {
                 Id = sourceMusic.Id,
+                Platform = sourceMusic.Platform,
+                PlatformId = sourceMusic.PlatformId,
                 Name = sourceMusic.Name,
                 Alias = sourceMusic.Alias,
                 Artist = sourceMusic.Artist,
@@ -115,6 +117,40 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 ImageUrl = sourceMusic.ImageUrl,
                 PlayUrl = playUrl
             };
+        }
+
+        public async Task<MusicDetail> UpdateMusicDetail(MusicDetail music)
+        {
+            string url = $"{UrlBase.Netease.GetMusicUrl}";
+            var postData = NeteaseUtils.GetPostDataForMusicUrl(music.PlatformId);
+
+            var form = new FormUrlEncodedContent(postData);
+            var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var httpResult = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicUrlHttpResult>>(json);
+            if (httpResult == null)
+            {
+                return music;
+            }
+            if (httpResult.code != 200)
+            {
+                return music;
+            }
+
+            if (httpResult.data.Count == 0)
+            {
+                return music;
+            }
+
+            string playUrl = httpResult.data[0].url;
+            if (playUrl.IsEmpty())
+            {
+                return music;
+            }
+
+            music.PlayUrl = playUrl;
+            return music;
         }
     }
 }
