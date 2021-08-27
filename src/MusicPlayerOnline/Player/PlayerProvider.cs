@@ -10,6 +10,7 @@ namespace MusicPlayerOnline.Player
     public class PlayerProvider : IPlayerProvider
     {
         public event MusicStartedEventHandler MusicStarted;
+        public event MusicMediaFailedEventHandler MusicMediaFailed;
 
         private readonly MediaPlayer _player;
         private readonly List<MusicDetail> _playlist;
@@ -42,6 +43,12 @@ namespace MusicPlayerOnline.Player
             _player = new MediaPlayer();
             _playlist = new List<MusicDetail>();
             _player.MediaEnded += _player_MediaEnded;
+            _player.MediaFailed += _player_MediaFailed;
+        }
+
+        private void _player_MediaFailed(object sender, ExceptionEventArgs e)
+        {
+            MusicMediaFailed?.Invoke();
         }
 
         private void _player_MediaEnded(object sender, EventArgs e)

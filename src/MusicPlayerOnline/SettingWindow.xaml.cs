@@ -108,6 +108,7 @@ namespace MusicPlayerOnline
 
             //播放设置
             ChkSavePlaylistToLocal.IsChecked = AppSetting.Setting.Play.IsSavePlaylistToLocal;
+            ChkAutoNextWhenFailed.IsChecked = AppSetting.Setting.Play.IsAutoNextWhenFailed;
         }
         private void ChkAutoCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -121,6 +122,11 @@ namespace MusicPlayerOnline
         private void ChkSavePlaylistToLocal_Click(object sender, RoutedEventArgs e)
         {
             AppSetting.Setting.Play.IsSavePlaylistToLocal = Convert.ToBoolean(ChkSavePlaylistToLocal.IsChecked);
+        }
+
+        private void ChkAutoNextWhenFailed_Click(object sender, RoutedEventArgs e)
+        {
+            AppSetting.Setting.Play.IsAutoNextWhenFailed = Convert.ToBoolean(ChkAutoNextWhenFailed.IsChecked);
         }
     }
 }

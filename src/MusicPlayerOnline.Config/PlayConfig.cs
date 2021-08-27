@@ -15,5 +15,19 @@
                 ConfigHandle.Save();
             }
         }
+
+        private bool _isAutoNextWhenFailed;
+        /// <summary>
+        /// 歌曲无法播放时自动跳到下一首
+        /// </summary>
+        public bool IsAutoNextWhenFailed
+        {
+            get => _isAutoNextWhenFailed;
+            set
+            {
+                _isAutoNextWhenFailed = value;
+                ConfigHandle.Save();
+            }
+        }
     }
 }

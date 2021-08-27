@@ -97,7 +97,8 @@
                 </TabItem>
                 <TabItem Header="播放" Style="{StaticResource TabItemTitle}">
                     <StackPanel Margin="10,0,0,0">
-                        <CheckBox x:Name="ChkSavePlaylistToLocal" Click="ChkSavePlaylistToLocal_Click" Foreground="{DynamicResource FontColor}">保存播放列表到本地</CheckBox>
+                        <CheckBox x:Name="ChkSavePlaylistToLocal" Click="ChkSavePlaylistToLocal_Click" Margin="0" Style="{StaticResource SettingChk}">保存播放列表到本地</CheckBox>
+                        <CheckBox x:Name="ChkAutoNextWhenFailed" Click="ChkAutoNextWhenFailed_Click" Style="{StaticResource SettingChk}">歌曲无法播放时自动跳到下一首（不勾选就停在那不动咯~~）</CheckBox>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="关于" Style="{StaticResource TabItemTitle}" 

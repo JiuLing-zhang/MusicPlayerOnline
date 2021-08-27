@@ -89,9 +89,11 @@ namespace MusicPlayerOnline
         private void InitializePlayProgressTimer()
         {
             _player.MusicStarted += _player_MusicStarted;
+            _player.MusicMediaFailed += _player_MusicMediaFailed;
             _timerPlayProgress.Interval = TimeSpan.FromMilliseconds(1000);
             _timerPlayProgress.Tick += _timerPlayProgress_Tick;
         }
+
 
         private string _playlistFileName = "playlist.json";
         private void LoadingAppConfig()
@@ -583,6 +585,17 @@ namespace MusicPlayerOnline
             _playerState.IsPlaying = true;
             SetPlayOrPause();
         }
+
+        private void _player_MusicMediaFailed()
+        {
+            //TODO:失败了，这里再来个提示或什么的？
+            if (AppSetting.Setting.Play.IsAutoNextWhenFailed == false)
+            {
+                return;
+            }
+            _player.Next();
+        }
+
         private void Previous_Click(object sender, RoutedEventArgs e)
         {
             _player.Previous();

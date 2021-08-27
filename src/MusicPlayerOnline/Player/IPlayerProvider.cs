@@ -5,9 +5,14 @@ using MusicPlayerOnline.Model.Model;
 namespace MusicPlayerOnline.Player
 {
     public delegate void MusicStartedEventHandler(MusicDetail music);
+    public delegate void MusicMediaFailedEventHandler();
     public interface IPlayerProvider
     {
         event MusicStartedEventHandler MusicStarted;
+        /// <summary>
+        /// 播放失败
+        /// </summary>
+        event MusicMediaFailedEventHandler MusicMediaFailed;
         /// <summary>
         /// 是否静音
         /// </summary>

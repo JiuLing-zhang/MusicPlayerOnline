@@ -4,7 +4,8 @@
     "IsHideWindowWhenMinimize": true
   },
   "Play": {
-    "IsSavePlaylistToLocal": true
+    "IsSavePlaylistToLocal": true,
+    "IsAutoNextWhenFailed": true
   },
   "Player": {
     "IsSoundOff": false,
