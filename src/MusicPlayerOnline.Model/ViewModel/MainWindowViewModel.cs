@@ -148,5 +148,19 @@ namespace MusicPlayerOnline.Model.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private bool _isMusicSearching;
+        /// <summary>
+        /// 正在搜索歌曲
+        /// </summary>
+        public bool IsMusicSearching
+        {
+            get => _isMusicSearching;
+            set
+            {
+                _isMusicSearching = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

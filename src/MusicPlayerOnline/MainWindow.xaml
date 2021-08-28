@@ -320,6 +320,33 @@
         <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">
             <Setter Property="Template" Value="{StaticResource SliderHorizontal}" />
         </Style>
+
+        <Style x:Key="TextBlockMusicSearching" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{DynamicResource FontColor}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMusicSearching}" Value="true">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMusicSearching}" Value="false">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ListViewMusicSearchResultBlock" TargetType="ListView">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMusicSearching}" Value="true">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMusicSearching}" Value="false">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -468,12 +495,14 @@
                         <Grid Grid.Column="4" x:Name="Col4"></Grid>
                         <Grid Grid.Column="5" x:Name="Col5"></Grid>
                     </Grid>
+                    <TextBlock Text="拼命查询中...." Style="{StaticResource TextBlockMusicSearching}"/>
                     <ListView x:Name="ListViewMusicSearchResult" 
                               Background="{DynamicResource  MusicSearchResultBackground}" 
                               BorderThickness="0"
                               SelectionMode="Single" 
                               ItemContainerStyle="{StaticResource SearchResultItem}"
                               AlternationCount="2"
+                              Style="{StaticResource ListViewMusicSearchResultBlock}"
                               >
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{StaticResource SearchResultHead}">

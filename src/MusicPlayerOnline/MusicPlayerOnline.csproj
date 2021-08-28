@@ -8,7 +8,7 @@
     <AssemblyName>MusicPlayerOnline</AssemblyName>
     <RootNamespace>MusicPlayerOnline</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

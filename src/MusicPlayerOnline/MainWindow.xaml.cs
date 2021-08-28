@@ -248,36 +248,43 @@ namespace MusicPlayerOnline
                 return;
             }
 
+            _myModel.MusicSearchResult.Clear();
             Task.Run(() =>
             {
-                var musics = _musicNetPlatform.Search(_myModel.SearchPlatform, _myModel.SearchKeyword).Result;
-                Application.Current.Dispatcher.Invoke(() =>
+                _myModel.IsMusicSearching = true;
+                try
                 {
-                    _myModel.MusicSearchResult.Clear();
-
-                    if (musics.Count == 0)
+                    var musics = _musicNetPlatform.Search(_myModel.SearchPlatform, _myModel.SearchKeyword).Result;
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        if (musics.Count == 0)
                         {
-                            Messages.ShowError("似乎啥也没找到，要不，您再试试？");
-                        });
-                        return;
-                    }
+                            Application.Current.Dispatcher.Invoke(() => { Messages.ShowError("似乎啥也没找到，要不，您再试试？"); });
+                            return;
+                        }
 
-                    foreach (var musicInfo in musics)
-                    {
-                        _myModel.MusicSearchResult.Add(new SearchResultViewModel()
+                        foreach (var musicInfo in musics)
                         {
-                            Platform = musicInfo.Platform.GetDescription(),
-                            Name = musicInfo.Name,
-                            Alias = musicInfo.Alias == "" ? "" : $"（{musicInfo.Alias}）",
-                            Artist = musicInfo.Artist,
-                            Album = musicInfo.Album,
-                            Duration = musicInfo.DurationText,
-                            SourceData = musicInfo
-                        });
-                    }
-                });
+                            _myModel.MusicSearchResult.Add(new SearchResultViewModel()
+                            {
+                                Platform = musicInfo.Platform.GetDescription(),
+                                Name = musicInfo.Name,
+                                Alias = musicInfo.Alias == "" ? "" : $"（{musicInfo.Alias}）",
+                                Artist = musicInfo.Artist,
+                                Album = musicInfo.Album,
+                                Duration = musicInfo.DurationText,
+                                SourceData = musicInfo
+                            });
+                        }
+                    });
+                }
+                finally
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        _myModel.IsMusicSearching = false;
+                    });
+                }
             });
         }
 
