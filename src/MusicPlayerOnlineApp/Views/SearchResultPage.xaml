@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicPlayerOnlineApp.Views.SearchResultPage">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" >
+            <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="拼命查询中..." HorizontalOptions="Center"></Label>
+            <CollectionView ItemsSource="{Binding MusicSearchResult}" SelectionMode="Single" SelectionChanged="SearchResult_SelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10"
+                              RowDefinitions="*"
+                              ColumnDefinitions="30,*,30">
+                            <StackLayout Grid.Column="0">
+                                <Label Text="{Binding Platform}"/>
+                                <Label Text="{Binding Duration}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Name}"/>
+                                    <Label Text="{Binding Alias}"/>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Artist}"/>
+                                    <Label Text="-"/>
+                                    <Label Text="{Binding Album}"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" VerticalOptions="Center" >
+                                <Label Text="收藏"/> 
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
