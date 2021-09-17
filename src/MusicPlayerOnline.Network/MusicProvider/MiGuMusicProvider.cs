@@ -68,10 +68,12 @@ namespace MusicPlayerOnline.Network.MusicProvider
 
         public async Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic)
         {
-            if (sourceMusic.PlatformData is not SearchResultExtended platformData)
+
+            if (!(sourceMusic.PlatformData is SearchResultExtended platformData))
             {
                 throw new ArgumentException("平台数据初始化异常");
             }
+
             var request = new HttpRequestMessage()
             {
                 RequestUri = new Uri(platformData.MusicPageUrl),
@@ -100,7 +102,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             string url = $"{UrlBase.MiGu.GetMusicDetailUrl}?copyrightId={argsResult.id}&resourceType=2";
             string json = await _httpClient.GetStringAsync(url).ConfigureAwait(false);
 
-            var result = System.Text.Json.JsonSerializer.Deserialize<HttpMusicDetailResult>(json);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpMusicDetailResult>(json);
             if (result == null || result.resource == null || result.resource.Length == 0)
             {
                 return null;

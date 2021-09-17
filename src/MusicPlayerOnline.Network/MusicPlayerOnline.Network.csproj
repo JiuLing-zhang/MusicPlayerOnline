@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MusicPlayerOnline.Network</AssemblyName>
     <RootNamespace>MusicPlayerOnline.Network</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JiuLing.CommonLibs" Version="1.0.1" />
+    <PackageReference Include="JiuLing.CommonLibs" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

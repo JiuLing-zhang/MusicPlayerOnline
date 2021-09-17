@@ -11,7 +11,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
 {
     public class KuGouMusicProvider : IMusicProvider
     {
-        private readonly HttpClient _httpClient = new();
+        private readonly HttpClient _httpClient = new HttpClient();
         private const PlatformEnum Platform = PlatformEnum.KuGou;
         public async Task<(bool IsSucceed, string ErrMsg, List<MusicSearchResult> musics)> Search(string keyword)
         {
@@ -24,7 +24,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             {
                 return (false, "服务器响应异常", null);
             }
-            var httpResult = System.Text.Json.JsonSerializer.Deserialize<HttpResultBase<HttpMusicSearchResult>>(json);
+            var httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpResultBase<HttpMusicSearchResult>>(json);
             if (httpResult == null)
             {
                 return (false, "请求服务器失败", null);
@@ -66,7 +66,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
         public async Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic)
         {
 
-            if (sourceMusic.PlatformData is not SearchResultExtended platformData)
+            if (!(sourceMusic.PlatformData is SearchResultExtended platformData))
             {
                 throw new ArgumentException("平台数据初始化异常");
             }
@@ -78,7 +78,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             {
                 return null;
             }
-            var httpResult = System.Text.Json.JsonSerializer.Deserialize<HttpResultBase<MusicDetailHttpResult>>(json);
+            var httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpResultBase<MusicDetailHttpResult>>(json);
             if (httpResult == null)
             {
                 return null;

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -58,7 +59,6 @@ namespace MusicPlayerOnline
 
             InitializeNotifyIcon();
         }
-
         private void InitializeNotifyIcon()
         {
             //设置托盘的各个属性

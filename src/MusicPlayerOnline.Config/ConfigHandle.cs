@@ -15,7 +15,7 @@ namespace MusicPlayerOnline.Config
                 throw new FileNotFoundException("配置文件未找到");
             }
             string json = File.ReadAllText(ConfigPath);
-            var obj = System.Text.Json.JsonSerializer.Deserialize<Config>(json);
+            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Config>(json);
             _isReadingConfig = false;
             return obj;
         }
@@ -30,7 +30,7 @@ namespace MusicPlayerOnline.Config
                 throw new FileNotFoundException("配置文件未找到");
             }
 
-            string json = System.Text.Json.JsonSerializer.Serialize(AppSetting.Setting);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(AppSetting.Setting);
             File.WriteAllText(ConfigPath, json);
         }
     }

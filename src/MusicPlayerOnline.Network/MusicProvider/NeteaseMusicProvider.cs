@@ -12,7 +12,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
 {
     public class NeteaseMusicProvider : IMusicProvider
     {
-        private readonly HttpClient _httpClient = new();
+        private readonly HttpClient _httpClient = new HttpClient();
         private const PlatformEnum Platform = PlatformEnum.Netease;
 
         public async Task<(bool IsSucceed, string ErrMsg, List<MusicSearchResult> musics)> Search(string keyword)
@@ -24,7 +24,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var result = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicSearchHttpResult>>(json);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultBase<MusicSearchHttpResult>>(json);
             if (result == null)
             {
                 return (false, "请求服务器失败", null);
@@ -84,7 +84,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var httpResult = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicUrlHttpResult>>(json);
+            var httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultBase<MusicUrlHttpResult>>(json);
             if (httpResult == null)
             {
                 return null;
@@ -128,7 +128,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
             var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var httpResult = System.Text.Json.JsonSerializer.Deserialize<ResultBase<MusicUrlHttpResult>>(json);
+            var httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultBase<MusicUrlHttpResult>>(json);
             if (httpResult == null)
             {
                 return music;

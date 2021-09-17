@@ -5,14 +5,12 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
-using System.Text.Unicode;
 
 namespace MusicPlayerOnline.Network
 {
     public class NeteaseUtils
     {
-        private static readonly Random MyRandom = new();
+        private static readonly Random MyRandom = new Random();
         private const string RandomBaseString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private const string SearchAESKey = "0CoJUm6Qyw8W8jud";
         private const string SearchAESIv = "0102030405060708";
