@@ -1,24 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicPlayerOnlineApp.Views.SearchResultPage">
+             x:Class="MusicPlayerOnlineApp.Views.SearchResultPage"
+             Title="{Binding keyword}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelMusicSearching" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="True" TargetType="Label">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="false" TargetType="Label">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CollectionViewMusicSearchResultBlock"  TargetType="CollectionView">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="True" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="false" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" >
-            <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="拼命查询中..." HorizontalOptions="Center"></Label>
-            <CollectionView ItemsSource="{Binding MusicSearchResult}" SelectionMode="Single" SelectionChanged="SearchResult_SelectionChanged">
+            <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="拼命查询中..." HorizontalOptions="Center" Style="{StaticResource LabelMusicSearching}"></Label>
+            <CollectionView ItemsSource="{Binding MusicSearchResult}" SelectionMode="Single" SelectionChanged="SearchResult_SelectionChanged" Style="{StaticResource CollectionViewMusicSearchResultBlock}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10"
                               RowDefinitions="*"
-                              ColumnDefinitions="30,*,30">
+                              ColumnDefinitions="30,*,30" 
+                              >
+                            <BoxView Grid.Row="0" Grid.ColumnSpan="3" BackgroundColor="#333311" HeightRequest="2" VerticalOptions="End" HorizontalOptions="FillAndExpand"></BoxView>
                             <StackLayout Grid.Column="0">
                                 <Label Text="{Binding Platform}"/>
-                                <Label Text="{Binding Duration}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="1" Orientation="Vertical">
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Name}"/>
-                                    <Label Text="{Binding Alias}"/>
+                                    <Label Text="{Binding Duration}"/>
                                 </StackLayout>
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Artist}"/>
@@ -26,8 +54,8 @@
                                     <Label Text="{Binding Album}"/>
                                 </StackLayout>
                             </StackLayout>
-                            <StackLayout Grid.Column="2" VerticalOptions="Center" >
-                                <Label Text="收藏"/> 
+                            <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                <Label Text="♥"/>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>
