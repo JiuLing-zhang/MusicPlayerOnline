@@ -1,14 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicPlayerOnlineApp.Views.PlayingListPage">
+             x:Class="MusicPlayerOnlineApp.Views.PlaylistPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelMusicSearching" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="True" TargetType="Label">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="false" TargetType="Label">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CollectionViewMusicSearchResultBlock"  TargetType="CollectionView">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="True" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="false" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="Grid">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor"
+                                            Value="#929292" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <StackLayout Orientation="Vertical"  BackgroundColor="#010101" Padding="10">
             <StackLayout>
-                <Entry x:Name="TxtKeyword" Placeholder="搜索" Completed="TxtKeywordEntry_Completed"></Entry>
+                <Entry Text="{Binding SearchKeyword}" Placeholder="输入歌曲名搜索" Completed="TxtKeywordEntry_Completed" TextColor="#DADADA" PlaceholderColor="#929292"></Entry>
             </StackLayout>
-            <StackLayout></StackLayout>
-            <StackLayout></StackLayout>
+            <StackLayout>
+                <StackLayout Orientation="Vertical">
+                    <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="播放列表居然是空的...." TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource LabelMusicSearching}"></Label>
+                    <CollectionView SelectionChanged="CollectionView_SelectionChanged"  ItemsSource="{Binding Playlist}" SelectionMode="Single" Style="{StaticResource CollectionViewMusicSearchResultBlock}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10,10,10,0" RowDefinitions="*" ColumnDefinitions="*,30">
+                                    <StackLayout Grid.Column="0" Orientation="Vertical">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
+                                            <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" >
+                                      
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Padding="5" HeightRequest="70">
+                <Grid RowDefinitions="*" ColumnDefinitions="auto,*,30">
+                    <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
+                    <StackLayout Grid.Column="1">
+                        <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"/>
+                        <Label Text="{Binding CurrentMusic.Artist}" TextColor="#929292" FontSize="16"/>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

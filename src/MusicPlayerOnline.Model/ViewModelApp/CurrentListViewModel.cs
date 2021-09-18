@@ -1,40 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using MusicPlayerOnline.Model.Enum;
+﻿using System.Collections.ObjectModel;
+using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline.Model.ViewModelApp
 {
-    public class CurrentListViewModel : ViewModelBase
+    public class PlaylistPageViewModel : ViewModelBase
     {
-        public CurrentListViewModel()
+        public PlaylistPageViewModel()
         {
-            MusicSearchResult = new ObservableCollection<SearchResultViewModel>();
             Playlist = new ObservableCollection<PlaylistViewModel>();
         }
 
-        private PlatformEnum _searchPlatform;
         /// <summary>
-        /// 搜索平台
+        /// 页面标题
         /// </summary>
-        public PlatformEnum SearchPlatform
-        {
-            get => _searchPlatform;
-            set
-            {
-                _searchPlatform = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IEnumerable<PlatformEnum> MyEnumTypeValues
-        {
-            get
-            {
-                return System.Enum.GetValues(typeof(PlatformEnum)).Cast<PlatformEnum>();
-            }
-        }
+        public string Title => "播放列表";
 
         private string _searchKeyword;
         /// <summary>
@@ -50,116 +30,45 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             }
         }
 
-        private ObservableCollection<SearchResultViewModel> _musicSearchResult;
+        private bool _isMusicsEmpty = true;
+        /// <summary>
+        /// 播放列表是否为空
+        /// </summary>
+        public bool IsMusicsEmpty
+        {
+            get => _isMusicsEmpty;
+            set
+            {
+                _isMusicsEmpty = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private ObservableCollection<PlaylistViewModel> _playlist;
         /// <summary>
         /// 搜索到的结果列表
         /// </summary>
-        public ObservableCollection<SearchResultViewModel> MusicSearchResult
-        {
-            get => _musicSearchResult;
-            set
-            {
-                _musicSearchResult = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<PlaylistViewModel> _playList;
-        /// <summary>
-        /// 播放列表
-        /// </summary>
         public ObservableCollection<PlaylistViewModel> Playlist
         {
-            get => _playList;
+            get => _playlist;
             set
             {
-                _playList = value;
+                _playlist = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _currentMusicInfo;
+        private MusicDetail _currentMusic;
         /// <summary>
-        /// 当前播放的信息
+        /// 当前播放的歌曲
         /// </summary>
-        public string CurrentMusicInfo
+        public MusicDetail CurrentMusic
         {
-            get => _currentMusicInfo;
+            get => _currentMusic;
             set
             {
-                _currentMusicInfo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _voiceValue;
-        /// <summary>
-        /// 声音大小
-        /// </summary>
-        public double VoiceValue
-        {
-            get => _voiceValue;
-            set
-            {
-                _voiceValue = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private string _playedTime;
-        /// <summary>
-        /// 已播放时长
-        /// </summary>
-        public string PlayedTime
-        {
-            get => _playedTime;
-            set
-            {
-                _playedTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _totalTime;
-        /// <summary>
-        /// 总时长
-        /// </summary>
-        public string TotalTime
-        {
-            get => _totalTime;
-            set
-            {
-                _totalTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private double _playPercent;
-        /// <summary>
-        /// 总时长
-        /// </summary>
-        public double PlayPercent
-        {
-            get => _playPercent;
-            set
-            {
-                _playPercent = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isMusicSearching;
-        /// <summary>
-        /// 正在搜索歌曲
-        /// </summary>
-        public bool IsMusicSearching
-        {
-            get => _isMusicSearching;
-            set
-            {
-                _isMusicSearching = value;
+                _currentMusic = value;
                 OnPropertyChanged();
             }
         }

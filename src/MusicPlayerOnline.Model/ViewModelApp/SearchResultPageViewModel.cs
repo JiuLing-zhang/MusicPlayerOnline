@@ -13,6 +13,20 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             MusicSearchResult = new ObservableCollection<SearchResultViewModel>();
         }
 
+        private string _title;
+        /// <summary>
+        /// 页面标题
+        /// </summary>
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
+
         private PlatformEnum _searchPlatform;
         /// <summary>
         /// 搜索平台

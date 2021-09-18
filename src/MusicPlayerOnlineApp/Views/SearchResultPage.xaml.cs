@@ -26,24 +26,25 @@ namespace MusicPlayerOnlineApp.Views
 
         public void Search(string keyword)
         {
-
-
             Task.Run(() =>
             {
                 try
                 {
                     _myModel.IsMusicSearching = true;
                     _myModel.SearchKeyword = keyword;
+                    _myModel.Title = $"搜索：{keyword}";
                     _myModel.MusicSearchResult.Clear();
 
                     SelectedMusicDetail = null;
-                   
+
                     _myModel.SearchPlatform = 0;
                     foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
                     {
                         _myModel.SearchPlatform = _myModel.SearchPlatform | item;
                     }
-                
+
+                    //TODO 开发阶段暂时只用一个平台
+                    _myModel.SearchPlatform = PlatformEnum.Netease;
 
                     var musics = _musicNetPlatform.Search(_myModel.SearchPlatform, keyword).Result;
                     if (musics.Count == 0)

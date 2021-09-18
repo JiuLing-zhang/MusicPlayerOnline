@@ -14,15 +14,15 @@
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.BackgroundColor" Value="#212121" />
                 <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TitleColor" Value="#FAFAFA" />
+                <Setter Property="Shell.DisabledColor" Value="red" />
+                <Setter Property="Shell.UnselectedColor" Value="SaddleBrown" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="#000000" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="Aquamarine"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#757575"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="#0088EB"/>
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
@@ -30,17 +30,8 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Playing" Icon="icon_about.png" ContentTemplate="{DataTemplate local:PlayingListPage}" />
-        <ShellContent Title="Browse" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <ShellContent Title="播放列表" Icon="listen_to_music.png" ContentTemplate="{DataTemplate local:PlaylistPage}" />
+        <ShellContent Title="我的收藏" Icon="music_folder.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <ShellContent Title="设置" Icon="settings.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
     </TabBar>
-
-    <!--
-        If you would like to navigate to this content you can do so by calling
-        await Shell.Current.GoToAsync("//LoginPage");
-    -->
-    <TabBar>
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
-    </TabBar>
-
-
 </Shell>
