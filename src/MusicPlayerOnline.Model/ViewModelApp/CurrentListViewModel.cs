@@ -30,21 +30,6 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             }
         }
 
-        private bool _isMusicsEmpty = true;
-        /// <summary>
-        /// 播放列表是否为空
-        /// </summary>
-        public bool IsMusicsEmpty
-        {
-            get => _isMusicsEmpty;
-            set
-            {
-                _isMusicsEmpty = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         private ObservableCollection<PlaylistViewModel> _playlist;
         /// <summary>
         /// 搜索到的结果列表
@@ -69,6 +54,21 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             set
             {
                 _currentMusic = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private bool _isPlaying;
+        /// <summary>
+        /// 是否正在播放
+        /// </summary>
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                _isPlaying = value;
                 OnPropertyChanged();
             }
         }

@@ -1,8 +1,8 @@
 ﻿using MusicPlayerOnlineApp.Services;
-using MusicPlayerOnlineApp.Views;
-using System;
+using System.IO;
+using MusicPlayerOnline.Data;
+using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MusicPlayerOnlineApp
 {
@@ -12,6 +12,13 @@ namespace MusicPlayerOnlineApp
         public App()
         {
             InitializeComponent();
+
+            if (!Directory.Exists(GlobalArgs.AppDataPath))
+            {
+                Directory.CreateDirectory(GlobalArgs.AppDataPath);
+            }
+            DatabaseProvide.SetConnection(GlobalArgs.AppDbPath);
+            DatabaseProvide.InitTable();
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();

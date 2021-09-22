@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JiuLing.CommonLibs" Version="1.1.0" />
+    <Compile Remove="DataStore.cs" />
+    <Compile Remove="IDataStore.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
   </ItemGroup>
 
 </Project>

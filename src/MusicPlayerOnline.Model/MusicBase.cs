@@ -1,10 +1,13 @@
-﻿namespace MusicPlayerOnline.Model
+﻿using SQLite;
+
+namespace MusicPlayerOnline.Model
 {
     public class MusicBase
     {
         /// <summary>
         /// ID，系统中唯一，guid.ToString("N")
         /// </summary>
+        [PrimaryKey]
         public string Id { get; set; }
         /// <summary>
         /// 歌曲名称

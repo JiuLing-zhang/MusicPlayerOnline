@@ -7,22 +7,9 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelMusicSearching" TargetType="Label">
+                <Setter Property="IsVisible" Value="false"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="True" TargetType="Label">
-                        <Setter Property="IsVisible" Value="true"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="false" TargetType="Label">
-                        <Setter Property="IsVisible" Value="false"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="CollectionViewMusicSearchResultBlock"  TargetType="CollectionView">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="True" TargetType="CollectionView">
-                        <Setter Property="IsVisible" Value="false"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsMusicsEmpty}" Value="false" TargetType="CollectionView">
+                    <DataTrigger Binding="{Binding Playlist.Count}" Value="0" TargetType="Label">
                         <Setter Property="IsVisible" Value="true"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -55,7 +42,7 @@
             <StackLayout>
                 <StackLayout Orientation="Vertical">
                     <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="播放列表居然是空的...." TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource LabelMusicSearching}"></Label>
-                    <CollectionView SelectionChanged="CollectionView_SelectionChanged"  ItemsSource="{Binding Playlist}" SelectionMode="Single" Style="{StaticResource CollectionViewMusicSearchResultBlock}">
+                    <CollectionView SelectionChanged="CollectionView_SelectionChanged"  ItemsSource="{Binding Playlist}" SelectionMode="Single">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10,10,10,0" RowDefinitions="*" ColumnDefinitions="*,30">
@@ -66,7 +53,7 @@
                                         </StackLayout>
                                     </StackLayout>
                                     <StackLayout Grid.Column="1" >
-                                      
+
                                     </StackLayout>
                                 </Grid>
                             </DataTemplate>
@@ -79,8 +66,9 @@
                     <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
                     <StackLayout Grid.Column="1">
                         <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"/>
-                        <Label Text="{Binding CurrentMusic.Artist}" TextColor="#929292" FontSize="16"/>
+                        <Label Text="{Binding CurrentMusic.Artist}" Margin="0,-7,0,0" TextColor="#929292" FontSize="16"/>
                     </StackLayout>
+                    <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
                 </Grid>
             </StackLayout>
         </StackLayout>

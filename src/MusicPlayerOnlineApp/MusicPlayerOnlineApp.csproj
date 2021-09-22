@@ -13,8 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Data\MusicPlayerOnline.Data.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Network\MusicPlayerOnline.Network.csproj" />
+    <ProjectReference Include="..\MusicPlayerOnline.Player\MusicPlayerOnline.Player.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,5 +26,9 @@
     <EmbeddedResource Update="Views\SearchResultPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 </Project>

@@ -6,16 +6,16 @@ namespace MusicPlayerOnline.Model.ViewModelApp
 {
     public class PlaylistViewModel : ViewModelBase
     {
-        private string _id;
+        private string _musicDetailId;
         /// <summary>
         /// id
         /// </summary>
-        public string Id
+        public string MusicDetailId
         {
-            get => _id;
+            get => _musicDetailId;
             set
             {
-                _id = value;
+                _musicDetailId = value;
                 OnPropertyChanged();
             }
         }
@@ -44,49 +44,6 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             set
             {
                 _artist = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private bool _isPlaying;
-        /// <summary>
-        /// 播放中
-        /// </summary>
-        public bool IsPlaying
-        {
-            get => _isPlaying;
-            set
-            {
-                _isPlaying = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _imageUrl;
-        /// <summary>
-        /// 歌曲图片地址
-        /// </summary>
-        public string ImageUrl
-        {
-            get => _imageUrl;
-            set
-            {
-                _imageUrl = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private MusicDetail _sourceData;
-        /// <summary>
-        /// 源数据，对应的MusicSearchResult
-        /// </summary>
-        public MusicDetail SourceData
-        {
-            get => _sourceData;
-            set
-            {
-                _sourceData = value;
                 OnPropertyChanged();
             }
         }

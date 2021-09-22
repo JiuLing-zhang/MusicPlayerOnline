@@ -68,6 +68,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioService.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -98,6 +99,10 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Player\MusicPlayerOnline.Player.csproj">
+      <Project>{b818851b-4aee-44a9-a3be-0be4813010a5}</Project>
+      <Name>MusicPlayerOnline.Player</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MusicPlayerOnlineApp\MusicPlayerOnlineApp.csproj">
       <Project>{EA73AB68-C81E-4E33-A458-ACB32690C73E}</Project>
       <Name>MusicPlayerOnlineApp</Name>
