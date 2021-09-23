@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicPlayerOnlineApp.Views.MyFavoritePage"
+             Title="{Binding Title}"
+             >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="plus_math" Command="{Binding AddFavoriteCommand}" Clicked="OnAddFavorite_Clicked" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="EmptyTips" TargetType="Label">
+                <Setter Property="IsVisible" Value="false"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding FavoriteList.Count}" Value="0" TargetType="Label">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#000000" Padding="10">
+            <StackLayout >
+                <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="还没有歌单....快去添加一个吧~~" TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource EmptyTips}"></Label>
+                <CollectionView ItemsSource="{Binding FavoriteList}" SelectionMode="Single" SelectionChanged="CollectionView_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10,10,10,10" RowDefinitions="*" ColumnDefinitions="30,*,30">
+                                <StackLayout Grid.Column="1" >
+                                    <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
+                                    <Label TextColor="#929292" FontSize="16" VerticalOptions="End" >
+                                        <MultiBinding StringFormat="共 {0} 首歌">
+                                            <Binding Path="MusicCount"></Binding>
+                                        </MultiBinding>
+                                    </Label>
+                                </StackLayout>
+                                <ImageButton Grid.Column="2" ClassId="{Binding Id}" Clicked="BtnEditFavorite_Clicked" Source="menu_vertical" BackgroundColor="Transparent" ></ImageButton>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

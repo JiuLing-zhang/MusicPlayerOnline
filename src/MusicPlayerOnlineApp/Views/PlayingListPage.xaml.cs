@@ -8,6 +8,7 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModelApp;
 using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Player;
+using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,6 +20,7 @@ namespace MusicPlayerOnlineApp.Views
         private readonly PlaylistPageViewModel _myModel = new PlaylistPageViewModel();
         private readonly SearchResultPage _searchResultPage = new SearchResultPage();
         private readonly MusicNetPlatform _musicNetPlatform = new MusicNetPlatform();
+        private readonly AddToMyFavoritePage _addToMyFavoritePage = new AddToMyFavoritePage();
         private readonly IAudio audio;
         public PlaylistPage()
         {
@@ -150,6 +152,12 @@ namespace MusicPlayerOnlineApp.Views
             }
 
             _myModel.IsPlaying = !_myModel.IsPlaying;
+        }
+
+        private async void BtnAddToMyFavorite_Clicked(object sender, EventArgs e)
+        {
+            _addToMyFavoritePage.Initialize();
+            await Navigation.PushPopupAsync(_addToMyFavoritePage);
         }
     }
 }

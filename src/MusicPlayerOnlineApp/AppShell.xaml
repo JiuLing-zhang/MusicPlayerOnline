@@ -31,7 +31,7 @@
 
     <TabBar>
         <ShellContent Title="播放列表" Icon="listen_to_music.png" ContentTemplate="{DataTemplate local:PlaylistPage}" />
-        <ShellContent Title="我的收藏" Icon="music_folder.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
-        <ShellContent Title="设置" Icon="settings.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <ShellContent Title="我的歌单" Icon="music_folder.png" ContentTemplate="{DataTemplate local:MyFavoritePage}" />
+        <ShellContent Title="设置" Icon="settings.png" ContentTemplate="{DataTemplate local:SettingPage}" />
     </TabBar>
 </Shell>

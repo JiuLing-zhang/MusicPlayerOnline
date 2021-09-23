@@ -33,6 +33,8 @@ namespace MusicPlayerOnline.Data
         {
             Database.CreateTableAsync<MusicDetail>().Wait();
             Database.CreateTableAsync<Playlist>().Wait();
+            Database.CreateTableAsync<MyFavorite>().Wait();
+            Database.CreateTableAsync<MyFavoriteDetail>().Wait();
         }
     }
 }

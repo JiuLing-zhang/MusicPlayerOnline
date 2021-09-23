@@ -62,7 +62,7 @@
                                             <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
                                         </StackLayout>
                                     </StackLayout>
-                                    <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math"></ImageButton>
+                                    <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math" Clicked="BtnAddToMyFavorite_Clicked"></ImageButton>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

@@ -6,6 +6,7 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Model.ViewModelApp;
 using MusicPlayerOnline.Network;
+using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
