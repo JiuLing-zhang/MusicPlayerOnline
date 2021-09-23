@@ -30,7 +30,17 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-
+            <Style x:Key="PlayerStateImg" TargetType="ImageButton">
+                <Setter Property="Source" Value="null"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsPlaying}" Value="true" TargetType="ImageButton">
+                        <Setter Property="Source" Value="pause_button"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsPlaying}" Value="false" TargetType="ImageButton">
+                        <Setter Property="Source" Value="circled_play"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -45,16 +55,14 @@
                     <CollectionView SelectionChanged="CollectionView_SelectionChanged"  ItemsSource="{Binding Playlist}" SelectionMode="Single">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Padding="10,10,10,0" RowDefinitions="*" ColumnDefinitions="*,30">
+                                <Grid Padding="10,10,10,10" RowDefinitions="*" ColumnDefinitions="*,20">
                                     <StackLayout Grid.Column="0" Orientation="Vertical">
                                         <StackLayout Orientation="Horizontal">
                                             <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
                                             <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
                                         </StackLayout>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="1" >
-
-                                    </StackLayout>
+                                    <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math"></ImageButton>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -62,13 +70,13 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout Padding="5" HeightRequest="70">
-                <Grid RowDefinitions="*" ColumnDefinitions="auto,*,30">
+                <Grid RowDefinitions="*" ColumnDefinitions="auto,*,40">
                     <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
                     <StackLayout Grid.Column="1">
                         <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"/>
                         <Label Text="{Binding CurrentMusic.Artist}" Margin="0,-7,0,0" TextColor="#929292" FontSize="16"/>
                     </StackLayout>
-                    <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
+                    <ImageButton BackgroundColor="Transparent" Grid.Column="2" Clicked="PlayerStateChange_Clicked" Style="{StaticResource PlayerStateImg}" ></ImageButton>
                 </Grid>
             </StackLayout>
         </StackLayout>

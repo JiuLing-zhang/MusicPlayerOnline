@@ -13,6 +13,10 @@
         event MediaFailedEventHandler MediaFailed;
         void Play(string path);
         void Pause();
+        /// <summary>
+        /// 恢复播放
+        /// </summary>
+        void Start();
         void Stop();
         void SeekTo(int millisecond);
 

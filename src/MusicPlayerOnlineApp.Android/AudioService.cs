@@ -32,14 +32,19 @@ namespace MusicPlayerOnlineApp.Droid
             };
             _player.Completion += (sender, e) =>
             {
+                MediaEnded?.Invoke();
                 _player.Release();
             };
+            _player.Error += (sender, e) =>
+            {
+                MediaFailed?.Invoke();
+            };
         }
-
-
         public async void Play(string path)
         {
+            Stop();
             await _player.SetDataSourceAsync(path);
+            MediaBegin?.Invoke();
             _player.PrepareAsync();
         }
 
@@ -47,6 +52,14 @@ namespace MusicPlayerOnlineApp.Droid
         {
             _player.Pause();
         }
+        /// <summary>
+        /// 恢复播放
+        /// </summary>
+        public void Start()
+        {
+            _player.Start();
+        }
+
         public void Stop()
         {
             if (_player.IsPlaying)

@@ -137,5 +137,19 @@ namespace MusicPlayerOnlineApp.Views
                 DependencyService.Get<IAudio>().Play(music.PlayUrl);
             });
         }
+
+        private void PlayerStateChange_Clicked(object sender, EventArgs e)
+        {
+            if (_myModel.IsPlaying == true)
+            {
+                audio.Pause();
+            }
+            else
+            {
+                audio.Start();
+            }
+
+            _myModel.IsPlaying = !_myModel.IsPlaying;
+        }
     }
 }
