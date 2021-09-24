@@ -12,7 +12,7 @@ namespace MusicPlayerOnline.Model.Model
     {
         [PrimaryKey]
         public string Id { get; set; }
-        public string FavoriteId { get; set; }
+        public string MyFavoriteId { get; set; }
         public string MusicId { get; set; }
     }
 }

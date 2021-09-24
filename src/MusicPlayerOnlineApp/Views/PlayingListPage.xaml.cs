@@ -156,7 +156,8 @@ namespace MusicPlayerOnlineApp.Views
 
         private async void BtnAddToMyFavorite_Clicked(object sender, EventArgs e)
         {
-            _addToMyFavoritePage.Initialize();
+            var musicDetailId = (sender as ImageButton).ClassId;
+            _addToMyFavoritePage.Initialize(musicDetailId);
             await Navigation.PushPopupAsync(_addToMyFavoritePage);
         }
     }

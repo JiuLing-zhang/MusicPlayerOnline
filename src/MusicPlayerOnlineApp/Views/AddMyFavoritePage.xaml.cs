@@ -14,7 +14,7 @@ namespace MusicPlayerOnlineApp.Views
     public partial class AddMyFavoritePage : PopupPage
     {
         private readonly AddMyFavoritePageViewModel _myModel = new AddMyFavoritePageViewModel();
-        public Action SaveFinished;
+        public Action<string> SaveFinished;
         public AddMyFavoritePage()
         {
             InitializeComponent();
@@ -41,16 +41,17 @@ namespace MusicPlayerOnlineApp.Views
                 return;
             }
 
+            string id = Guid.NewGuid().ToString("d");
             var myFavorite = new MyFavorite()
             {
-                Id = Guid.NewGuid().ToString("d"),
+                Id = id,
                 Name = name,
                 MusicCount = 0
             };
-            
+
             await DatabaseProvide.Database.InsertAsync(myFavorite);
             await Navigation.PopPopupAsync();
-            SaveFinished.Invoke();
+            SaveFinished.Invoke(id);
         }
     }
 }

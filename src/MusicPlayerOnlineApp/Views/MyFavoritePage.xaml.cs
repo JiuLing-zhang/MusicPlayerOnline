@@ -25,7 +25,10 @@ namespace MusicPlayerOnlineApp.Views
             {
                 LoadMyFavoriteList();
             };
-            _addMyFavoritePage.SaveFinished = LoadMyFavoriteList;
+            _addMyFavoritePage.SaveFinished = (myFavoriteId) =>
+            {
+                LoadMyFavoriteList();
+            };
             _editMyFavoritePage.EditFinished = LoadMyFavoriteList;
         }
 

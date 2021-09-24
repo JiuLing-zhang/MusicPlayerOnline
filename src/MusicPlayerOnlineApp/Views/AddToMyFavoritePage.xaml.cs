@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModelApp;
+using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,15 +18,55 @@ namespace MusicPlayerOnlineApp.Views
     public partial class AddToMyFavoritePage : PopupPage
     {
         private readonly AddToMyFavoritePageViewModel _myModel = new AddToMyFavoritePageViewModel();
+        private readonly AddMyFavoritePage _addMyFavoritePage = new AddMyFavoritePage();
         public Action AddFinished;
+        private string _musicId;
         public AddToMyFavoritePage()
         {
             InitializeComponent();
             BindingContext = _myModel;
+            _addMyFavoritePage.SaveFinished = AddMusicToMyFavorite;
         }
-        public void Initialize()
+        public void Initialize(string musicId)
         {
             BindingMyFavoriteList();
+            _musicId = musicId;
+        }
+
+        private async void AddMusicToMyFavorite(string myFavoriteId)
+        {
+            if (DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == _musicId).CountAsync().Result > 0)
+            {
+                await DisplayAlert("提示", "添加失败，不能重复添加", "确定");
+                await Navigation.PopPopupAsync();
+                return;
+            }
+            string id = Guid.NewGuid().ToString("d");
+            var obj = new MyFavoriteDetail()
+            {
+                Id = id,
+                MyFavoriteId = myFavoriteId,
+                MusicId = _musicId
+            };
+            int count = await DatabaseProvide.Database.InsertAsync(obj);
+            if (count == 0)
+            {
+                await DisplayAlert("提示", "添加失败", "确定");
+                await Navigation.PopPopupAsync();
+                return;
+            }
+
+            var myFavorite = await DatabaseProvide.Database.GetAsync<MyFavorite>(myFavoriteId);
+            myFavorite.MusicCount = myFavorite.MusicCount + 1;
+            if (myFavorite.ImageUrl.IsEmpty())
+            {
+                var musicDetail = await DatabaseProvide.Database.GetAsync<MusicDetail>(_musicId);
+                myFavorite.ImageUrl = musicDetail.ImageUrl;
+            }
+
+            await DatabaseProvide.Database.UpdateAsync(myFavorite);
+            //TODO 这里做个提示？
+            await Navigation.PopPopupAsync();
         }
         private async void BindingMyFavoriteList()
         {
@@ -42,6 +84,21 @@ namespace MusicPlayerOnlineApp.Views
                         ImageUrl = myFavorite.ImageUrl
                     });
                 }
+            });
+        }
+
+        private async void BtnAddMyFavorite_Clicked(object sender, EventArgs e)
+        {
+            _addMyFavoritePage.Initialize();
+            await Navigation.PushPopupAsync(_addMyFavoritePage);
+        }
+
+        private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                MyFavoriteViewModel myFavoriteView = e.CurrentSelection[0] as MyFavoriteViewModel;
+                AddMusicToMyFavorite(myFavoriteView.Id);
             });
         }
     }
