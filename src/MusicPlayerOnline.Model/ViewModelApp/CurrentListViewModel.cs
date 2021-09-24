@@ -4,11 +4,12 @@ using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline.Model.ViewModelApp
 {
+    //TODO 这里需要修改文件名
     public class PlaylistPageViewModel : ViewModelBase
     {
         public PlaylistPageViewModel()
         {
-            Playlist = new ObservableCollection<PlaylistViewModel>();
+            Playlist = new ObservableCollection<MusicDetailViewModel>();
         }
 
         /// <summary>
@@ -30,11 +31,11 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             }
         }
 
-        private ObservableCollection<PlaylistViewModel> _playlist;
+        private ObservableCollection<MusicDetailViewModel> _playlist;
         /// <summary>
         /// 搜索到的结果列表
         /// </summary>
-        public ObservableCollection<PlaylistViewModel> Playlist
+        public ObservableCollection<MusicDetailViewModel> Playlist
         {
             get => _playlist;
             set

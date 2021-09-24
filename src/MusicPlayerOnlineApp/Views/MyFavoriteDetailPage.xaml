@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicPlayerOnlineApp.Views.MyFavoriteDetailPage"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelMusicSearching" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="True" TargetType="Label">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="false" TargetType="Label">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CollectionViewMusicSearchResultBlock"  TargetType="CollectionView">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="True" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMusicSearching}" Value="false" TargetType="CollectionView">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" BackgroundColor="#010101" Padding="10">
+            <CollectionView ItemsSource="{Binding MyFavoriteMusics}" SelectionMode="Single" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="5" Orientation="Horizontal" >
+                            <StackLayout HorizontalOptions="Start" VerticalOptions="Center">
+                                <Label Text="{Binding Seq}" TextColor="#E0E0E0" FontSize="14" />
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Padding="5,0,0,0">
+                                <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
+                                <Label TextColor="#929292" FontSize="16" VerticalOptions="End" >
+                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                        <Binding Path="Artist" />
+                                        <Binding Path="Album" />
+                                    </MultiBinding>
+                                </Label>
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="End" VerticalOptions="Center">
+                                <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Source="menu_vertical"></ImageButton>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

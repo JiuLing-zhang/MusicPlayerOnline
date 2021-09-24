@@ -57,9 +57,23 @@ namespace MusicPlayerOnlineApp.Views
             await Navigation.PushPopupAsync(_addMyFavoritePage);
         }
 
-        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            MyFavoriteViewModel myFavoriteView = e.CurrentSelection[0] as MyFavoriteViewModel;
+            if (myFavoriteView.MusicCount == 0)
+            {
+                return;
+            }
+            var myFavoriteDetailPage = new MyFavoriteDetailPage();
+            myFavoriteDetailPage.Initialize(
+                new MyFavorite()
+                {
+                    Id = myFavoriteView.Id,
+                    ImageUrl = myFavoriteView.ImageUrl,
+                    MusicCount = myFavoriteView.MusicCount,
+                    Name = myFavoriteView.Name
+                });
+            await Navigation.PushAsync(myFavoriteDetailPage);
         }
 
         private async void BtnEditFavorite_Clicked(object sender, EventArgs e)

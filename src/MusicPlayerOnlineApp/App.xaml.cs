@@ -17,7 +17,11 @@ namespace MusicPlayerOnlineApp
             {
                 Directory.CreateDirectory(GlobalArgs.AppDataPath);
             }
-            DatabaseProvide.SetConnection(GlobalArgs.AppDbPath);
+            if (!Directory.Exists(GlobalArgs.AppMusicCachePath))
+            {
+                Directory.CreateDirectory(GlobalArgs.AppMusicCachePath);
+            }
+            DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
             DatabaseProvide.InitTable();
 
             DependencyService.Register<MockDataStore>();

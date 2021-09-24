@@ -20,24 +20,24 @@ namespace MusicPlayerOnlineApp.Views
         private readonly AddToMyFavoritePageViewModel _myModel = new AddToMyFavoritePageViewModel();
         private readonly AddMyFavoritePage _addMyFavoritePage = new AddMyFavoritePage();
         public Action AddFinished;
-        private string _musicId;
+        private MusicDetail _music;
         public AddToMyFavoritePage()
         {
             InitializeComponent();
             BindingContext = _myModel;
             _addMyFavoritePage.SaveFinished = AddMusicToMyFavorite;
         }
-        public void Initialize(string musicId)
+        public void Initialize(MusicDetail music)
         {
             BindingMyFavoriteList();
-            _musicId = musicId;
+            _music = music;
         }
 
         private async void AddMusicToMyFavorite(string myFavoriteId)
         {
-            if (DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == _musicId).CountAsync().Result > 0)
+            if (DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == _music.Id).CountAsync().Result > 0)
             {
-                await DisplayAlert("提示", "添加失败，不能重复添加", "确定");
+                DependencyService.Get<IToast>().Show("不能重复添加");
                 await Navigation.PopPopupAsync();
                 return;
             }
@@ -46,12 +46,16 @@ namespace MusicPlayerOnlineApp.Views
             {
                 Id = id,
                 MyFavoriteId = myFavoriteId,
-                MusicId = _musicId
+                MusicId = _music.Id,
+                Platform = _music.Platform,
+                Name = _music.Name,
+                Artist = _music.Artist,
+                Album = _music.Album
             };
             int count = await DatabaseProvide.Database.InsertAsync(obj);
             if (count == 0)
             {
-                await DisplayAlert("提示", "添加失败", "确定");
+                DependencyService.Get<IToast>().Show("添加失败");
                 await Navigation.PopPopupAsync();
                 return;
             }
@@ -60,7 +64,7 @@ namespace MusicPlayerOnlineApp.Views
             myFavorite.MusicCount = myFavorite.MusicCount + 1;
             if (myFavorite.ImageUrl.IsEmpty())
             {
-                var musicDetail = await DatabaseProvide.Database.GetAsync<MusicDetail>(_musicId);
+                var musicDetail = await DatabaseProvide.Database.GetAsync<MusicDetail>(_music.Id);
                 myFavorite.ImageUrl = musicDetail.ImageUrl;
             }
 

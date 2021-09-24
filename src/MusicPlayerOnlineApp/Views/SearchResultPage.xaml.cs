@@ -31,9 +31,9 @@ namespace MusicPlayerOnlineApp.Views
             {
                 try
                 {
+                    _myModel.Title = $"搜索: {keyword}";
                     _myModel.IsMusicSearching = true;
                     _myModel.SearchKeyword = keyword;
-                    _myModel.Title = $"搜索：{keyword}";
                     _myModel.MusicSearchResult.Clear();
 
                     SelectedMusicDetail = null;
@@ -85,7 +85,7 @@ namespace MusicPlayerOnlineApp.Views
             {
                 if (musicDetail == null)
                 {
-                    DisplayAlert("出错啦", "暂时听不了，该歌曲的信息似乎没找到~~~", "确定");
+                    DependencyService.Get<IToast>().Show("该歌曲的信息似乎没找到~~~");
                     return;
                 }
 

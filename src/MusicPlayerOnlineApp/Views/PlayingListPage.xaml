@@ -62,22 +62,30 @@
                                             <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
                                         </StackLayout>
                                     </StackLayout>
-                                    <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math" ClassId="{Binding MusicDetailId}" Clicked="BtnAddToMyFavorite_Clicked"></ImageButton>
+                                    <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math" ClassId="{Binding Id}" Clicked="BtnAddToMyFavorite_Clicked"></ImageButton>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
             </StackLayout>
-            <StackLayout Padding="5" HeightRequest="70">
-                <Grid RowDefinitions="*" ColumnDefinitions="auto,*,40">
-                    <Image Grid.Column="0" Source="{Binding CurrentMusic.ImageUrl}" ></Image>
-                    <StackLayout Grid.Column="1">
-                        <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"/>
-                        <Label Text="{Binding CurrentMusic.Artist}" Margin="0,-7,0,0" TextColor="#929292" FontSize="16"/>
-                    </StackLayout>
-                    <ImageButton BackgroundColor="Transparent" Grid.Column="2" Clicked="PlayerStateChange_Clicked" Style="{StaticResource PlayerStateImg}" ></ImageButton>
-                </Grid>
+            <StackLayout Padding="5" Orientation="Horizontal" HeightRequest="50" >
+                <StackLayout HorizontalOptions="Start" VerticalOptions="Center">
+                    <Frame CornerRadius="20" 
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           Padding="0"
+                           IsClippedToBounds="True" BackgroundColor="#404040">
+                        <Image Source="{Binding CurrentMusic.ImageUrl}"></Image>
+                    </Frame>
+                </StackLayout>
+                <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0">
+                    <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"/>
+                    <Label Text="{Binding CurrentMusic.Artist}" TextColor="#929292" FontSize="16"/>
+                </StackLayout>
+                <StackLayout HorizontalOptions="End" VerticalOptions="Center">
+                    <ImageButton HeightRequest="35"  BackgroundColor="Transparent" Clicked="PlayerStateChange_Clicked" Style="{StaticResource PlayerStateImg}" ></ImageButton>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

@@ -1,4 +1,5 @@
-﻿using MusicPlayerOnline.Model.ViewModel;
+﻿using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline.Model.ViewModelApp
 {
@@ -36,7 +37,8 @@ namespace MusicPlayerOnline.Model.ViewModelApp
                 OnPropertyChanged();
             }
         }
-
+         
+        public bool IsUseDefaultImage => ImageUrl.IsEmpty();
 
         private int _musicCount;
         public int MusicCount

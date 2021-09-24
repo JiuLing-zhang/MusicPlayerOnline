@@ -37,7 +37,7 @@ namespace MusicPlayerOnlineApp.Views
             string name = _myModel.NewName;
             if (name.IsEmpty())
             {
-                await DisplayAlert("提示", "输入歌单名称", "确定");
+                DependencyService.Get<IToast>().Show("输入歌单名称");
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace MusicPlayerOnlineApp.Views
             var count = await DatabaseProvide.Database.UpdateAsync(_myFavorite);
             if (count == 0)
             {
-                await DisplayAlert("提示", "保存失败", "确定");
+                DependencyService.Get<IToast>().Show("保存失败");
                 return;
             }
             await Navigation.PopPopupAsync();
@@ -62,7 +62,7 @@ namespace MusicPlayerOnlineApp.Views
             var count = await DatabaseProvide.Database.DeleteAsync<MyFavorite>(_myFavorite.Id);
             if (count == 0)
             {
-                await DisplayAlert("提示", "删除失败", "确定");
+                DependencyService.Get<IToast>().Show("删除失败");
                 return;
             }
             await Navigation.PopPopupAsync();

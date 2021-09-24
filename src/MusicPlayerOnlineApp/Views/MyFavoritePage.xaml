@@ -19,31 +19,49 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="MyFavoriteImg" TargetType="Image">
+                <Setter Property="Source" Value="music_library"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsUseDefaultImage}" Value="false" TargetType="Image">
+                        <Setter Property="Source" Value="{Binding ImageUrl}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="#000000" Padding="10">
-            <StackLayout >
-                <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="还没有歌单....快去添加一个吧~~" TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource EmptyTips}"></Label>
-                <CollectionView ItemsSource="{Binding FavoriteList}" SelectionMode="Single" SelectionChanged="CollectionView_SelectionChanged">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="10,10,10,10" RowDefinitions="*" ColumnDefinitions="30,*,30">
-                                <StackLayout Grid.Column="1" >
-                                    <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
-                                    <Label TextColor="#929292" FontSize="16" VerticalOptions="End" >
-                                        <MultiBinding StringFormat="共 {0} 首歌">
-                                            <Binding Path="MusicCount"></Binding>
-                                        </MultiBinding>
-                                    </Label>
-                                </StackLayout>
-                                <ImageButton Grid.Column="2" ClassId="{Binding Id}" Clicked="BtnEditFavorite_Clicked" Source="menu_vertical" BackgroundColor="Transparent" ></ImageButton>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
+            <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="还没有歌单....快去添加一个吧~~" TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource EmptyTips}"></Label>
+            <CollectionView ItemsSource="{Binding FavoriteList}" SelectionMode="Single" SelectionChanged="CollectionView_SelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="5" Orientation="Horizontal" >
+                            <StackLayout HorizontalOptions="Start" VerticalOptions="Center">
+                                <Frame CornerRadius="10" 
+                                           HeightRequest="50"
+                                           WidthRequest="50"
+                                           Padding="0"
+                                           IsClippedToBounds="True" BackgroundColor="#404040">
+                                    <Image Style="{StaticResource MyFavoriteImg}"></Image>
+                                </Frame>
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Padding="5,0,0,0">
+                                <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
+                                <Label TextColor="#929292" FontSize="16" VerticalOptions="End" >
+                                    <MultiBinding StringFormat="共 {0} 首歌">
+                                        <Binding Path="MusicCount"></Binding>
+                                    </MultiBinding>
+                                </Label>
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="End" VerticalOptions="Center">
+                                <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Clicked="BtnEditFavorite_Clicked" Source="menu_vertical"></ImageButton>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

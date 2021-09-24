@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
+using MusicPlayerOnline.Player;
 
 namespace MusicPlayerOnlineApp.Common
 {
     public class GlobalArgs
     {
-        private static string AppDirectory = "MusicPlayerOnline";
-        public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppDirectory);
-        public static string AppDbPath = Path.Combine(AppDataPath, "data.db3");
+        public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+        public static string AppDbFileName = Path.Combine(AppDataPath, "data.db3");
+        public static string AppMusicCachePath = Path.Combine(AppDataPath, "Music");
+        public static IAudio Audio;
     }
 }
