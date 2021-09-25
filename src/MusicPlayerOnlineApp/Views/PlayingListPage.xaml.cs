@@ -11,6 +11,7 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModelApp;
 using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Player;
+using MusicPlayerOnlineApp.Common;
 using Plugin.Connectivity;
 using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
@@ -41,14 +42,11 @@ namespace MusicPlayerOnlineApp.Views
             Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
             Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
 
-            _myModel.CurrentMusic = new MusicDetail()
-            {
-                Name = "未开始播放",
-                ImageUrl = "music_record"
-            };
+            _myModel.CurrentMusic = GlobalArgs.CurrentMusic;
         }
         private void Audio_MediaBegin()
         {
+            _myModel.CurrentMusic = GlobalArgs.CurrentMusic;
             _myModel.IsPlaying = true;
         }
 
@@ -58,7 +56,7 @@ namespace MusicPlayerOnlineApp.Views
         }
         private void Audio_MediaFailed()
         {
-            throw new NotImplementedException();
+            DependencyService.Get<IToast>().Show("播放失败");
         }
 
 
@@ -96,85 +94,78 @@ namespace MusicPlayerOnlineApp.Views
                 return;
             }
             var music = _searchResultPage.SelectedMusicDetail;
-            await Task.Run(() =>
+            if (await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == music.Id).CountAsync() == 0)
             {
-                if (DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == music.Id).CountAsync().Result == 0)
-                {
-                    DatabaseProvide.Database.InsertAsync(music);
-                }
+                await DatabaseProvide.Database.InsertAsync(music);
+            }
 
-                if (DatabaseProvide.Database.Table<Playlist>().Where(x => x.MusicDetailId == music.Id).CountAsync().Result == 0)
-                {
-                    DatabaseProvide.Database.InsertAsync(new Playlist() { MusicDetailId = music.Id, Name = music.Name, Artist = music.Artist });
-                }
+            if (await DatabaseProvide.Database.Table<Playlist>().Where(x => x.MusicDetailId == music.Id).CountAsync() == 0)
+            {
+                await DatabaseProvide.Database.InsertAsync(new Playlist() { MusicDetailId = music.Id, Name = music.Name, Artist = music.Artist });
+            }
 
-                if (_myModel.Playlist.All(x => x.Id != music.Id))
+            if (_myModel.Playlist.All(x => x.Id != music.Id))
+            {
+                _myModel.Playlist.Add(new MusicDetailViewModel()
                 {
-                    _myModel.Playlist.Add(new MusicDetailViewModel()
-                    {
-                        Id = music.Id,
-                        Name = music.Name,
-                        Artist = music.Artist
-                    });
-                }
-                PlayMusic(music.Id);
-            });
+                    Id = music.Id,
+                    Name = music.Name,
+                    Artist = music.Artist
+                });
+            }
+            await PlayMusic(music.Id);
         }
 
-        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MusicDetailViewModel selectedMusic = e.CurrentSelection[0] as MusicDetailViewModel;
-            PlayMusic(selectedMusic.Id);
+            await PlayMusic(selectedMusic.Id);
         }
 
         /// <summary>
         /// 播放
         /// </summary>
-        private void PlayMusic(string id)
+        private async Task PlayMusic(string id)
         {
-            Task.Run(() =>
+            try
             {
-                try
+                var music = await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == id).FirstOrDefaultAsync();
+                if (music == null)
                 {
-                    var music = DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == id).FirstOrDefaultAsync().Result;
-                    if (music == null)
-                    { 
-                        DependencyService.Get<IToast>().Show("未找到歌曲信息");
-                        return;
-                    }
+                    DependencyService.Get<IToast>().Show("未找到歌曲信息");
+                    return;
+                }
 
-                    string musicCache = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
-                    if (File.Exists(musicCache))
-                    { 
-                        Common.GlobalArgs.Audio.Play(musicCache);
-                        return;
-                    }
-
-                    var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
-                    var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
-                    if (!connectionTypes.Contains(wifi))
-                    {
-                        DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
-                        return;
-                    }
-                    music = _musicNetPlatform.UpdateMusicDetail(music).Result;
-
-                    using (HttpClient client = new HttpClient())
-                    {
-                        var data = client.GetByteArrayAsync(music.PlayUrl).ConfigureAwait(false).GetAwaiter().GetResult();
-                        System.IO.File.WriteAllBytes(musicCache, data);
-                    }
-
-                    _myModel.CurrentMusic = music;
+                string musicCache = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
+                if (File.Exists(musicCache))
+                {
+                    GlobalArgs.CurrentMusic = music;
                     Common.GlobalArgs.Audio.Play(musicCache);
+                    return;
                 }
-                catch (Exception ex)
+
+                var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
+                var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
+                if (!connectionTypes.Contains(wifi))
                 {
-                    DisplayAlert("出错啦", "歌曲信息在本地未找到。。。", "确定");
+                    DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
+                    return;
                 }
-            });
+                music = await _musicNetPlatform.UpdateMusicDetail(music);
 
+                using (HttpClient client = new HttpClient())
+                {
+                    var data = await client.GetByteArrayAsync(music.PlayUrl);
+                    System.IO.File.WriteAllBytes(musicCache, data);
+                }
 
+                GlobalArgs.CurrentMusic = music;
+                Common.GlobalArgs.Audio.Play(musicCache);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("出错啦", "歌曲信息在本地未找到。。。", "确定");
+            }
         }
 
         private void PlayerStateChange_Clicked(object sender, EventArgs e)

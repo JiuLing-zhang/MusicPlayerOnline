@@ -20,7 +20,7 @@
                 <Setter Property="Shell.DisabledColor" Value="red" />
                 <Setter Property="Shell.UnselectedColor" Value="SaddleBrown" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="#000000" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="Aquamarine"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="#FAFAFA"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="#757575"/>
                 <Setter Property="Shell.TabBarTitleColor" Value="#0088EB"/>
             </Style>

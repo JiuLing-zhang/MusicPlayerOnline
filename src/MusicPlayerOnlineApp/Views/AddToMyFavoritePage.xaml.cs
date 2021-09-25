@@ -25,7 +25,10 @@ namespace MusicPlayerOnlineApp.Views
         {
             InitializeComponent();
             BindingContext = _myModel;
-            _addMyFavoritePage.SaveFinished = AddMusicToMyFavorite;
+            _addMyFavoritePage.SaveFinished = async myFavoriteId =>
+            {
+                await AddMusicToMyFavorite(myFavoriteId);
+            };
         }
         public void Initialize(MusicDetail music)
         {
@@ -33,7 +36,7 @@ namespace MusicPlayerOnlineApp.Views
             _music = music;
         }
 
-        private async void AddMusicToMyFavorite(string myFavoriteId)
+        private async Task AddMusicToMyFavorite(string myFavoriteId)
         {
             if (DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == _music.Id).CountAsync().Result > 0)
             {
@@ -69,7 +72,7 @@ namespace MusicPlayerOnlineApp.Views
             }
 
             await DatabaseProvide.Database.UpdateAsync(myFavorite);
-            //TODO 这里做个提示？
+            DependencyService.Get<IToast>().Show("添加成功");
             await Navigation.PopPopupAsync();
         }
         private async void BindingMyFavoriteList()
@@ -99,11 +102,8 @@ namespace MusicPlayerOnlineApp.Views
 
         private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await Task.Run(() =>
-            {
-                MyFavoriteViewModel myFavoriteView = e.CurrentSelection[0] as MyFavoriteViewModel;
-                AddMusicToMyFavorite(myFavoriteView.Id);
-            });
+            MyFavoriteViewModel myFavoriteView = e.CurrentSelection[0] as MyFavoriteViewModel;
+            await AddMusicToMyFavorite(myFavoriteView.Id);
         }
     }
 }

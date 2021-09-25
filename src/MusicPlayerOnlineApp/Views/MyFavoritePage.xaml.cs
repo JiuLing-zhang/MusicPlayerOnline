@@ -21,34 +21,34 @@ namespace MusicPlayerOnlineApp.Views
         {
             InitializeComponent();
             BindingContext = _myModel;
-            this.Appearing += (sender, e) =>
+            this.Appearing += async (sender, e) =>
             {
-                LoadMyFavoriteList();
+                await LoadMyFavoriteList();
             };
-            _addMyFavoritePage.SaveFinished = (myFavoriteId) =>
+            _addMyFavoritePage.SaveFinished = async (myFavoriteId) =>
             {
-                LoadMyFavoriteList();
+                await LoadMyFavoriteList();
             };
-            _editMyFavoritePage.EditFinished = LoadMyFavoriteList;
+            _editMyFavoritePage.EditFinished = async () =>
+            {
+                await LoadMyFavoriteList();
+            };
         }
 
-        private async void LoadMyFavoriteList()
+        private async Task LoadMyFavoriteList()
         {
-            await Task.Run(() =>
+            _myModel.FavoriteList.Clear();
+            var myFavoriteList = await DatabaseProvide.Database.Table<MyFavorite>().ToListAsync();
+            foreach (var myFavorite in myFavoriteList)
             {
-                _myModel.FavoriteList.Clear();
-                var myFavoriteList = DatabaseProvide.Database.Table<MyFavorite>().ToListAsync().Result;
-                foreach (var myFavorite in myFavoriteList)
+                _myModel.FavoriteList.Add(new MyFavoriteViewModel()
                 {
-                    _myModel.FavoriteList.Add(new MyFavoriteViewModel()
-                    {
-                        Id = myFavorite.Id,
-                        Name = myFavorite.Name,
-                        MusicCount = myFavorite.MusicCount,
-                        ImageUrl = myFavorite.ImageUrl
-                    });
-                }
-            });
+                    Id = myFavorite.Id,
+                    Name = myFavorite.Name,
+                    MusicCount = myFavorite.MusicCount,
+                    ImageUrl = myFavorite.ImageUrl
+                });
+            }
         }
 
         private async void OnAddFavorite_Clicked(object sender, EventArgs e)

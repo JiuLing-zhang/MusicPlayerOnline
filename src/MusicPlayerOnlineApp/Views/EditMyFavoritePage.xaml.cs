@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
@@ -50,11 +51,12 @@ namespace MusicPlayerOnlineApp.Views
             }
             await Navigation.PopPopupAsync();
             EditFinished.Invoke();
+            DependencyService.Get<IToast>().Show("重命名成功");
         }
 
         private async void BtnRemove_Clicked(object sender, EventArgs e)
         {
-            var isOk = await DisplayAlert("提示", "输入歌单名称", "确定", "取消");
+            var isOk = await DisplayAlert("提示", "确定要删除该歌单吗？", "确定", "取消");
             if (isOk == false)
             {
                 return;
@@ -65,8 +67,12 @@ namespace MusicPlayerOnlineApp.Views
                 DependencyService.Get<IToast>().Show("删除失败");
                 return;
             }
+            
+            await DatabaseProvide.Database.Table<MyFavoriteDetail>().DeleteAsync(m => m.MyFavoriteId == _myFavorite.Id);
+
             await Navigation.PopPopupAsync();
             EditFinished.Invoke();
+            DependencyService.Get<IToast>().Show("删除成功");
         }
     }
 }

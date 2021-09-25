@@ -30,7 +30,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" BackgroundColor="#010101" Padding="10">
-            <CollectionView ItemsSource="{Binding MyFavoriteMusics}" SelectionMode="Single" >
+            <CollectionView ItemsSource="{Binding MyFavoriteMusics}" SelectionMode="Single" SelectionChanged="MyFavoriteDetail_SelectionChanged" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="5" Orientation="Horizontal" >

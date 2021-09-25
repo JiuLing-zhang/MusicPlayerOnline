@@ -30,13 +30,13 @@ namespace MusicPlayerOnlineApp.Views
         {
             string name = _myModel.Name;
             if (name.IsEmpty())
-            { 
+            {
                 DependencyService.Get<IToast>().Show("输入歌单名称");
                 return;
             }
 
             if (DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == name).CountAsync().Result > 0)
-            { 
+            {
                 DependencyService.Get<IToast>().Show("该歌单已存在");
                 await Navigation.PopPopupAsync();
                 return;
