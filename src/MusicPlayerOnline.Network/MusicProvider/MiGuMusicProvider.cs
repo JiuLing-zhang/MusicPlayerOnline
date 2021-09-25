@@ -83,11 +83,6 @@ namespace MusicPlayerOnline.Network.MusicProvider
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
             string html = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (response.StatusCode != HttpStatusCode.NotFound || html.IsNotEmpty())
-            {
-                return null;
-            }
-
             if (response.RequestMessage == null || response.RequestMessage.RequestUri == null)
             {
                 return null;
@@ -108,11 +103,19 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 return null;
             }
 
+            string lyricUrl = result.resource[0].lrcUrl;
+            if (lyricUrl.IsEmpty())
+            {
+                return null;
+            }
+
+            string lyric = await _httpClient.GetStringAsync(lyricUrl);
             string contentId = result.resource[0].contentId;
             if (contentId.IsEmpty())
             {
                 return null;
             }
+
             string args = MiGuUtils.GetPlayUrlData(contentId, argsResult.id);
             url = $"{UrlBase.MiGu.GetMusicPlayUrl}?{args}";
 
@@ -154,7 +157,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 Album = result.resource[0].album,
                 Duration = sourceMusic.Duration,
                 ImageUrl = imageUrl,
-                PlayUrl = playUrl
+                PlayUrl = playUrl,
+                Lyric = lyric
             };
         }
 

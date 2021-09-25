@@ -77,7 +77,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
 
         public async Task<MusicDetail> GetMusicDetail(MusicSearchResult sourceMusic)
         {
-            string url = $"{UrlBase.Netease.GetMusicUrl}";
+            string url = $"{UrlBase.Netease.GetMusic}";
             var postData = NeteaseUtils.GetPostDataForMusicUrl(sourceMusic.PlatformId);
 
             var form = new FormUrlEncodedContent(postData);
@@ -104,6 +104,30 @@ namespace MusicPlayerOnline.Network.MusicProvider
             {
                 return null;
             }
+
+            //获取歌词
+            url = $"{UrlBase.Netease.Lyric}";
+            postData = NeteaseUtils.GetPostDataForLyric(sourceMusic.PlatformId);
+
+            form = new FormUrlEncodedContent(postData);
+            response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
+            json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var lyricResult = Newtonsoft.Json.JsonConvert.DeserializeObject<MusicLyricHttpResult>(json);
+            if (lyricResult == null)
+            {
+                return null;
+            }
+            if (lyricResult.code != 200)
+            {
+                return null;
+            }
+
+            if (lyricResult.lrc == null)
+            {
+                return null;
+            }
+
             return new MusicDetail()
             {
                 Id = sourceMusic.Id,
@@ -115,13 +139,14 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 Album = sourceMusic.Album,
                 Duration = sourceMusic.Duration,
                 ImageUrl = sourceMusic.ImageUrl,
-                PlayUrl = playUrl
+                PlayUrl = playUrl,
+                Lyric = lyricResult.lrc.lyric
             };
         }
 
         public async Task<MusicDetail> UpdateMusicDetail(MusicDetail music)
         {
-            string url = $"{UrlBase.Netease.GetMusicUrl}";
+            string url = $"{UrlBase.Netease.GetMusic}";
             var postData = NeteaseUtils.GetPostDataForMusicUrl(music.PlatformId);
 
             var form = new FormUrlEncodedContent(postData);

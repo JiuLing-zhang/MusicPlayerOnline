@@ -70,5 +70,12 @@ namespace MusicPlayerOnline.Network
             Int64 timestamp = JiuLing.CommonLibs.Text.TimestampUtils.GetLen13();
             return $"r=play/getdata&hash={hash}&mid={mid}&album_id={albumId}&_={timestamp}";
         }
+
+        public static string GetMusicLyricData(string hash, string albumId)
+        {
+            var mid = StringMd5(new Guid().ToString("d"));
+            Int64 timestamp = JiuLing.CommonLibs.Text.TimestampUtils.GetLen13();
+            return $"r=play/getdata&hash={hash}&mid={mid}&album_id={albumId}&_={timestamp}";
+        }
     }
 }

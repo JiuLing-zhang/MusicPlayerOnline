@@ -71,7 +71,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 throw new ArgumentException("平台数据初始化异常");
             }
             string args = KuGouUtils.GetMusicUrlData(platformData.Hash, platformData.AlbumId);
-            string url = $"{UrlBase.KuGou.GetMusicUrl}?{args}";
+            string url = $"{UrlBase.KuGou.GetMusic}?{args}";
 
             string json = await _httpClient.GetStringAsync(url).ConfigureAwait(false);
             if (json.IsEmpty())
@@ -88,6 +88,20 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 return null;
             }
 
+            args = KuGouUtils.GetMusicLyricData(platformData.Hash, platformData.AlbumId);
+            url = $"{UrlBase.KuGou.Lyric}?{args}";
+            json = await _httpClient.GetStringAsync(url).ConfigureAwait(false);
+
+            var lyricResult = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpResultBase<MusicLyricHttpResult>>(json);
+            if (lyricResult == null)
+            {
+                return null;
+            }
+            if (lyricResult.status != 1 || lyricResult.error_code != 0)
+            {
+                return null;
+            }
+
             return new MusicDetail()
             {
                 Id = sourceMusic.Id,
@@ -99,7 +113,8 @@ namespace MusicPlayerOnline.Network.MusicProvider
                 Album = sourceMusic.Album,
                 Duration = sourceMusic.Duration,
                 ImageUrl = httpResult.data.img,
-                PlayUrl = httpResult.data.play_url
+                PlayUrl = httpResult.data.play_url,
+                Lyric = lyricResult.data.lyrics
             };
         }
 

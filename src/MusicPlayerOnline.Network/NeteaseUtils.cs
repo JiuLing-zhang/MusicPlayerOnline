@@ -93,6 +93,22 @@ namespace MusicPlayerOnline.Network
         {
             return "{\"ids\":\"[" + musicId + "]\",\"level\":\"standard\",\"encodeType\":\"aac\",\"csrf_token\":\"\"}";
         }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetPostDataForLyric(string musicId)
+        {
+            string searchString = GetLyricRequest(musicId);
+            string num = GetRandom();
+            string encText = CalcAES(searchString, SearchAESKey);
+            encText = CalcAES(encText, num);
+            string encSecKey = GetEncSecKey(num);
+            var data = new Dictionary<string, string> { { "params", encText }, { "encSecKey", encSecKey } };
+            return data;
+        }
+
+        private static string GetLyricRequest(string musicId)
+        {
+            return "{\"id\":" + musicId + ",\"lv\":-1,\"tv\":-1,\"csrf_token\":\"\"}";
+        }
     }
 
     public class AESHelper

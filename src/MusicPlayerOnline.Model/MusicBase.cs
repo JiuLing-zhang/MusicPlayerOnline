@@ -37,5 +37,9 @@ namespace MusicPlayerOnline.Model
         /// 播放地址
         /// </summary>
         public string PlayUrl { get; set; }
+        /// <summary>
+        /// 歌词
+        /// </summary>
+        public string Lyric { get; set; }
     }
 }
