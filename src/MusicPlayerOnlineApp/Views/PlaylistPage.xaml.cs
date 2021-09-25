@@ -1,16 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Data;
-using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModelApp;
 using MusicPlayerOnline.Network;
-using MusicPlayerOnline.Player;
 using MusicPlayerOnlineApp.Common;
 using Plugin.Connectivity;
 using Rg.Plugins.Popup.Extensions;
@@ -31,50 +28,30 @@ namespace MusicPlayerOnlineApp.Views
         {
             InitializeComponent();
             BindingContext = _myModel;
+
+            _searchResultPage.SelectedFinished = async selectMusic =>
+            {
+                await SelectedFinishedDo(selectMusic);
+            };
+
             this.Appearing += (sender, args) =>
             {
-                OnPageAppearing();
+                RefreshPage();
             };
-            LoadPlaylist();
-
-            Common.GlobalArgs.Audio = DependencyService.Get<IAudio>();
-            Common.GlobalArgs.Audio.MediaBegin += Audio_MediaBegin;
-            Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
-            Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
-
-            _myModel.CurrentMusic = GlobalArgs.CurrentMusic;
         }
-        private void Audio_MediaBegin()
+        private async void RefreshPage()
         {
-            _myModel.CurrentMusic = GlobalArgs.CurrentMusic;
-            _myModel.IsPlaying = true;
-        }
-
-        private void Audio_MediaEnded()
-        {
-            _myModel.IsPlaying = false;
-        }
-        private void Audio_MediaFailed()
-        {
-            DependencyService.Get<IToast>().Show("播放失败");
-        }
-
-
-        private async void LoadPlaylist()
-        {
-            await Task.Run(() =>
+            var playlist = await DatabaseProvide.Database.Table<Playlist>().ToListAsync();
+            _myModel.Playlist.Clear();
+            foreach (var m in playlist)
             {
-                var playlist = DatabaseProvide.Database.Table<Playlist>().ToListAsync().Result;
-                foreach (var m in playlist)
+                _myModel.Playlist.Add(new MusicDetailViewModel()
                 {
-                    _myModel.Playlist.Add(new MusicDetailViewModel()
-                    {
-                        Id = m.MusicDetailId,
-                        Name = m.Name,
-                        Artist = m.Artist
-                    });
-                }
-            });
+                    Id = m.MusicDetailId,
+                    Name = m.Name,
+                    Artist = m.Artist
+                });
+            }
         }
         private void TxtKeywordEntry_Completed(object sender, EventArgs e)
         {
@@ -86,14 +63,9 @@ namespace MusicPlayerOnlineApp.Views
             _searchResultPage.Search(_myModel.SearchKeyword);
         }
 
-        private async void OnPageAppearing()
+        private async Task SelectedFinishedDo(MusicDetail music)
         {
             _myModel.SearchKeyword = "";
-            if (_searchResultPage.SelectedMusicDetail == null)
-            {
-                return;
-            }
-            var music = _searchResultPage.SelectedMusicDetail;
             if (await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == music.Id).CountAsync() == 0)
             {
                 await DatabaseProvide.Database.InsertAsync(music);
@@ -167,21 +139,6 @@ namespace MusicPlayerOnlineApp.Views
                 await DisplayAlert("出错啦", "歌曲信息在本地未找到。。。", "确定");
             }
         }
-
-        private void PlayerStateChange_Clicked(object sender, EventArgs e)
-        {
-            if (_myModel.IsPlaying == true)
-            {
-                Common.GlobalArgs.Audio.Pause();
-            }
-            else
-            {
-                Common.GlobalArgs.Audio.Start();
-            }
-
-            _myModel.IsPlaying = !_myModel.IsPlaying;
-        }
-
         private async void BtnAddToMyFavorite_Clicked(object sender, EventArgs e)
         {
             var musicDetailId = (sender as ImageButton).ClassId;

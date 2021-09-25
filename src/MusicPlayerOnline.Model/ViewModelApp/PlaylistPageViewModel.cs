@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline.Model.ViewModelApp
@@ -40,35 +39,6 @@ namespace MusicPlayerOnline.Model.ViewModelApp
             set
             {
                 _playlist = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private MusicDetail _currentMusic;
-        /// <summary>
-        /// 当前播放的歌曲
-        /// </summary>
-        public MusicDetail CurrentMusic
-        {
-            get => _currentMusic;
-            set
-            {
-                _currentMusic = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private bool _isPlaying;
-        /// <summary>
-        /// 是否正在播放
-        /// </summary>
-        public bool IsPlaying
-        {
-            get => _isPlaying;
-            set
-            {
-                _isPlaying = value;
                 OnPropertyChanged();
             }
         }

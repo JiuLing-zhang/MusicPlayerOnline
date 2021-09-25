@@ -18,7 +18,7 @@ namespace MusicPlayerOnlineApp.Views
         private readonly SearchResultPageViewModel _myModel = new SearchResultPageViewModel();
         private readonly MusicNetPlatform _musicNetPlatform = new MusicNetPlatform();
 
-        public MusicDetail SelectedMusicDetail;
+        public Action<MusicDetail> SelectedFinished;
         public SearchResultPage()
         {
             InitializeComponent();
@@ -35,8 +35,6 @@ namespace MusicPlayerOnlineApp.Views
                     _myModel.IsMusicSearching = true;
                     _myModel.SearchKeyword = keyword;
                     _myModel.MusicSearchResult.Clear();
-
-                    SelectedMusicDetail = null;
 
                     _myModel.SearchPlatform = 0;
                     foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
@@ -89,8 +87,8 @@ namespace MusicPlayerOnlineApp.Views
                     return;
                 }
 
-                SelectedMusicDetail = musicDetail;
                 Navigation.PopAsync();
+                SelectedFinished.Invoke(musicDetail);
             });
         }
         private void BuildMusicDetail(MusicSearchResult music, Action<MusicDetail> callback)
