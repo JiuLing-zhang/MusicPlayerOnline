@@ -4,7 +4,6 @@ using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline.Model.ViewModelApp
 {
-    //TODO 这里需要修改文件名
     public class PlaylistPageViewModel : ViewModelBase
     {
         public PlaylistPageViewModel()

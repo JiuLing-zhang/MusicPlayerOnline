@@ -14412,64 +14412,76 @@ namespace MusicPlayerOnlineApp.Droid
 			public const int navigation_empty_icon = 2131165324;
 			
 			// aapt resource value: 0x7F07008D
-			public const int notification_action_background = 2131165325;
+			public const int next = 2131165325;
 			
 			// aapt resource value: 0x7F07008E
-			public const int notification_bg = 2131165326;
+			public const int notification_action_background = 2131165326;
 			
 			// aapt resource value: 0x7F07008F
-			public const int notification_bg_low = 2131165327;
+			public const int notification_bg = 2131165327;
 			
 			// aapt resource value: 0x7F070090
-			public const int notification_bg_low_normal = 2131165328;
+			public const int notification_bg_low = 2131165328;
 			
 			// aapt resource value: 0x7F070091
-			public const int notification_bg_low_pressed = 2131165329;
+			public const int notification_bg_low_normal = 2131165329;
 			
 			// aapt resource value: 0x7F070092
-			public const int notification_bg_normal = 2131165330;
+			public const int notification_bg_low_pressed = 2131165330;
 			
 			// aapt resource value: 0x7F070093
-			public const int notification_bg_normal_pressed = 2131165331;
+			public const int notification_bg_normal = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int notification_icon_background = 2131165332;
+			public const int notification_bg_normal_pressed = 2131165332;
 			
 			// aapt resource value: 0x7F070095
-			public const int notification_template_icon_bg = 2131165333;
+			public const int notification_icon_background = 2131165333;
 			
 			// aapt resource value: 0x7F070096
-			public const int notification_template_icon_low_bg = 2131165334;
+			public const int notification_template_icon_bg = 2131165334;
 			
 			// aapt resource value: 0x7F070097
-			public const int notification_tile_bg = 2131165335;
+			public const int notification_template_icon_low_bg = 2131165335;
 			
 			// aapt resource value: 0x7F070098
-			public const int notify_panel_notification_icon_bg = 2131165336;
+			public const int notification_tile_bg = 2131165336;
 			
 			// aapt resource value: 0x7F070099
-			public const int pause_button = 2131165337;
+			public const int notify_panel_notification_icon_bg = 2131165337;
 			
 			// aapt resource value: 0x7F07009A
-			public const int plus_math = 2131165338;
+			public const int pause_button = 2131165338;
 			
 			// aapt resource value: 0x7F07009B
-			public const int settings = 2131165339;
+			public const int plus_math = 2131165339;
 			
 			// aapt resource value: 0x7F07009C
-			public const int test_custom_background = 2131165340;
+			public const int previous = 2131165340;
 			
 			// aapt resource value: 0x7F07009D
-			public const int tooltip_frame_dark = 2131165341;
+			public const int puzzled = 2131165341;
 			
 			// aapt resource value: 0x7F07009E
-			public const int tooltip_frame_light = 2131165342;
+			public const int repeat_one = 2131165342;
 			
 			// aapt resource value: 0x7F07009F
-			public const int trash = 2131165343;
+			public const int settings = 2131165343;
 			
 			// aapt resource value: 0x7F0700A0
-			public const int xamarin_logo = 2131165344;
+			public const int test_custom_background = 2131165344;
+			
+			// aapt resource value: 0x7F0700A1
+			public const int tooltip_frame_dark = 2131165345;
+			
+			// aapt resource value: 0x7F0700A2
+			public const int tooltip_frame_light = 2131165346;
+			
+			// aapt resource value: 0x7F0700A3
+			public const int trash = 2131165347;
+			
+			// aapt resource value: 0x7F0700A4
+			public const int xamarin_logo = 2131165348;
 			
 			static Drawable()
 			{

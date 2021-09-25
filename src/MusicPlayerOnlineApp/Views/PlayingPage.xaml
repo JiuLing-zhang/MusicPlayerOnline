@@ -1,12 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicPlayerOnlineApp.Views.PlayingPage">
+             x:Class="MusicPlayerOnlineApp.Views.PlayingPage"
+             Title="{Binding Title}" >
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="正在播放"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="#010101" Padding="10">
+            <!-- 歌曲信息 -->
+            <StackLayout Orientation="Horizontal" VerticalOptions="Start">
+                <StackLayout>
+                    <Image Source="music_library"></Image>
+                </StackLayout>
+                <StackLayout>
+                    <Label Text="流星雨" TextColor="#E0E0E0" FontSize="18"></Label>
+                    <Label Text="歌手: F4" TextColor="#929292" FontSize="16"></Label>
+                </StackLayout>
+            </StackLayout>
+            <!-- 歌词 -->
+            <StackLayout VerticalOptions="FillAndExpand">
+                <Label Text="歌词"></Label>
+            </StackLayout>
+            <!-- 播放按钮 -->
+            <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60" >
+                <ImageButton Source="repeat_one" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="StartAndExpand"></ImageButton>
+                <ImageButton Source="previous" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
+                <ImageButton Source="circled_play" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand"></ImageButton>
+                <ImageButton Source="next" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
+                <ImageButton Source="puzzled" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand"></ImageButton>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
