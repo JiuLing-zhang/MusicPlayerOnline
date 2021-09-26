@@ -120,7 +120,10 @@ namespace MusicPlayerOnlineApp.Views
                 var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
                 if (!connectionTypes.Contains(wifi))
                 {
-                    DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
+                    });
                     return;
                 }
                 music = await _musicNetPlatform.UpdateMusicDetail(music);

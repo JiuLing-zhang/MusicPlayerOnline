@@ -1,6 +1,7 @@
 ﻿using MusicPlayerOnlineApp.Services;
 using System.IO;
 using MusicPlayerOnline.Data;
+using MusicPlayerOnline.Player;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
@@ -25,6 +26,7 @@ namespace MusicPlayerOnlineApp
             DatabaseProvide.InitTable();
 
             DependencyService.Register<MockDataStore>();
+            Common.GlobalArgs.Audio = DependencyService.Get<IAudio>();
             MainPage = new AppShell();
         }
 

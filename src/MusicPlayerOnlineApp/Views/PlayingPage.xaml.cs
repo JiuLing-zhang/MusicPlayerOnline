@@ -16,11 +16,10 @@ namespace MusicPlayerOnlineApp.Views
             InitializeComponent();
             BindingContext = _myModel;
 
-            Common.GlobalArgs.Audio = DependencyService.Get<IAudio>();
             Common.GlobalArgs.Audio.MediaBegin += Audio_MediaBegin;
             Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
             Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
-            
+
             this.Appearing += (sender, args) =>
             {
                 RefreshPage();
