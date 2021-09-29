@@ -2,7 +2,6 @@
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnline.Model.ViewModelApp;
 using MusicPlayerOnlineApp.ViewModels;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;

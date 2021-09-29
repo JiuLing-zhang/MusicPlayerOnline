@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using MusicPlayerOnline.Model.ViewModel;
 
-namespace MusicPlayerOnline.Model.ViewModelApp
+namespace MusicPlayerOnlineApp.ViewModels
 {
     public class PlaylistPageViewModel : ViewModelBase
     {

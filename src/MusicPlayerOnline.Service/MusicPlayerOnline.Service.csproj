@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
+    <ProjectReference Include="..\MusicPlayerOnline.Network\MusicPlayerOnline.Network.csproj" />
+  </ItemGroup>
+
+</Project>

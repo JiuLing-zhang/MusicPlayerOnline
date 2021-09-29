@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MusicPlayerOnline.Model.ViewModel;
-
-namespace MusicPlayerOnline.Model.ViewModelApp
+﻿namespace MusicPlayerOnlineApp.ViewModels
 {
     public class EditMyFavoritePageViewModel : ViewModelBase
     {

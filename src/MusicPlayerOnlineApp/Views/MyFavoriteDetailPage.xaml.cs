@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnline.Model.ViewModelApp;
+using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

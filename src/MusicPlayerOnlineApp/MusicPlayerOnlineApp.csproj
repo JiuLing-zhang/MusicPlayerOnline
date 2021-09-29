@@ -25,6 +25,7 @@
     <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Network\MusicPlayerOnline.Network.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Player\MusicPlayerOnline.Player.csproj" />
+    <ProjectReference Include="..\MusicPlayerOnline.Service\MusicPlayerOnline.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

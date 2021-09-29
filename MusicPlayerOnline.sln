@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnlineApp.Androi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Data", "src\MusicPlayerOnline.Data\MusicPlayerOnline.Data.csproj", "{744AC950-C368-4033-A85A-117E88B6B460}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnline.Player", "src\MusicPlayerOnline.Player\MusicPlayerOnline.Player.csproj", "{B818851B-4AEE-44A9-A3BE-0BE4813010A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Player", "src\MusicPlayerOnline.Player\MusicPlayerOnline.Player.csproj", "{B818851B-4AEE-44A9-A3BE-0BE4813010A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnline.Service", "src\MusicPlayerOnline.Service\MusicPlayerOnline.Service.csproj", "{1140F6F2-A7F8-4E35-87F4-FDA940A71DA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{B818851B-4AEE-44A9-A3BE-0BE4813010A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B818851B-4AEE-44A9-A3BE-0BE4813010A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B818851B-4AEE-44A9-A3BE-0BE4813010A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1140F6F2-A7F8-4E35-87F4-FDA940A71DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1140F6F2-A7F8-4E35-87F4-FDA940A71DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1140F6F2-A7F8-4E35-87F4-FDA940A71DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1140F6F2-A7F8-4E35-87F4-FDA940A71DA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

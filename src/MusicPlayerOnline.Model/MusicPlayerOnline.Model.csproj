@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModelApp\**" />
+    <EmbeddedResource Remove="ViewModelApp\**" />
+    <None Remove="ViewModelApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JiuLing.CommonLibs" Version="1.1.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
   </ItemGroup>

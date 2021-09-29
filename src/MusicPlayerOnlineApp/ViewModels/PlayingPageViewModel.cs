@@ -1,7 +1,6 @@
 ﻿using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnline.Model.ViewModel;
 
-namespace MusicPlayerOnline.Model.ViewModelApp
+namespace MusicPlayerOnlineApp.ViewModels
 {
     public class PlayingPageViewModel : ViewModelBase
     {

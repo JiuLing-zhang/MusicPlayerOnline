@@ -1,7 +1,6 @@
 ﻿using JiuLing.CommonLibs.ExtensionMethods;
-using MusicPlayerOnline.Model.ViewModel;
 
-namespace MusicPlayerOnline.Model.ViewModelApp
+namespace MusicPlayerOnlineApp.ViewModels
 {
     public class MyFavoriteViewModel : ViewModelBase
     {

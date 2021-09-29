@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using MusicPlayerOnline.Model.ViewModel;
+﻿using System.Collections.ObjectModel;
 
-namespace MusicPlayerOnline.Model.ViewModelApp
+namespace MusicPlayerOnlineApp.ViewModels
 {
     public class AddToMyFavoritePageViewModel : ViewModelBase
     {
