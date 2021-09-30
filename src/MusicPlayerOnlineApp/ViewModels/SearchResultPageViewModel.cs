@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
+using MusicPlayerOnlineApp.Common;
+using Plugin.Connectivity;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -168,12 +171,26 @@ namespace MusicPlayerOnlineApp.ViewModels
                 //TODO 提示
                 return;
             }
-            //TODO 这里可以添加后顺便缓存 AddAndCaChe
+
             await _musicService.Add(music);
             await _playlistService.Add(music);
 
+            //TODO 加入判断 非WIFI是否允许播放
+            var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
+            var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
+            if (!connectionTypes.Contains(wifi))
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    //TODO 提示
+                    DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
+                });
+                return;
+            }
+            string cachePath = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
+            await _musicService.CacheMusic(music, cachePath);
+            GlobalMethods.PlayMusic(music.CachePath);
             await Shell.Current.GoToAsync("..", true);
-            //TODO play
         }
     }
 }

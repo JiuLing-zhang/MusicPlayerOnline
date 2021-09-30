@@ -125,8 +125,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             string cachePath = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
             await _musicService.CacheMusic(music, cachePath);
-
-            Common.GlobalArgs.Audio.Play(cachePath);
+            Common.GlobalMethods.PlayMusic(cachePath);
         }
 
         private async void AddToMyFavorite(MusicDetailViewModel music)

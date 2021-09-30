@@ -13,7 +13,7 @@ namespace MusicPlayerOnline.Service
     public class MusicService : IMusicService
     {
         private readonly MusicNetPlatform _musicNetPlatform = new MusicNetPlatform();
-        private HttpClientHelper _httpClient = new HttpClientHelper();
+        private readonly HttpClientHelper _httpClient = new HttpClientHelper();
         public async Task<MusicDetail> GetMusicDetail(string id)
         {
             return await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == id).FirstOrDefaultAsync();

@@ -1,4 +1,5 @@
 ﻿using MusicPlayerOnline.Model.Model;
+using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
@@ -6,12 +7,20 @@ namespace MusicPlayerOnlineApp.ViewModels
 {
     public class PlayingPageViewModel : ViewModelBase
     {
+        private readonly IMusicService _musicService;
         public Command PlayerStateChangeCommand => new Command(PlayerStateChange);
         public PlayingPageViewModel()
         {
+            _musicService = new MusicService();
+
             Common.GlobalArgs.Audio.MediaBegin += Audio_MediaBegin;
             Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
             Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
+
+            MessagingCenter.Subscribe<string>(this, "Play", (sender) =>
+            {
+                Common.GlobalArgs.Audio.Play(sender);
+            });
         }
 
         public async void OnAppearing()
