@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MusicPlayerOnlineApp.ViewModels;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.MyFavoritePage"
              Title="{Binding Title}"
              >
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="plus_math" Command="{Binding AddFavoriteCommand}" Clicked="OnAddFavorite_Clicked" ></ToolbarItem>
+        <ToolbarItem IconImageSource="plus_math" Command="{Binding AddFavoriteCommand}" ></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>
@@ -34,7 +35,7 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="#000000" Padding="10">
             <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="还没有歌单....快去添加一个吧~~" TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource EmptyTips}"></Label>
-            <CollectionView ItemsSource="{Binding FavoriteList}" SelectionMode="Single" SelectionChanged="CollectionView_SelectionChanged">
+            <CollectionView ItemsSource="{Binding FavoriteList}" SelectedItem="{Binding SelectedResult}" SelectionChangedCommand="{Binding SelectedChangedCommand}" SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="5" Orientation="Horizontal" >
@@ -56,7 +57,9 @@
                                 </Label>
                             </StackLayout>
                             <StackLayout HorizontalOptions="End" VerticalOptions="Center">
-                                <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Clicked="BtnEditFavorite_Clicked" Source="menu_vertical"></ImageButton>
+                                <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Source="menu_vertical"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyFavoritePageViewModel}}, Path=AddToMyFavoriteCommand}"		
+                                             CommandParameter="{Binding .}"/>
                             </StackLayout>
                         </StackLayout>
                     </DataTemplate>

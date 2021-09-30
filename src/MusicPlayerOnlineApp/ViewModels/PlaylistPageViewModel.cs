@@ -135,10 +135,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-
-
             await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedId)}={music.Id}");
-
         }
     }
 }
