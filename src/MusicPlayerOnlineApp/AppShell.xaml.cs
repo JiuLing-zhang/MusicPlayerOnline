@@ -13,7 +13,10 @@ namespace MusicPlayerOnlineApp
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
-        }
 
+            Routing.RegisterRoute(nameof(SearchResultPage), typeof(SearchResultPage));
+            Routing.RegisterRoute(nameof(AddToMyFavoritePage), typeof(AddToMyFavoritePage));
+            Routing.RegisterRoute(nameof(AddMyFavoritePage), typeof(AddMyFavoritePage));
+        }
     }
 }

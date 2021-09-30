@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
-using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
 {
+    [QueryProperty(nameof(SearchKeyword), nameof(SearchKeyword))]
     public class SearchResultPageViewModel : ViewModelBase
     {
-        private ISearchService _searchService;
+        private readonly ISearchService _searchService;
+        private readonly IMusicService _musicService;
+        private readonly IPlaylistService _playlistService;
+
+        public Command SelectedChangedCommand => new Command(SearchFinished);
         public SearchResultPageViewModel()
         {
             MusicSearchResult = new ObservableCollection<SearchResultViewModel>();
             _searchService = new SearchService();
+            _musicService = new MusicService();
+            _playlistService = new PlaylistService();
         }
 
         private string _title;
@@ -111,12 +117,14 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 _musicSelectedResult = value;
                 OnPropertyChanged();
-                SearchFinished();
             }
         }
-
         private async void Search()
         {
+            if (SearchKeyword.IsEmpty())
+            {
+                return;
+            }
             try
             {
                 IsMusicSearching = true;
@@ -154,7 +162,17 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         private async void SearchFinished()
         {
-            await _searchService.SaveResultToPlaylist(MusicSelectedResult.SourceData);
+            var music = await _searchService.GetMusicDetail(MusicSelectedResult.SourceData);
+            if (music == null)
+            {
+                //TODO 提示
+                return;
+            }
+            //TODO 这里可以添加后顺便缓存 AddAndCaChe
+            await _musicService.Add(music);
+            await _playlistService.Add(music);
+
+            await Shell.Current.GoToAsync("..", true);
             //TODO play
         }
     }

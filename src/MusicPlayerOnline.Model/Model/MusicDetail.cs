@@ -12,5 +12,9 @@ namespace MusicPlayerOnline.Model.Model
         /// 对应平台的ID
         /// </summary>
         public string PlatformId { get; set; }
+        /// <summary>
+        /// 缓存地址
+        /// </summary>
+        public string CachePath { get; set; }
     }
 }

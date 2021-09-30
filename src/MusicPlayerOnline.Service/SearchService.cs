@@ -16,15 +16,9 @@ namespace MusicPlayerOnline.Service
             return await _musicNetPlatform.Search(platform, keyword);
         }
 
-        public async Task SaveResultToPlaylist(MusicSearchResult music)
+        public async Task<MusicDetail> GetMusicDetail(MusicSearchResult music)
         {
-            var musicDetail = await _musicNetPlatform.BuildMusicDetail(music);
-            if (musicDetail == null)
-            {
-                //TODO 通知
-                //DependencyService.Get<IToast>().Show("该歌曲的信息似乎没找到~~~");
-                return;
-            }
+            return await _musicNetPlatform.BuildMusicDetail(music);
         }
     }
 }

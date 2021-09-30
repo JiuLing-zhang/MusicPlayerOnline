@@ -4,14 +4,13 @@ using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnlineApp.ViewModels;
 using Rg.Plugins.Popup.Extensions;
-using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MusicPlayerOnlineApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddMyFavoritePage : PopupPage
+    public partial class AddMyFavoritePage : ContentPage
     {
         private readonly AddMyFavoritePageViewModel _myModel = new AddMyFavoritePageViewModel();
         public Action<string> SaveFinished;
@@ -27,6 +26,8 @@ namespace MusicPlayerOnlineApp.Views
         }
         private async void BtnSaveMyFavorite_Clicked(object sender, System.EventArgs e)
         {
+            await Shell.Current.GoToAsync($"../..");
+            return;
             string name = _myModel.Name;
             if (name.IsEmpty())
             {

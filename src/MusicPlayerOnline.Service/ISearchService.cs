@@ -10,6 +10,6 @@ namespace MusicPlayerOnline.Service
     public interface ISearchService
     {
         Task<List<MusicSearchResult>> Search(PlatformEnum platform, string keyword);
-        Task SaveResultToPlaylist(MusicSearchResult music);
+        Task<MusicDetail> GetMusicDetail(MusicSearchResult music);
     }
 }

@@ -53,7 +53,7 @@ namespace MusicPlayerOnlineApp.Views
         private async void OnAddFavorite_Clicked(object sender, EventArgs e)
         {
             _addMyFavoritePage.Initialize();
-            await Navigation.PushPopupAsync(_addMyFavoritePage);
+            //await Navigation.PushPopupAsync(_addMyFavoritePage);
         }
 
         private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)

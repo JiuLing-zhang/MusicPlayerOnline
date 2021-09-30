@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MusicPlayerOnlineApp.ViewModels;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.PlaylistPage"
              Title="{Binding Title}">
 
@@ -47,11 +48,11 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical"  BackgroundColor="#010101" Padding="10">
             <StackLayout>
-                <Entry Text="{Binding SearchKeyword}" Placeholder="输入歌曲名搜索" Completed="TxtKeywordEntry_Completed" TextColor="#DADADA" PlaceholderColor="#929292"></Entry>
+                <Entry Text="{Binding SearchKeyword}" Placeholder="输入歌曲名搜索" Completed="Entry_Completed" TextColor="#DADADA" PlaceholderColor="#929292"/>
             </StackLayout>
             <StackLayout>
                 <Label x:Name="LblMsg" Padding="0,10,0,0" FontSize="16" Text="播放列表居然是空的...." TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource LabelMusicSearching}"></Label>
-                <CollectionView SelectionChanged="CollectionView_SelectionChanged"  ItemsSource="{Binding Playlist}" SelectionMode="Single">
+                <CollectionView ItemsSource="{Binding Playlist}" SelectedItem="{Binding SelectedResult}" SelectionChangedCommand="{Binding SelectedChangedCommand}" SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="10,10,10,10" RowDefinitions="*" ColumnDefinitions="*,20">
@@ -61,7 +62,10 @@
                                         <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
                                     </StackLayout>
                                 </StackLayout>
-                                <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math" ClassId="{Binding Id}" Clicked="BtnAddToMyFavorite_Clicked"></ImageButton>
+                                <ImageButton Grid.Column="1" BackgroundColor="Transparent" Source="plus_math" 
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:PlaylistPageViewModel}}, Path=AddToMyFavoriteCommand}"		
+                                             CommandParameter="{Binding .}"
+                                           />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

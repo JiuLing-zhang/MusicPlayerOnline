@@ -33,7 +33,7 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" BackgroundColor="#010101" >
             <Label x:Name="LblMsg" Padding="10,10,10,0" FontSize="16" Text="拼命查询中..." TextColor="#E0E0E0" HorizontalOptions="Center" Style="{StaticResource LabelMusicSearching}"></Label>
-            <CollectionView ItemsSource="{Binding MusicSearchResult}" SelectionMode="Single" SelectionChanged="SearchResult_SelectionChanged" Style="{StaticResource CollectionViewMusicSearchResultBlock}">
+            <CollectionView ItemsSource="{Binding MusicSearchResult}" SelectedItem="{Binding MusicSelectedResult}"  SelectionChangedCommand="{Binding SelectedChangedCommand}" SelectionMode="Single" Style="{StaticResource CollectionViewMusicSearchResultBlock}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10"

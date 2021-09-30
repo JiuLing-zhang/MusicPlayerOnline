@@ -1,12 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                 xmlns:pages="http://rotorgames.com"
-                 x:Class="MusicPlayerOnlineApp.Views.AddToMyFavoritePage">
-    <ScrollView  HorizontalOptions="Fill"  VerticalOptions="End">
-        <StackLayout BackgroundColor="#151515" HeightRequest="250" Padding="10">
-            <Button HorizontalOptions="Start" VerticalOptions="Center" Text="创建歌单" TextColor="#E0E0E0" FontSize="17" Clicked="BtnAddMyFavorite_Clicked"></Button>
-            <CollectionView ItemsSource="{Binding MyFavoriteList}" SelectionMode="Single" SelectionChanged="CollectionView_SelectionChanged">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="http://rotorgames.com"
+             xmlns:shades="http://sharpnado.com"
+             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnlineApp;assembly=MusicPlayerOnlineApp"
+             x:Class="MusicPlayerOnlineApp.Views.AddToMyFavoritePage" >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelMyFavoriteListEmpty" TargetType="Label">
+                <Setter Property="IsVisible" Value="false"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding MyFavoriteList.Count}" Value="0" TargetType="Label">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout BackgroundColor="#151515" Padding="10">
+        <musicPlayerOnlineApp:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding AddedMusic.ImageUrl}"/>
+        <StackLayout HeightRequest="250">
+            <StackLayout Orientation="Horizontal">
+                <Label HorizontalOptions="Start" VerticalOptions="Center" Text="添加歌曲到歌单" TextColor="#E0E0E0" FontSize="17"></Label>
+                <Button HorizontalOptions="EndAndExpand" VerticalOptions="End" Text="添加歌单" TextColor="#0088EB" FontSize="17" BackgroundColor="Transparent" Command="{Binding AddMyFavoriteCommand}"></Button>
+            </StackLayout>
+            <Label HorizontalOptions="Center" VerticalOptions="Start"  Text="您还没有歌单哦~~" TextColor="#E0E0E0" FontSize="17" Style="{StaticResource LabelMyFavoriteListEmpty}" ></Label>
+            <CollectionView ItemsSource="{Binding MyFavoriteList}" SelectedItem="{Binding SelectedResult}" SelectionChangedCommand="{Binding SelectedChangedCommand}"  SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="10">
@@ -16,6 +36,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
-    </ScrollView>
-
-</pages:PopupPage>
+    </StackLayout>
+</ContentPage>
