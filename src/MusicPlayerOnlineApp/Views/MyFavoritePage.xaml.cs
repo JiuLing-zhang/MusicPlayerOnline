@@ -5,7 +5,6 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Rg.Plugins.Popup.Extensions;
 
 namespace MusicPlayerOnlineApp.Views
 {
@@ -28,10 +27,11 @@ namespace MusicPlayerOnlineApp.Views
             {
                 await LoadMyFavoriteList();
             };
-            _editMyFavoritePage.EditFinished = async () =>
-            {
-                await LoadMyFavoriteList();
-            };
+            //TODO 绑定事件
+            // _editMyFavoritePage.EditFinished = async () =>
+            // {
+            //     await LoadMyFavoriteList();
+            // };
         }
 
         private async Task LoadMyFavoriteList()
@@ -52,7 +52,8 @@ namespace MusicPlayerOnlineApp.Views
 
         private async void OnAddFavorite_Clicked(object sender, EventArgs e)
         {
-            _addMyFavoritePage.Initialize();
+            //TODO 跳转
+            //_addMyFavoritePage.Initialize();
             //await Navigation.PushPopupAsync(_addMyFavoritePage);
         }
 
@@ -79,8 +80,9 @@ namespace MusicPlayerOnlineApp.Views
         {
             var myFavoriteId = (sender as ImageButton).ClassId;
             var myFavorite = await DatabaseProvide.Database.GetAsync<MyFavorite>(myFavoriteId);
-            _editMyFavoritePage.Initialize(myFavorite);
-            await Navigation.PushPopupAsync(_editMyFavoritePage);
+            //TODO  初始化
+            // _editMyFavoritePage.Initialize(myFavorite);
+            // await Navigation.PushPopupAsync(_editMyFavoritePage);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using MusicPlayerOnlineApp.ViewModels;
-using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

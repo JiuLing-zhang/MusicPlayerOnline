@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Data;
@@ -10,6 +9,38 @@ namespace MusicPlayerOnline.Service
 {
     public class MyFavoriteService : IMyFavoriteService
     {
+        public async Task<MyFavorite> GetMyFavorite(string id)
+        {
+            return await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task Add(MyFavorite myFavorite)
+        {
+            if (await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == myFavorite.Name).CountAsync() > 0)
+            {
+                return;
+            }
+
+            await DatabaseProvide.Database.InsertAsync(myFavorite);
+        }
+
+        public async Task Update(MyFavorite myFavorite)
+        {
+            await DatabaseProvide.Database.UpdateAsync(myFavorite);
+        }
+
+        public async Task<(bool Succeed, string Message)> DeleteMyFavorite(string id)
+        {
+            var count = await DatabaseProvide.Database.DeleteAsync<MyFavorite>(id);
+            if (count == 0)
+            {
+                return (false, "删除我们收藏失败");
+            }
+
+            await DatabaseProvide.Database.Table<MyFavoriteDetail>().DeleteAsync(m => m.MyFavoriteId == id);
+            return (true, "删除成功");
+        }
+
         public async Task<List<MyFavorite>> GetMyFavoriteList()
         {
             return await DatabaseProvide.Database.Table<MyFavorite>().ToListAsync();

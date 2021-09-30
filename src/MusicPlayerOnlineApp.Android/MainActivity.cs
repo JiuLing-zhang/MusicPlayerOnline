@@ -22,8 +22,6 @@ namespace MusicPlayerOnlineApp.Droid
             //把标题栏设置为透明色
             Window.SetStatusBarColor(Android.Graphics.Color.Argb(0, 0, 0, 0));
 
-            Rg.Plugins.Popup.Popup.Init(this);
-
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
@@ -37,7 +35,6 @@ namespace MusicPlayerOnlineApp.Droid
 
         public override void OnBackPressed()
         {
-            Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
         }
     }
 }

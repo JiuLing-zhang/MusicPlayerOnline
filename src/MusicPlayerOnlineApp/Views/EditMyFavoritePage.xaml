@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<pages:PopupPage  xmlns="http://xamarin.com/schemas/2014/forms"
-                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                  xmlns:pages="http://rotorgames.com"
-                  x:Class="MusicPlayerOnlineApp.Views.EditMyFavoritePage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:pages="http://rotorgames.com"
+                        x:Class="MusicPlayerOnlineApp.Views.EditMyFavoritePage">
     <ScrollView  HorizontalOptions="Fill"  VerticalOptions="End">
         <StackLayout BackgroundColor="#151515" HeightRequest="250" Padding="10">
             <StackLayout Orientation="Horizontal">
                 <Label HorizontalOptions="Start" VerticalOptions="Center" Text="{Binding Name,StringFormat='编辑: {0}'}" TextColor="#E0E0E0" FontSize="17"></Label>
-                <ImageButton HorizontalOptions="EndAndExpand" VerticalOptions="End" Source="trash" BackgroundColor="Transparent" Clicked="BtnRemove_Clicked"></ImageButton>
+                <ImageButton HorizontalOptions="EndAndExpand" VerticalOptions="End" Source="trash" BackgroundColor="Transparent" Command="{Binding RemoveCommand}"></ImageButton>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
                 <Label Text="重命名" FontSize="17" VerticalTextAlignment="Center" TextColor="#DADADA" Margin="0,0,5,0"></Label>
                 <Entry Placeholder="请输入新名称" TextColor="#DADADA" Text="{Binding NewName}" PlaceholderColor="#929292" Margin="0,0,5,0"></Entry>
-                <Button HorizontalOptions="EndAndExpand" VerticalOptions="End" FontSize="17" WidthRequest="60" BackgroundColor="Transparent" TextColor="#0088EB" Text="保存" Clicked="BtnRename_Clicked"></Button>
+                <Button HorizontalOptions="EndAndExpand" VerticalOptions="End" FontSize="17" WidthRequest="60" BackgroundColor="Transparent" TextColor="#0088EB" Text="保存" Command="{Binding RenameCommand}"></Button>
             </StackLayout>
         </StackLayout>
     </ScrollView>
-</pages:PopupPage>
+</ContentPage>
