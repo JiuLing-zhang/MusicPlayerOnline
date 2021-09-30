@@ -30,7 +30,7 @@
             <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60" >
                 <ImageButton Source="repeat_one" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="StartAndExpand"></ImageButton>
                 <ImageButton Source="previous" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
-                <ImageButton Source="circled_play" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand" Clicked="PlayerStateChange_Clicked"></ImageButton>
+                <ImageButton Source="circled_play" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand"  Command="{Binding PlayerStateChangeCommand}"></ImageButton>
                 <ImageButton Source="next" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
                 <ImageButton Source="puzzled" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand"></ImageButton>
             </StackLayout>
