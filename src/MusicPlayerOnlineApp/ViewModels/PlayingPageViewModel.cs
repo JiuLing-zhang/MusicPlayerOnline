@@ -17,15 +17,11 @@ namespace MusicPlayerOnlineApp.ViewModels
             Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
             Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
 
-            MessagingCenter.Subscribe<string>(this, "Play", (sender) =>
+            MessagingCenter.Subscribe<string, MusicDetail>(this, SubscribeKey.Play, (_, data) =>
             {
-                Common.GlobalArgs.Audio.Play(sender);
+                Common.GlobalArgs.Audio.Play(data.CachePath);
+                CurrentMusic = data;
             });
-        }
-
-        public async void OnAppearing()
-        {
-            CurrentMusic = GlobalArgs.CurrentMusic;
         }
 
         /// <summary>
@@ -63,7 +59,6 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private void Audio_MediaBegin()
         {
-            CurrentMusic = GlobalArgs.CurrentMusic;
             IsPlaying = true;
         }
 
@@ -73,8 +68,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         private void Audio_MediaFailed()
         {
-            //TODO 提示
-            // DependencyService.Get<IToast>().Show("播放失败");
+            DependencyService.Get<IToast>().Show("播放失败");
         }
 
         private async void PlayerStateChange()

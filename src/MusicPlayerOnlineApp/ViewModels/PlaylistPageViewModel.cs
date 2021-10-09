@@ -6,6 +6,7 @@ using Plugin.Connectivity;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using MusicPlayerOnline.Model.Model;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -23,12 +24,27 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             _playlistService = new PlaylistService();
             _musicService = new MusicService();
+
+            MessagingCenter.Subscribe<SearchResultPageViewModel, MusicDetail>(this, SubscribeKey.SearchFinished, (_, data) =>
+            {
+                SearchKeyword = "";
+                if (data == null)
+                {
+                    return;
+                }
+                Playlist.Add(new MusicDetailViewModel()
+                {
+                    Id = data.Id,
+                    Name = data.Name,
+                    Artist = data.Artist
+                });
+            });
+
+            GetPlaylist();
         }
 
-        public async void OnAppearing()
+        private async void GetPlaylist()
         {
-            SearchKeyword = "";
-            Playlist.Clear();
             var playlist = await _playlistService.GetList();
             foreach (var item in playlist)
             {
@@ -100,32 +116,28 @@ namespace MusicPlayerOnlineApp.ViewModels
             var music = await _musicService.GetMusicDetail(SelectedResult.Id);
             if (music == null)
             {
-                //TODO 提示
+                DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
 
             if (File.Exists(music.CachePath))
             {
-                GlobalArgs.CurrentMusic = music;
-                Common.GlobalArgs.Audio.Play(music.CachePath);
+                GlobalMethods.PlayMusic(music);
                 return;
             }
 
-            //TODO 加入判断 非WIFI是否允许播放
             var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
             var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
-            if (!connectionTypes.Contains(wifi))
+            if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.General.IsWifiPlayOnly)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
-                });
+                DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
                 return;
             }
 
             string cachePath = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
             await _musicService.CacheMusic(music, cachePath);
-            Common.GlobalMethods.PlayMusic(cachePath);
+            music.CachePath = cachePath;
+            Common.GlobalMethods.PlayMusic(music);
         }
 
         private async void AddToMyFavorite(MusicDetailViewModel music)
@@ -134,7 +146,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-            await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedId)}={music.Id}");
+            await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}");
         }
     }
 }

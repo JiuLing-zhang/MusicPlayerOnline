@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.Collections.ObjectModel;
+using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Views;
@@ -8,7 +7,8 @@ using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
 {
-    [QueryProperty(nameof(AddedId), nameof(AddedId))]
+    [QueryProperty(nameof(AddedMusicId), nameof(AddedMusicId))]
+    [QueryProperty(nameof(MyFavoriteId), nameof(MyFavoriteId))]
     public class AddToMyFavoritePageViewModel : ViewModelBase
     {
         private readonly IMyFavoriteService _myFavoriteService;
@@ -26,15 +26,33 @@ namespace MusicPlayerOnlineApp.ViewModels
             BindingMyFavoriteList();
         }
 
-        private string _addedId;
-        public string AddedId
+        private string _addedMusicId;
+        /// <summary>
+        /// 要添加的歌曲ID
+        /// </summary>
+        public string AddedMusicId
         {
-            get => _addedId;
+            get => _addedMusicId;
             set
             {
-                _addedId = value;
+                _addedMusicId = value;
                 OnPropertyChanged();
                 GetMusicDetail();
+            }
+        }
+
+        private string _myFavoriteId;
+        /// <summary>
+        /// 新添加的歌单名称
+        /// </summary>
+        public string MyFavoriteId
+        {
+            get => _myFavoriteId;
+            set
+            {
+                _myFavoriteId = value;
+                OnPropertyChanged();
+                AddToNewMyFavorite();
             }
         }
 
@@ -72,7 +90,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         private async void GetMusicDetail()
         {
-            AddedMusic = await _musicService.GetMusicDetail(AddedId);
+            AddedMusic = await _musicService.GetMusicDetail(AddedMusicId);
         }
 
         private async void BindingMyFavoriteList()
@@ -104,8 +122,25 @@ namespace MusicPlayerOnlineApp.ViewModels
             var result = await _myFavoriteService.AddToMyFavorite(AddedMusic, SelectedItem.Id);
             if (result.Succeed == false)
             {
-                //TODO 错误提醒
+                DependencyService.Get<IToast>().Show("添加失败");
             }
+        }
+
+        /// <summary>
+        /// 将歌曲添加到新增的歌单中
+        /// </summary>
+        private async void AddToNewMyFavorite()
+        {
+            if (MyFavoriteId.IsEmpty())
+            {
+                return;
+            }
+            var result = await _myFavoriteService.AddToMyFavorite(AddedMusic, MyFavoriteId);
+            if (result.Succeed == false)
+            {
+                DependencyService.Get<IToast>().Show("添加失败");
+            }
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

@@ -36,6 +36,8 @@ namespace MusicPlayerOnline.Service
             music = await _musicNetPlatform.UpdateMusicDetail(music);
             var data = await _httpClient.GetReadByteArray(music.PlayUrl);
             System.IO.File.WriteAllBytes(cachePath, data);
+            music.CachePath = cachePath;
+            await DatabaseProvide.Database.UpdateAsync(music);
         }
     }
 }

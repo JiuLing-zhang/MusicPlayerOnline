@@ -9,6 +9,7 @@ using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Common;
+using MusicPlayerOnlineApp.Views;
 using Plugin.Connectivity;
 using Xamarin.Forms;
 
@@ -153,11 +154,6 @@ namespace MusicPlayerOnlineApp.ViewModels
                     });
                 }
             }
-            catch (Exception e)
-            {
-                //TODO 处理异常
-                throw e;
-            }
             finally
             {
                 IsMusicSearching = false;
@@ -165,32 +161,49 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         private async void SearchFinished()
         {
-            var music = await _searchService.GetMusicDetail(MusicSelectedResult.SourceData);
-            if (music == null)
+            GlobalMethods.ShowLoading();
+            try
             {
-                //TODO 提示
-                return;
-            }
-
-            await _musicService.Add(music);
-            await _playlistService.Add(music);
-
-            //TODO 加入判断 非WIFI是否允许播放
-            var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
-            var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
-            if (!connectionTypes.Contains(wifi))
-            {
-                Device.BeginInvokeOnMainThread(() =>
+                var music = await _searchService.GetMusicDetail(MusicSelectedResult.SourceData);
+                if (music == null)
                 {
-                    //TODO 提示
-                    DependencyService.Get<IToast>().Show("没有WIFI，不能播放");
-                });
-                return;
+                    MessagingCenter.Send<SearchResultPageViewModel, MusicDetail>(this, SubscribeKey.SearchFinished,
+                        null);
+                    await Shell.Current.GoToAsync("..", true);
+                    DependencyService.Get<IToast>().Show("emm没有解析出歌曲信息");
+                    return;
+                }
+
+                var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
+                var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
+                if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.General.IsWifiPlayOnly)
+                {
+                    MessagingCenter.Send<SearchResultPageViewModel, MusicDetail>(this, SubscribeKey.SearchFinished,
+                        null);
+                    await Shell.Current.GoToAsync("..", true);
+                    DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
+                    return;
+                }
+
+                await _musicService.Add(music);
+                await _playlistService.Add(music);
+
+                string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
+                await _musicService.CacheMusic(music, cachePath);
+                music.CachePath = cachePath;
+                GlobalMethods.PlayMusic(music);
+                MessagingCenter.Send(this, SubscribeKey.SearchFinished, music);
+                await Shell.Current.GoToAsync("..", true);
             }
-            string cachePath = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
-            await _musicService.CacheMusic(music, cachePath);
-            GlobalMethods.PlayMusic(music.CachePath);
-            await Shell.Current.GoToAsync("..", true);
+            catch (Exception e)
+            {
+                //TODO 记录个日志？
+                DependencyService.Get<IToast>().Show("出错啦，播放失败~~");
+            }
+            finally
+            {
+                GlobalMethods.HideLoading();
+            }
         }
     }
 }

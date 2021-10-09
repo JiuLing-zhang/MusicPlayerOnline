@@ -34,7 +34,7 @@ namespace MusicPlayerOnline.Service
             var count = await DatabaseProvide.Database.DeleteAsync<MyFavorite>(id);
             if (count == 0)
             {
-                return (false, "删除我们收藏失败");
+                return (false, "删除失败");
             }
 
             await DatabaseProvide.Database.Table<MyFavoriteDetail>().DeleteAsync(m => m.MyFavoriteId == id);
@@ -50,9 +50,6 @@ namespace MusicPlayerOnline.Service
         {
             if (await DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == music.Id).CountAsync() > 0)
             {
-                //TODO 检查页面返回
-                // DependencyService.Get<IToast>().Show("");
-                // await Navigation.PopPopupAsync();
                 return (false, "不能重复添加");
             }
             string id = Guid.NewGuid().ToString("d");
@@ -66,14 +63,7 @@ namespace MusicPlayerOnline.Service
                 Artist = music.Artist,
                 Album = music.Album
             };
-            int count = await DatabaseProvide.Database.InsertAsync(obj);
-            if (count == 0)
-            {
-                // DependencyService.Get<IToast>().Show("添加失败");
-                // await Navigation.PopPopupAsync();
-                //TODO 检查页面返回
-                return (false, "添加失败");
-            }
+            await DatabaseProvide.Database.InsertAsync(obj);
 
             //添加后，歌曲数量+1
             var myFavorite = await DatabaseProvide.Database.GetAsync<MyFavorite>(myFavoriteId);
@@ -85,6 +75,11 @@ namespace MusicPlayerOnline.Service
 
             await DatabaseProvide.Database.UpdateAsync(myFavorite);
             return (true, "添加成功");
+        }
+
+        public async Task<List<MyFavoriteDetail>> GetMyFavoriteDetail(string myFavoriteId)
+        {
+            return await DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId).ToListAsync();
         }
     }
 }

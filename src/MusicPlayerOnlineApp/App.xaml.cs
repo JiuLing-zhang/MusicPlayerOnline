@@ -23,7 +23,8 @@ namespace MusicPlayerOnlineApp
                 Directory.CreateDirectory(GlobalArgs.AppMusicCachePath);
             }
             DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
-            DatabaseProvide.InitTable();
+
+            GlobalMethods.ReadAppConfig();
 
             DependencyService.Register<MockDataStore>();
             Common.GlobalArgs.Audio = DependencyService.Get<IAudio>();

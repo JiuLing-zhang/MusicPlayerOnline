@@ -16,5 +16,7 @@ namespace MusicPlayerOnline.Service
         Task<List<MyFavorite>> GetMyFavoriteList();
 
         Task<(bool Succeed, string Message)> AddToMyFavorite(MusicDetail music, string myFavoriteId);
+
+        Task<List<MyFavoriteDetail>> GetMyFavoriteDetail(string myFavoriteId);
     }
 }

@@ -15,11 +15,6 @@ namespace MusicPlayerOnlineApp.Views
         {
             InitializeComponent();
             BindingContext = _myModel;
-
-            this.Appearing += (sender, args) =>
-            {
-                _myModel.OnAppearing();
-            };
         }
     }
 }

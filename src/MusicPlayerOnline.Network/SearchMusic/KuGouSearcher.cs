@@ -20,7 +20,8 @@ namespace MusicPlayerOnline.Network.SearchMusic
             var result = await _myMusicProvider.Search(keyword);
             if (result.IsSucceed == false)
             {
-                //todo 记录日志  result.ErrMsg
+                //TODO 加入日志
+                //Logger.Write($"搜索酷狗歌曲失败：{result.ErrMsg}");
                 return;
             }
             searchCallback(result.musics);

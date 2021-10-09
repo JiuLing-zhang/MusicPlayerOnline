@@ -29,5 +29,19 @@
                 ConfigHandle.Save();
             }
         }
+
+        private bool _isWifiPlayOnly;
+        /// <summary>
+        /// 仅WIFI下可播放
+        /// </summary>
+        public bool IsWifiPlayOnly
+        {
+            get => _isWifiPlayOnly;
+            set
+            {
+                _isWifiPlayOnly = value;
+                //ConfigHandle.Save();
+            }
+        }
     }
 }

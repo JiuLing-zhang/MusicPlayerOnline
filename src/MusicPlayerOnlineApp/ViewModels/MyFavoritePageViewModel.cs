@@ -25,7 +25,10 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         public async void OnAppearing()
         {
-            FavoriteList.Clear();
+            if (FavoriteList.Count > 0)
+            {
+                FavoriteList.Clear();
+            }
             var myFavoriteList = await _myFavoriteService.GetMyFavoriteList();
             foreach (var myFavorite in myFavoriteList)
             {
@@ -63,9 +66,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private async void AddMyFavorite()
         {
-            //TODO 跳转
-            //_addMyFavoritePage.Initialize();
-            //await Navigation.PushPopupAsync(_addMyFavoritePage);
+            await Shell.Current.GoToAsync(nameof(AddMyFavoritePage));
         }
 
         private async void SelectedChangedDo()
@@ -74,24 +75,12 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-            //TODO 打开详情页
-            // var myFavoriteDetailPage = new MyFavoriteDetailPage();
-            // myFavoriteDetailPage.Initialize(
-            //     new MyFavorite()
-            //     {
-            //         Id = myFavoriteView.Id,
-            //         ImageUrl = myFavoriteView.ImageUrl,
-            //         MusicCount = myFavoriteView.MusicCount,
-            //         Name = myFavoriteView.Name
-            //     });
-            // await Navigation.PushAsync(myFavoriteDetailPage);
+            await Shell.Current.GoToAsync($"{nameof(MyFavoriteDetailPage)}?{nameof(MyFavoriteDetailPageViewModel.MyFavoriteId)}={SelectedResult.Id}");
         }
 
         private async void EditFavorite(MyFavoriteViewModel myFavorite)
         {
-            //TODO  初始化
-            // _editMyFavoritePage.Initialize(myFavorite);
-            // await Navigation.PushPopupAsync(_editMyFavoritePage);
+            await Shell.Current.GoToAsync($"{nameof(EditMyFavoritePage)}?{nameof(EditMyFavoritePageViewModel.MyFavoriteId)}={myFavorite.Id}");
         }
     }
 }

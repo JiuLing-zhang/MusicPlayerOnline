@@ -25,16 +25,21 @@ namespace MusicPlayerOnline.Data
                     }
 
                     _database = new SQLiteAsyncConnection(_dbPath);
+                    InitTable();
                 }
                 return _database;
             }
         }
-        public static void InitTable()
+        private static void InitTable()
         {
             Database.CreateTableAsync<MusicDetail>().Wait();
             Database.CreateTableAsync<Playlist>().Wait();
             Database.CreateTableAsync<MyFavorite>().Wait();
             Database.CreateTableAsync<MyFavoriteDetail>().Wait();
+
+            Database.CreateTableAsync<GeneralConfig>().Wait();
+            Database.CreateTableAsync<PlayConfig>().Wait();
+            Database.CreateTableAsync<PlayerConfig>().Wait();
         }
     }
 }

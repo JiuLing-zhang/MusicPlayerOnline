@@ -31,9 +31,9 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="播放列表" Icon="listen_to_music.png" ContentTemplate="{DataTemplate local:PlaylistPage}" />
-        <ShellContent Title="我的歌单" Icon="music_folder.png" ContentTemplate="{DataTemplate local:MyFavoritePage}" />
-        <ShellContent Title="正在播放" Icon="musical_notes.png" ContentTemplate="{DataTemplate local:PlayingPage}" />
-        <ShellContent Title="设置" Icon="settings.png" ContentTemplate="{DataTemplate local:SettingPage}" />
+        <ShellContent Title="播放列表" Route="PlaylistPage" Icon="listen_to_music.png" ContentTemplate="{DataTemplate local:PlaylistPage}" />
+        <ShellContent Title="我的歌单" Route="MyFavoritePage" Icon="music_folder.png" ContentTemplate="{DataTemplate local:MyFavoritePage}" />
+        <ShellContent Title="正在播放" Route="PlayingPage" Icon="musical_notes.png" ContentTemplate="{DataTemplate local:PlayingPage}" />
+        <ShellContent Title="设置" Route="SettingPage" Icon="settings.png" ContentTemplate="{DataTemplate local:SettingPage}" />
     </TabBar>
 </Shell>

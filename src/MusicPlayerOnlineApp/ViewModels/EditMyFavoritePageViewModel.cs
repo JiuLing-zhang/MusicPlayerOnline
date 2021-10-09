@@ -1,6 +1,4 @@
-﻿using System;
-using JiuLing.CommonLibs.ExtensionMethods;
-using MusicPlayerOnline.Model.Model;
+﻿using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Service;
 using Xamarin.Forms;
 
@@ -55,7 +53,6 @@ namespace MusicPlayerOnlineApp.ViewModels
         {
             if (NewName.IsEmpty())
             {
-                //TODO 提示
                 DependencyService.Get<IToast>().Show("输入歌单名称");
                 return;
             }
@@ -63,13 +60,12 @@ namespace MusicPlayerOnlineApp.ViewModels
             var myFavorite = await _myFavoriteService.GetMyFavorite(MyFavoriteId);
             if (myFavorite.Name == NewName)
             {
-                //TODO 直接提示成功
+                DependencyService.Get<IToast>().Show("修改成功");
                 return;
             }
 
             myFavorite.Name = NewName;
             await _myFavoriteService.Update(myFavorite);
-            //TODO 提示，返回
         }
 
         private async void Remove()
@@ -80,10 +76,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
 
-            //TODO 给ID赋值
-            var result = await _myFavoriteService.DeleteMyFavorite("");
-            //TODO 判断状态，返回页面
-
+            var result = await _myFavoriteService.DeleteMyFavorite(MyFavoriteId);
             DependencyService.Get<IToast>().Show("删除成功");
         }
     }

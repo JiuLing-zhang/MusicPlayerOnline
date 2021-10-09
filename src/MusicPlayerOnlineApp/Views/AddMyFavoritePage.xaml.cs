@@ -9,7 +9,6 @@ namespace MusicPlayerOnlineApp.Views
     public partial class AddMyFavoritePage : ContentPage
     {
         private readonly AddMyFavoritePageViewModel _myModel = new AddMyFavoritePageViewModel();
-        public Action<string> SaveFinished;
         public AddMyFavoritePage()
         {
             InitializeComponent();

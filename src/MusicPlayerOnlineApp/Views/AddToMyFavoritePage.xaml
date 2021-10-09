@@ -18,23 +18,25 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <StackLayout BackgroundColor="#151515" Padding="10">
-        <musicPlayerOnlineApp:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding AddedMusic.ImageUrl}"/>
-        <StackLayout HeightRequest="250">
-            <StackLayout Orientation="Horizontal">
-                <Label HorizontalOptions="Start" VerticalOptions="Center" Text="添加歌曲到歌单" TextColor="#E0E0E0" FontSize="17"></Label>
-                <Button HorizontalOptions="EndAndExpand" VerticalOptions="End" Text="添加歌单" TextColor="#0088EB" FontSize="17" BackgroundColor="Transparent" Command="{Binding AddMyFavoriteCommand}"></Button>
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#151515" Padding="10">
+            <musicPlayerOnlineApp:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding AddedMusic.ImageUrl}"/>
+            <StackLayout HeightRequest="250">
+                <StackLayout Orientation="Horizontal">
+                    <Label HorizontalOptions="Start" VerticalOptions="Center" Text="添加歌曲到歌单" TextColor="#E0E0E0" FontSize="17"></Label>
+                    <Button HorizontalOptions="EndAndExpand" VerticalOptions="End" Text="添加歌单" TextColor="#0088EB" FontSize="17" BackgroundColor="Transparent" Command="{Binding AddMyFavoriteCommand}"></Button>
+                </StackLayout>
+                <Label HorizontalOptions="Center" VerticalOptions="Start"  Text="您还没有歌单哦~~" TextColor="#E0E0E0" FontSize="17" Style="{StaticResource LabelMyFavoriteListEmpty}" ></Label>
+                <CollectionView ItemsSource="{Binding MyFavoriteList}" SelectedItem="{Binding SelectedResult}" SelectionChangedCommand="{Binding SelectedChangedCommand}"  SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Name}" HorizontalTextAlignment="Center" BackgroundColor="Transparent" FontSize="17" TextColor="#DADADA"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </StackLayout>
-            <Label HorizontalOptions="Center" VerticalOptions="Start"  Text="您还没有歌单哦~~" TextColor="#E0E0E0" FontSize="17" Style="{StaticResource LabelMyFavoriteListEmpty}" ></Label>
-            <CollectionView ItemsSource="{Binding MyFavoriteList}" SelectedItem="{Binding SelectedResult}" SelectionChangedCommand="{Binding SelectedChangedCommand}"  SelectionMode="Single">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Name}" HorizontalTextAlignment="Center" BackgroundColor="Transparent" FontSize="17" TextColor="#DADADA"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
         </StackLayout>
-    </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

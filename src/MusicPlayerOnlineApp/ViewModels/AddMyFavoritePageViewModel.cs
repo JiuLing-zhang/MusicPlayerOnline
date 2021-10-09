@@ -1,6 +1,5 @@
 ﻿using System;
 using JiuLing.CommonLibs.ExtensionMethods;
-using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 using Xamarin.Forms;
@@ -32,7 +31,6 @@ namespace MusicPlayerOnlineApp.ViewModels
         {
             if (Name.IsEmpty())
             {
-                //TODO 提示
                 DependencyService.Get<IToast>().Show("输入歌单名称");
                 return;
             }
@@ -45,8 +43,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             };
 
             await _myFavoriteService.Add(myFavorite);
-
-            //TODO 返回
+            await Shell.Current.GoToAsync($"..?MyFavoriteId={id}", true);
+            DependencyService.Get<IToast>().Show("添加失败");
         }
     }
 }
