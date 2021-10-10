@@ -26,26 +26,28 @@ namespace MusicPlayerOnlineApp.ViewModels
             _playlistService = new PlaylistService();
             _musicService = new MusicService();
 
-            MessagingCenter.Subscribe<SearchResultPageViewModel, MusicDetail>(this, SubscribeKey.SearchFinished, (_, data) =>
+            MessagingCenter.Subscribe<SearchResultPageViewModel>(this, SubscribeKey.UpdatePlaylist, (_) =>
             {
-                SearchKeyword = "";
-                if (data == null)
-                {
-                    return;
-                }
-                Playlist.Add(new MusicDetailViewModel()
-                {
-                    Id = data.Id,
-                    Name = data.Name,
-                    Artist = data.Artist
-                });
+                GetPlaylist();
             });
-
+            MessagingCenter.Subscribe<MyFavoriteDetailPageViewModel>(this, SubscribeKey.UpdatePlaylist, (_) =>
+            {
+                GetPlaylist();
+            });
             GetPlaylist();
         }
 
+        public void OnAppearing()
+        {
+            SearchKeyword = "";
+        }
         private async void GetPlaylist()
         {
+            GlobalMethods.ShowLoading();
+            if (Playlist.Count > 0)
+            {
+                Playlist.Clear();
+            }
             var playlist = await _playlistService.GetList();
             foreach (var item in playlist)
             {
@@ -56,6 +58,8 @@ namespace MusicPlayerOnlineApp.ViewModels
                     Artist = item.Artist
                 });
             }
+
+            GlobalMethods.HideLoading();
         }
 
         /// <summary>

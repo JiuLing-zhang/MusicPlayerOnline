@@ -23,8 +23,8 @@ namespace MusicPlayerOnlineApp.Common
     public class SubscribeKey
     {
         /// <summary>
-        /// 歌曲搜索完成
+        /// 更新播放列表
         /// </summary>
-        public const string SearchFinished = "SearchFinished";
+        public const string UpdatePlaylist = "UpdatePlaylist";
     }
 }

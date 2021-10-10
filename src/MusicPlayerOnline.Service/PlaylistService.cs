@@ -9,6 +9,11 @@ namespace MusicPlayerOnline.Service
 {
     public class PlaylistService : IPlaylistService
     {
+        public async Task Clear()
+        {
+            await DatabaseProvide.Database.DeleteAllAsync<Playlist>();
+        }
+
         public async Task<List<Playlist>> GetList()
         {
             return await DatabaseProvide.Database.Table<Playlist>().ToListAsync();

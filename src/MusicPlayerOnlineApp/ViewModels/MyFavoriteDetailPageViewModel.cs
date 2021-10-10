@@ -11,6 +11,7 @@ namespace MusicPlayerOnlineApp.ViewModels
     public class MyFavoriteDetailPageViewModel : ViewModelBase
     {
         private readonly IMyFavoriteService _myFavoriteService;
+        private readonly IPlaylistService _playlistService;
         private readonly IMusicService _musicService;
         public Command SelectedChangedCommand => new Command(SelectedChangedDo);
         public Command PlayAllMusicsCommand => new Command(PlayAllMusics);
@@ -20,6 +21,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             MyFavoriteMusics = new ObservableCollection<MusicDetailViewModel>();
 
             _myFavoriteService = new MyFavoriteService();
+            _playlistService = new PlaylistService();
             _musicService = new MusicService();
         }
 
@@ -106,14 +108,37 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
+
+            await _playlistService.Add(music);
+
             GlobalMethods.PlayMusic(music);
+            MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
             await Shell.Current.GoToAsync($"..", true);
         }
 
         private async void PlayAllMusics()
         {
-            //TODO 播放全部
             DependencyService.Get<IToast>().Show("播放全部");
+            await _playlistService.Clear();
+
+            int index = 0;
+            foreach (var myFavoriteMusic in MyFavoriteMusics)
+            {
+                var music = await _musicService.GetMusicDetail(myFavoriteMusic.Id);
+                if (music == null)
+                {
+                    DependencyService.Get<IToast>().Show("获取歌曲信息失败");
+                    return;
+                }
+                await _playlistService.Add(music);
+                if (index == 0)
+                {
+                    GlobalMethods.PlayMusic(music);
+                }
+                index++;
+            }
+
+            MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
             await Shell.Current.GoToAsync($"..", true);
         }
     }

@@ -8,6 +8,7 @@ namespace MusicPlayerOnline.Service
 {
     public interface IPlaylistService
     {
+        Task Clear();
         Task<List<Playlist>> GetList();
         Task Add(MusicDetail music);
     }
