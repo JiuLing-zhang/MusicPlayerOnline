@@ -17,9 +17,5 @@ namespace MusicPlayerOnlineApp.Views
             InitializeComponent();
             BindingContext = _myModel;
         }
-        private async void MyFavoriteDetail_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           
-        }
     }
 }

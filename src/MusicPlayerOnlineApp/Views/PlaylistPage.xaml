@@ -57,8 +57,8 @@
                         <DataTemplate>
                             <Grid Padding="10,10,10,10" RowDefinitions="*" ColumnDefinitions="*,20">
                                 <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
-                                    <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="16" VerticalOptions="End" />
+                                    <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" MinimumWidthRequest="60" LineBreakMode="NoWrap"/>
+                                    <Label TextColor="#929292" Text="{Binding Artist,StringFormat='{} - {0}'}" FontSize="15" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" />
                                 </StackLayout>
                                 <ImageButton Grid.Column="1"  BackgroundColor="Transparent" Source="plus_math" 
                                              Aspect="AspectFill"

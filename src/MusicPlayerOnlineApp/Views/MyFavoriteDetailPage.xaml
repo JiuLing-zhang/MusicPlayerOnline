@@ -3,6 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MusicPlayerOnlineApp.Views.MyFavoriteDetailPage"
              Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding PlayAllMusicsCommand}" Text="播放全部"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelMusicSearching" TargetType="Label">
@@ -30,7 +35,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" BackgroundColor="#010101" Padding="10">
-            <CollectionView ItemsSource="{Binding MyFavoriteMusics}" SelectionMode="Single" SelectionChanged="MyFavoriteDetail_SelectionChanged" >
+            <CollectionView ItemsSource="{Binding MyFavoriteMusics}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}" SelectionChangedCommand="{Binding SelectedChangedCommand}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="5" Orientation="Horizontal" >
@@ -38,8 +43,8 @@
                                 <Label Text="{Binding Seq}" TextColor="#E0E0E0" FontSize="14" />
                             </StackLayout>
                             <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Padding="5,0,0,0">
-                                <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" VerticalOptions="End"/>
-                                <Label TextColor="#929292" FontSize="16" VerticalOptions="End" >
+                                <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" LineBreakMode="TailTruncation"/>
+                                <Label TextColor="#929292" FontSize="15" LineBreakMode="TailTruncation">
                                     <MultiBinding StringFormat="{}{0} - {1}">
                                         <Binding Path="Artist" />
                                         <Binding Path="Album" />

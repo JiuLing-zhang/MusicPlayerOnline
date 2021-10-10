@@ -1,6 +1,8 @@
 ﻿using MusicPlayerOnline.Service;
 using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -9,11 +11,16 @@ namespace MusicPlayerOnlineApp.ViewModels
     public class MyFavoriteDetailPageViewModel : ViewModelBase
     {
         private readonly IMyFavoriteService _myFavoriteService;
+        private readonly IMusicService _musicService;
+        public Command SelectedChangedCommand => new Command(SelectedChangedDo);
+        public Command PlayAllMusicsCommand => new Command(PlayAllMusics);
+
         public MyFavoriteDetailPageViewModel()
         {
             MyFavoriteMusics = new ObservableCollection<MusicDetailViewModel>();
 
             _myFavoriteService = new MyFavoriteService();
+            _musicService = new MusicService();
         }
 
         private string _title;
@@ -41,6 +48,17 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 LoadPageTitle();
                 GetMyFavoriteDetail();
+            }
+        }
+
+        private MusicDetailViewModel _selectedItem;
+        public MusicDetailViewModel SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged();
             }
         }
 
@@ -77,7 +95,26 @@ namespace MusicPlayerOnlineApp.ViewModels
         private async void LoadPageTitle()
         {
             var myFavorite = await _myFavoriteService.GetMyFavorite(MyFavoriteId);
-            Title = $"歌单：{myFavorite.Name}";
+            Title = myFavorite.Name;
+        }
+
+        private async void SelectedChangedDo()
+        {
+            var music = await _musicService.GetMusicDetail(SelectedItem.Id);
+            if (music == null)
+            {
+                DependencyService.Get<IToast>().Show("获取歌曲信息失败");
+                return;
+            }
+            GlobalMethods.PlayMusic(music);
+            await Shell.Current.GoToAsync($"..", true);
+        }
+
+        private async void PlayAllMusics()
+        {
+            //TODO 播放全部
+            DependencyService.Get<IToast>().Show("播放全部");
+            await Shell.Current.GoToAsync($"..", true);
         }
     }
 }
