@@ -1,5 +1,6 @@
 ﻿using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Service;
+using MusicPlayerOnlineApp.AppInterface;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels

@@ -1,5 +1,4 @@
 ﻿using System;
-using MusicPlayerOnline.Player;
 using MusicPlayerOnlineApp.Common;
 using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;

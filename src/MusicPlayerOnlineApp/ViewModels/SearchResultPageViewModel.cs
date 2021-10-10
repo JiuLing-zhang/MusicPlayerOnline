@@ -8,6 +8,7 @@ using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
+using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
 using MusicPlayerOnlineApp.Views;
 using Plugin.Connectivity;

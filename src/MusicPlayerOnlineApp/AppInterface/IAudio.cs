@@ -1,4 +1,4 @@
-﻿namespace MusicPlayerOnline.Player
+﻿namespace MusicPlayerOnlineApp.AppInterface
 {
     public delegate void MediaBeginEventHandler();
     public delegate void MediaEndedEventHandler();

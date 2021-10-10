@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Android.Media;
-using MusicPlayerOnline.Player;
+using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Droid;
 using Xamarin.Forms;
 

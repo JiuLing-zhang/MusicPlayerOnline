@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnline.Player;
+using IAudio = MusicPlayerOnlineApp.AppInterface.IAudio;
 
 namespace MusicPlayerOnlineApp.Common
 {

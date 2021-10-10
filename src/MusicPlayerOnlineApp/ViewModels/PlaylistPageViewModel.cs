@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using MusicPlayerOnline.Model.Model;
+using MusicPlayerOnlineApp.AppInterface;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels

@@ -2,6 +2,7 @@
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
+using MusicPlayerOnlineApp.AppInterface;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels

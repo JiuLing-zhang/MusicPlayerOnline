@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Graphics.Drawables;
 using Android.Views;
+using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Droid;
 using MusicPlayerOnlineApp.Views;
 using Plugin.CurrentActivity;

@@ -1,9 +1,9 @@
 ﻿using MusicPlayerOnlineApp.Services;
 using System.IO;
 using MusicPlayerOnline.Data;
-using MusicPlayerOnline.Player;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
+using IAudio = MusicPlayerOnlineApp.AppInterface.IAudio;
 
 namespace MusicPlayerOnlineApp
 {
