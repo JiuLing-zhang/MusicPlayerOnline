@@ -38,11 +38,11 @@
                     <DataTemplate>
                         <Grid Padding="10"
                               RowDefinitions="*"
-                              ColumnDefinitions="30,*" 
+                              ColumnDefinitions="35,*" 
                               >
                             <StackLayout Grid.Column="0">
-                                <Label Text="{Binding Platform}" BackgroundColor="#404040" TextColor="#DADADA"/>
-                                <Label Text="{Binding Duration}" TextColor="#929292" FontSize="13"/>
+                                <Label Text="{Binding Platform}" BackgroundColor="#404040" TextColor="#DADADA" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding Duration}" TextColor="#929292" FontSize="13" HorizontalTextAlignment="Center"/>
                             </StackLayout>
                             <StackLayout Grid.Column="1" Orientation="Vertical">
                                 <StackLayout Orientation="Horizontal">

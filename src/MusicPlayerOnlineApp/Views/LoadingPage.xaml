@@ -12,7 +12,7 @@
             <ActivityIndicator IsRunning="True" Color="#0088EB" />
             <Label
                 FontAttributes="Bold"
-                Text="加载中...."
+                Text="快马加鞭处理中...."
                 TextColor="#E0E0E0" />
         </StackLayout>
     </ContentPage.Content>

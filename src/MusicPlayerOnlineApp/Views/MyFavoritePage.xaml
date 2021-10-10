@@ -45,7 +45,7 @@
                                            WidthRequest="50"
                                            Padding="0"
                                            IsClippedToBounds="True" BackgroundColor="#404040">
-                                    <Image Style="{StaticResource MyFavoriteImg}"></Image>
+                                    <Image Aspect="AspectFill" Style="{StaticResource MyFavoriteImg}"></Image>
                                 </Frame>
                             </StackLayout>
                             <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Padding="5,0,0,0">
@@ -58,6 +58,7 @@
                             </StackLayout>
                             <StackLayout HorizontalOptions="End" VerticalOptions="Center">
                                 <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Source="menu_vertical"
+                                             Aspect="AspectFill"
                                              Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyFavoritePageViewModel}}, Path=AddToMyFavoriteCommand}"		
                                              CommandParameter="{Binding .}"/>
                             </StackLayout>

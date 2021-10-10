@@ -9,7 +9,6 @@ using Xamarin.Forms;
 namespace MusicPlayerOnlineApp.ViewModels
 {
     [QueryProperty(nameof(AddedMusicId), nameof(AddedMusicId))]
-    [QueryProperty(nameof(MyFavoriteId), nameof(MyFavoriteId))]
     public class AddToMyFavoritePageViewModel : ViewModelBase
     {
         private readonly IMyFavoriteService _myFavoriteService;
@@ -39,21 +38,6 @@ namespace MusicPlayerOnlineApp.ViewModels
                 _addedMusicId = value;
                 OnPropertyChanged();
                 GetMusicDetail();
-            }
-        }
-
-        private string _myFavoriteId;
-        /// <summary>
-        /// 新添加的歌单名称
-        /// </summary>
-        public string MyFavoriteId
-        {
-            get => _myFavoriteId;
-            set
-            {
-                _myFavoriteId = value;
-                OnPropertyChanged();
-                AddToNewMyFavorite();
             }
         }
 
@@ -112,7 +96,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private async void AddMyFavorite()
         {
-            await Shell.Current.GoToAsync($"{nameof(AddMyFavoritePage)}");
+            await Shell.Current.GoToAsync($"{nameof(AddMyFavoritePage)}?{nameof(AddMyFavoritePageViewModel.AddedMusicId)}={AddedMusicId}", true);
         }
         private async void SelectedChangedDo()
         {
@@ -123,25 +107,12 @@ namespace MusicPlayerOnlineApp.ViewModels
             var result = await _myFavoriteService.AddToMyFavorite(AddedMusic, SelectedItem.Id);
             if (result.Succeed == false)
             {
+                await Shell.Current.GoToAsync($"..", true);
                 DependencyService.Get<IToast>().Show("添加失败");
-            }
-        }
-
-        /// <summary>
-        /// 将歌曲添加到新增的歌单中
-        /// </summary>
-        private async void AddToNewMyFavorite()
-        {
-            if (MyFavoriteId.IsEmpty())
-            {
                 return;
             }
-            var result = await _myFavoriteService.AddToMyFavorite(AddedMusic, MyFavoriteId);
-            if (result.Succeed == false)
-            {
-                DependencyService.Get<IToast>().Show("添加失败");
-            }
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync($"..", true);
+            DependencyService.Get<IToast>().Show("添加成功");
         }
     }
 }

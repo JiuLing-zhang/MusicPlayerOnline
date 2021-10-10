@@ -91,13 +91,13 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private MusicDetailViewModel _selectedResult;
-        public MusicDetailViewModel SelectedResult
+        private MusicDetailViewModel _selectedItem;
+        public MusicDetailViewModel SelectedItem
         {
-            get => _selectedResult;
+            get => _selectedItem;
             set
             {
-                _selectedResult = value;
+                _selectedItem = value;
                 OnPropertyChanged();
             }
         }
@@ -109,12 +109,12 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
 
-            await Shell.Current.GoToAsync($"{nameof(SearchResultPage)}?{nameof(SearchResultPageViewModel.SearchKeyword)}={SearchKeyword}");
+            await Shell.Current.GoToAsync($"{nameof(SearchResultPage)}?{nameof(SearchResultPageViewModel.SearchKeyword)}={SearchKeyword}", true);
         }
 
         private async void SelectedChangedDo()
         {
-            var music = await _musicService.GetMusicDetail(SelectedResult.Id);
+            var music = await _musicService.GetMusicDetail(SelectedItem.Id);
             if (music == null)
             {
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
@@ -147,7 +147,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-            await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}");
+            await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
         }
     }
 }

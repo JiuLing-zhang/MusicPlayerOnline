@@ -44,7 +44,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         private async void OnCancel()
         {
             // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("..", true);
         }
 
         private async void OnSave()
@@ -59,7 +59,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             await DataStore.AddItemAsync(newItem);
 
             // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("..", true);
         }
     }
 }

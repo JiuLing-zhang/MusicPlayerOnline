@@ -2,6 +2,8 @@
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
+using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnlineApp.Common;
 using MusicPlayerOnlineApp.Views;
 using Xamarin.Forms;
 
@@ -29,6 +31,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 FavoriteList.Clear();
             }
+
+            GlobalMethods.ShowLoading();
             var myFavoriteList = await _myFavoriteService.GetMyFavoriteList();
             foreach (var myFavorite in myFavoriteList)
             {
@@ -40,6 +44,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                     ImageUrl = myFavorite.ImageUrl
                 });
             }
+            GlobalMethods.HideLoading();
         }
 
         private ObservableCollection<MyFavoriteViewModel> _favoriteList;
@@ -66,21 +71,22 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private async void AddMyFavorite()
         {
-            await Shell.Current.GoToAsync(nameof(AddMyFavoritePage));
+            await Shell.Current.GoToAsync(nameof(AddMyFavoritePage), true);
         }
 
         private async void SelectedChangedDo()
         {
             if (SelectedResult.MusicCount == 0)
             {
+                DependencyService.Get<IToast>().Show("该歌单是空的");
                 return;
             }
-            await Shell.Current.GoToAsync($"{nameof(MyFavoriteDetailPage)}?{nameof(MyFavoriteDetailPageViewModel.MyFavoriteId)}={SelectedResult.Id}");
+            await Shell.Current.GoToAsync($"{nameof(MyFavoriteDetailPage)}?{nameof(MyFavoriteDetailPageViewModel.MyFavoriteId)}={SelectedResult.Id}", true);
         }
 
         private async void EditFavorite(MyFavoriteViewModel myFavorite)
         {
-            await Shell.Current.GoToAsync($"{nameof(EditMyFavoritePage)}?{nameof(EditMyFavoritePageViewModel.MyFavoriteId)}={myFavorite.Id}");
+            await Shell.Current.GoToAsync($"{nameof(EditMyFavoritePage)}?{nameof(EditMyFavoritePageViewModel.MyFavoriteId)}={myFavorite.Id}", true);
         }
     }
 }
