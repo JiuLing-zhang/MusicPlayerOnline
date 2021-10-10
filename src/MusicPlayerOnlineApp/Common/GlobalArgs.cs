@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using MusicPlayerOnline.Model.Model;
-using IAudio = MusicPlayerOnlineApp.AppInterface.IAudio;
 
 namespace MusicPlayerOnlineApp.Common
 {
@@ -10,7 +9,11 @@ namespace MusicPlayerOnlineApp.Common
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         public static string AppDbFileName = Path.Combine(AppDataPath, "data.db3");
         public static string AppMusicCachePath = Path.Combine(AppDataPath, "Music");
-        public static IAudio Audio;
+
+        /// <summary>
+        /// 正在播放的歌曲信息
+        /// </summary>
+        public static MusicDetail PlayingMusic;
         public static Config AppConfig;
     }
 
@@ -19,10 +22,6 @@ namespace MusicPlayerOnlineApp.Common
     /// </summary>
     public class SubscribeKey
     {
-        /// <summary>
-        /// 播放
-        /// </summary>
-        public const string Play = "Play";
         /// <summary>
         /// 歌曲搜索完成
         /// </summary>

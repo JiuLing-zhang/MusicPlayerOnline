@@ -18,6 +18,7 @@ using Android.Graphics;
 using Java.IO;
 using MusicPlayerOnlineApp;
 using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnlineApp.Services;
 
 [assembly: ExportRenderer(typeof(BlurredImage), typeof(BlurredImageRenderer))]
 namespace MusicPlayerOnlineApp.Droid

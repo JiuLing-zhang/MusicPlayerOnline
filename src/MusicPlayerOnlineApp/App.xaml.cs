@@ -27,7 +27,7 @@ namespace MusicPlayerOnlineApp
             GlobalMethods.ReadAppConfig();
 
             DependencyService.Register<MockDataStore>();
-            Common.GlobalArgs.Audio = DependencyService.Get<IAudio>();
+            PlayerService.Init();
             MainPage = new AppShell();
         }
 

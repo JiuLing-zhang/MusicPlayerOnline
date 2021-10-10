@@ -4,6 +4,7 @@
              xmlns:pages="http://rotorgames.com"
              xmlns:shades="http://sharpnado.com"
              xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnlineApp;assembly=MusicPlayerOnlineApp"
+             xmlns:services="clr-namespace:MusicPlayerOnlineApp.Services;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.AddToMyFavoritePage" >
 
     <ContentPage.Resources>
@@ -20,7 +21,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout BackgroundColor="#151515" Padding="10">
-            <musicPlayerOnlineApp:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding AddedMusic.ImageUrl}"/>
+            <services:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding AddedMusic.ImageUrl}"/>
             <StackLayout HeightRequest="250">
                 <StackLayout Orientation="Horizontal">
                     <Label HorizontalOptions="Start" VerticalOptions="Center" Text="添加歌曲到歌单" TextColor="#E0E0E0" FontSize="17"></Label>

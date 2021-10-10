@@ -1,6 +1,7 @@
 ﻿using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnlineApp.Services;
 using MusicPlayerOnlineApp.Views;
 using Xamarin.Forms;
 
@@ -34,7 +35,7 @@ namespace MusicPlayerOnlineApp.Common
 
         public static void PlayMusic(MusicDetail music)
         {
-            MessagingCenter.Send("", SubscribeKey.Play, music);
+            PlayerService.Play(music);
         }
 
         public static void ShowLoading()

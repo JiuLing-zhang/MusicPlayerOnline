@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="http://rotorgames.com"
              xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnlineApp;assembly=MusicPlayerOnlineApp"
+             xmlns:services="clr-namespace:MusicPlayerOnlineApp.Services;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.AddMyFavoritePage">
     <ContentView>
         <StackLayout BackgroundColor="#151515" Padding="10">
-            <musicPlayerOnlineApp:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="icon"/>
+            <services:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="icon"/>
             <StackLayout BackgroundColor="#151515" HeightRequest="250" Padding="10">
                 <StackLayout Orientation="Horizontal">
                     <Label HorizontalOptions="Start" VerticalOptions="Center" Text="添加歌单" TextColor="#E0E0E0" FontSize="17" ></Label>

@@ -2,6 +2,7 @@
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
+using MusicPlayerOnlineApp.Services;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -13,16 +14,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         public PlayingPageViewModel()
         {
             _musicService = new MusicService();
-
-            Common.GlobalArgs.Audio.MediaBegin += Audio_MediaBegin;
-            Common.GlobalArgs.Audio.MediaEnded += Audio_MediaEnded;
-            Common.GlobalArgs.Audio.MediaFailed += Audio_MediaFailed;
-
-            MessagingCenter.Subscribe<string, MusicDetail>(this, SubscribeKey.Play, (_, data) =>
-            {
-                Common.GlobalArgs.Audio.Play(data.CachePath);
-                CurrentMusic = data;
-            });
+            CurrentMusic = GlobalArgs.PlayingMusic;
         }
 
         /// <summary>
@@ -58,29 +50,16 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private void Audio_MediaBegin()
-        {
-            IsPlaying = true;
-        }
-
-        private void Audio_MediaEnded()
-        {
-            IsPlaying = false;
-        }
-        private void Audio_MediaFailed()
-        {
-            DependencyService.Get<IToast>().Show("播放失败");
-        }
 
         private async void PlayerStateChange()
         {
             if (IsPlaying == true)
             {
-                Common.GlobalArgs.Audio.Pause();
+                PlayerService.Pause();
             }
             else
             {
-                Common.GlobalArgs.Audio.Start();
+                PlayerService.Start();
             }
 
             IsPlaying = !IsPlaying;
