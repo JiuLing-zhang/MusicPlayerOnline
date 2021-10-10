@@ -1,5 +1,5 @@
-![](https://img.shields.io/badge/build-passing-brightgreen)
-![](https://img.shields.io/github/license/JiuLing-zhang/MusicPlayerOnline)
+![](https://img.shields.io/badge/build-passing-brightgreen)  
+![](https://img.shields.io/github/license/JiuLing-zhang/MusicPlayerOnline)  
 ![](https://img.shields.io/github/v/release/JiuLing-zhang/MusicPlayerOnline)  
 
 # 该项目禁止Fork、禁止Fork、禁止Fork
@@ -13,3 +13,6 @@
 原来免费听不了的歌曲，现在依然听不了，唯一的好处就是如果有平台免费听不了，可以尝试搜下其他平台  
 
 ![MusicPlayerOnline.png](https://i.loli.net/2021/08/28/b5d4BIwO7LHhFCi.png)  
+
+# 说明
+PC版功能已完成；Android版还在努力开发中....  
