@@ -9,11 +9,6 @@ namespace MusicPlayerOnlineApp.Common
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         public static string AppDbFileName = Path.Combine(AppDataPath, "data.db3");
         public static string AppMusicCachePath = Path.Combine(AppDataPath, "Music");
-
-        /// <summary>
-        /// 正在播放的歌曲信息
-        /// </summary>
-        public static MusicDetail PlayingMusic;
         public static Config AppConfig;
     }
 

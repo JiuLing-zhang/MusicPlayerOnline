@@ -35,7 +35,7 @@ namespace MusicPlayerOnlineApp.Common
 
         public static void PlayMusic(MusicDetail music)
         {
-            PlayerService.Play(music);
+            PlayerService.Instance().Play(music);
         }
 
         public static void ShowLoading()

@@ -40,6 +40,9 @@ namespace MusicPlayerOnlineApp.Droid
                 MediaFailed?.Invoke();
             };
         }
+
+        public bool IsPlaying => _player.IsPlaying;
+
         public async void Play(string path)
         {
             Stop();
@@ -76,6 +79,11 @@ namespace MusicPlayerOnlineApp.Droid
         public void Dispose()
         {
             _player.Dispose();
+        }
+
+        public (int Duration, int Position) GetPosition()
+        {
+            return (_player.Duration, _player.CurrentPosition);
         }
     }
 }

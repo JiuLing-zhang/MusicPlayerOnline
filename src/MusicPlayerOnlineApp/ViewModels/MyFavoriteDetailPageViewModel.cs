@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
+using MusicPlayerOnlineApp.Views;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -112,13 +113,15 @@ namespace MusicPlayerOnlineApp.ViewModels
             await _playlistService.Add(music);
 
             GlobalMethods.PlayMusic(music);
+
+            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
-            await Shell.Current.GoToAsync($"..", true);
         }
 
         private async void PlayAllMusics()
         {
-            DependencyService.Get<IToast>().Show("播放全部");
+            GlobalMethods.ShowLoading();
+
             await _playlistService.Clear();
 
             int index = 0;
@@ -137,9 +140,10 @@ namespace MusicPlayerOnlineApp.ViewModels
                 }
                 index++;
             }
+            GlobalMethods.HideLoading();
 
+            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
-            await Shell.Current.GoToAsync($"..", true);
         }
     }
 }

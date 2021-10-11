@@ -67,7 +67,7 @@ namespace MusicPlayerOnline.Service
 
             //添加后，歌曲数量+1
             var myFavorite = await DatabaseProvide.Database.GetAsync<MyFavorite>(myFavoriteId);
-            myFavorite.MusicCount = myFavorite.MusicCount + 1;
+            myFavorite.MusicCount++;
             if (myFavorite.ImageUrl.IsEmpty())
             {
                 myFavorite.ImageUrl = music.ImageUrl;

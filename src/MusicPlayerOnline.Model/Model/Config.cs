@@ -30,19 +30,29 @@ namespace MusicPlayerOnline.Model.Model
         /// </summary>
         public bool IsHideWindowWhenMinimize { get; set; } = true;
 
-        /// <summary>
-        /// 仅WIFI下可播放
-        /// </summary>
-        public bool IsWifiPlayOnly { get; set; } = true;
     }
-
-
+    
     public class PlayConfig
     {
         /// <summary>
         /// 是否保存播放记录到本地
         /// </summary>
         public bool IsSavePlaylistToLocal { get; set; } = true;
+
+        /// <summary>
+        /// 仅WIFI下可播放
+        /// </summary>
+        public bool IsWifiPlayOnly { get; set; } = true;
+
+        /// <summary>
+        /// 播放失败时关闭搜索页面
+        /// </summary>
+        public bool IsCloseSearchPageWhenPlayFailed { get; set; } = false;
+
+        /// <summary>
+        /// 播放我的歌单前清空播放列表
+        /// </summary>
+        public bool IsCleanPlaylistWhenPlayMyFavorite { get; set; } = true;
 
         /// <summary>
         /// 歌曲无法播放时自动跳到下一首

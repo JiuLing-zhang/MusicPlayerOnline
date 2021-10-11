@@ -63,8 +63,4 @@
       <DependentUpon>MyFavoritePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AppInterface\" />
-  </ItemGroup>
 </Project>

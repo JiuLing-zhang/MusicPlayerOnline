@@ -124,25 +124,8 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
-
-            if (File.Exists(music.CachePath))
-            {
-                GlobalMethods.PlayMusic(music);
-                return;
-            }
-
-            var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
-            var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
-            if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.General.IsWifiPlayOnly)
-            {
-                DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
-                return;
-            }
-
-            string cachePath = Path.Combine(Common.GlobalArgs.AppMusicCachePath, music.Id);
-            await _musicService.CacheMusic(music, cachePath);
-            music.CachePath = cachePath;
             Common.GlobalMethods.PlayMusic(music);
+            await Shell.Current.GoToAsync($"{nameof(PlayingPage)}", true);
         }
 
         private async void AddToMyFavorite(MusicDetailViewModel music)

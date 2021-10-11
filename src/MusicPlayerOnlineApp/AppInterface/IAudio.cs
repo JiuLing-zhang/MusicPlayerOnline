@@ -1,4 +1,6 @@
-﻿namespace MusicPlayerOnlineApp.AppInterface
+﻿using System;
+
+namespace MusicPlayerOnlineApp.AppInterface
 {
     public delegate void MediaBeginEventHandler();
     public delegate void MediaEndedEventHandler();
@@ -11,6 +13,8 @@
         /// 播放失败
         /// </summary>
         event MediaFailedEventHandler MediaFailed;
+
+        bool IsPlaying { get; }
         void Play(string path);
         void Pause();
         /// <summary>
@@ -21,5 +25,7 @@
         void SeekTo(int millisecond);
 
         void Dispose();
+
+        (int Duration, int Position) GetPosition();
     }
 }

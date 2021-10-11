@@ -74,6 +74,7 @@
     <Compile Include="AudioService.cs" />
     <Compile Include="BlurredImageRenderer.cs" />
     <Compile Include="LoadingPageService.cs" />
+    <Compile Include="Renderer\CustomSwitchRenderer.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -174,5 +175,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

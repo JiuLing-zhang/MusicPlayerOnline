@@ -11,40 +11,59 @@ namespace MusicPlayerOnlineApp.Services
     public class PlayerService
     {
         private static IAudio _audio;
-        public static void Init()
+
+        private static readonly PlayerService MyPlayerService = new PlayerService();
+        public static PlayerService Instance()
         {
-            _audio= DependencyService.Get<IAudio>();
+            return MyPlayerService;
+        }
+        public PlayerService()
+        {
+            _audio = DependencyService.Get<IAudio>();
             _audio.MediaBegin += Audio_MediaBegin;
             _audio.MediaEnded += Audio_MediaEnded;
             _audio.MediaFailed += Audio_MediaFailed;
         }
+        /// <summary>
+        /// 是否正在播放
+        /// </summary>
+        public bool IsPlaying => _audio.IsPlaying;
+        /// <summary>
+        /// 正在播放的歌曲信息
+        /// </summary>
+        public MusicDetail PlayingMusic;
 
-        private static void Audio_MediaBegin()
+        private void Audio_MediaBegin()
         {
 
         }
 
-        private static void Audio_MediaEnded()
+        private void Audio_MediaEnded()
         {
         }
-        private static void Audio_MediaFailed()
+        private void Audio_MediaFailed()
         {
             DependencyService.Get<IToast>().Show("播放失败");
         }
 
-        public static void Play(MusicDetail music)
+        public void Play(MusicDetail music)
         {
             _audio.Play(music.CachePath);
-            GlobalArgs.PlayingMusic = music;
+            PlayingMusic = music;
         }
 
-        public static void Start()
+        public void Start()
         {
             _audio.Start();
         }
-        public static void Pause()
+        public void Pause()
         {
             _audio.Pause();
+        }
+
+        public (int Duration, int Position) GetPosition()
+        {
+            return _audio.GetPosition();
         }
     }
 }

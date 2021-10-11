@@ -1,39 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:MusicPlayerOnlineApp.Services;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.PlayingPage"
-             Title="{Binding Title}" >
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <Style x:Key="PlayerStateImage" TargetType="ImageButton">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPlaying}" Value="true" TargetType="ImageButton">
+                    <Setter Property="Source" Value="pause_button"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsPlaying}" Value="false" TargetType="ImageButton">
+                    <Setter Property="Source" Value="circled_play"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#010101" Padding="10">
-            <!-- 歌曲信息 -->
-            <StackLayout Orientation="Horizontal" VerticalOptions="Start">
-                <StackLayout WidthRequest="50">
-                    <Image Source="{Binding CurrentMusic.ImageUrl}"></Image>
+        <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" BackgroundColor="#000000">
+                <services:BlurredImage Opacity="0.3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="Fill" Source="{Binding CurrentMusic.ImageUrl}"/>
+            </StackLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Padding="10,10,10,0">
+                <!-- 歌曲信息 -->
+                <StackLayout VerticalOptions="Start" Padding="0,0,0,10">
+                    <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="20" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="{Binding CurrentMusic.Artist}" TextColor="#929292" FontSize="15" HorizontalTextAlignment="Center"></Label>
                 </StackLayout>
-                <StackLayout>
-                    <Label Text="{Binding CurrentMusic.Name}" TextColor="#E0E0E0" FontSize="18"></Label>
-                    <Label Text="{Binding CurrentMusic.Artist}" TextColor="#929292" FontSize="16"></Label>
+                <!-- 歌词 -->
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <ScrollView>
+                        <Label Text="{Binding CurrentMusic.Lyric}" TextColor="#E0E0E0" FontSize="16" HorizontalTextAlignment="Center"></Label>
+                    </ScrollView>
+                </StackLayout>
+                <!-- 进度条 -->
+                <StackLayout Orientation="Horizontal" VerticalOptions="End" Margin="0,10,0,0">
+                    <Label TextColor="#E0E0E0" Text="{Binding CurrentTime}" HorizontalOptions="Start"></Label>
+                    <Slider x:Name="SliderPlayProgress" Minimum="0" Maximum="1" Value="{Binding Position}" HorizontalOptions="FillAndExpand" ThumbColor="#0088EB" />
+                    <Label TextColor="#E0E0E0" Text="{Binding DurationTime}" HorizontalOptions="End"></Label>
+                </StackLayout>
+                <!-- 播放按钮 -->
+                <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60" >
+                    <ImageButton Source="repeat_one" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="StartAndExpand"></ImageButton>
+                    <ImageButton Source="previous" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
+                    <ImageButton BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand"  Command="{Binding PlayerStateChangeCommand}" Style="{StaticResource PlayerStateImage}"></ImageButton>
+                    <ImageButton Source="next" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
+                    <ImageButton Source="puzzled" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand"></ImageButton>
                 </StackLayout>
             </StackLayout>
-            <!-- 歌词 -->
-            <StackLayout VerticalOptions="FillAndExpand">
-                <ScrollView>
-                    <Label Text="{Binding CurrentMusic.Lyric}" TextColor="#E0E0E0" FontSize="16"></Label>
-                </ScrollView>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" VerticalOptions="End" Margin="0,10,0,0">
-                <Label TextColor="#E0E0E0" Text="01:18" HorizontalOptions="Start"></Label>
-                <Slider x:Name="SliderPlayProgress" Minimum="0" Maximum="1" HorizontalOptions="FillAndExpand" ThumbColor="#0088EB" />
-                <Label TextColor="#E0E0E0" Text="01:18" HorizontalOptions="End"></Label>
-            </StackLayout>
-            <!-- 播放按钮 -->
-            <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60" >
-                <ImageButton Source="repeat_one" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="StartAndExpand"></ImageButton>
-                <ImageButton Source="previous" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
-                <ImageButton Source="circled_play" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand"  Command="{Binding PlayerStateChangeCommand}"></ImageButton>
-                <ImageButton Source="next" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
-                <ImageButton Source="puzzled" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand"></ImageButton>
-            </StackLayout>
-        </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
