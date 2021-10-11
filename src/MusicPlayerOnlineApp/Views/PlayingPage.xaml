@@ -31,9 +31,13 @@
                 </StackLayout>
                 <!-- 歌词 -->
                 <StackLayout VerticalOptions="FillAndExpand">
-                    <ScrollView>
-                        <Label Text="{Binding CurrentMusic.Lyric}" TextColor="#E0E0E0" FontSize="16" HorizontalTextAlignment="Center"></Label>
-                    </ScrollView>
+                    <ListView ItemsSource="{Binding LyricRows}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding Value}" HorizontalOptions="Center"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackLayout>
                 <!-- 进度条 -->
                 <StackLayout Orientation="Horizontal" VerticalOptions="End" Margin="0,10,0,0">

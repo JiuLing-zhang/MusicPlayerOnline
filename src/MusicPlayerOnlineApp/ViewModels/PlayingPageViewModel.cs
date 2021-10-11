@@ -137,7 +137,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private void GetLyricDetail()
         {
-            LyricRows = new SortedDictionary<int, string>();
+            var rows = new SortedDictionary<int, string>();
             if (CurrentMusic.Lyric.IsEmpty())
             {
                 return;
@@ -160,8 +160,10 @@ namespace MusicPlayerOnlineApp.ViewModels
                 }
 
                 int totalMillisecond = Convert.ToInt32(result.mm) * 60 * 1000 + Convert.ToInt32(result.ss) * 1000 + Convert.ToInt32(result.fff);
-                LyricRows.Add(totalMillisecond, result.lyric);
+                rows.Add(totalMillisecond, result.lyric);
             }
+
+            LyricRows = rows;
         }
 
         /// <summary>
