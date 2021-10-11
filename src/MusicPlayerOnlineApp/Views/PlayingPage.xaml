@@ -34,7 +34,7 @@
                     <ListView ItemsSource="{Binding LyricRows}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Label Text="{Binding Value}" HorizontalOptions="Center"/>
+                                <TextCell Text="{Binding Value}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
