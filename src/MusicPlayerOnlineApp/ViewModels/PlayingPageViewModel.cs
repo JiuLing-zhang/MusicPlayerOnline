@@ -2,6 +2,8 @@
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Services;
 using System;
+using System.Collections.Generic;
+using JiuLing.CommonLibs.ExtensionMethods;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -55,6 +57,20 @@ namespace MusicPlayerOnlineApp.ViewModels
             set
             {
                 _currentMusic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private SortedDictionary<int, string> _lyricRows;
+        /// <summary>
+        /// 每行歌词
+        /// </summary>
+        public SortedDictionary<int, string> LyricRows
+        {
+            get => _lyricRows;
+            set
+            {
+                _lyricRows = value;
                 OnPropertyChanged();
             }
         }
@@ -114,7 +130,40 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
             CurrentMusic = PlayerService.Instance().PlayingMusic;
+            GetLyricDetail();
         }
+        /// <summary>
+        /// 解析歌词
+        /// </summary>
+        private void GetLyricDetail()
+        {
+            LyricRows = new SortedDictionary<int, string>();
+            if (CurrentMusic.Lyric.IsEmpty())
+            {
+                return;
+            }
+
+            string pattern = ".*";
+            var lyricRowList = JiuLing.CommonLibs.Text.RegexUtils.GetAll(CurrentMusic.Lyric, pattern);
+            var lyricGroupNames = new List<string>() { "mm", "ss", "fff", "lyric" };
+            foreach (var lyricRow in lyricRowList)
+            {
+                if (lyricRow.IsEmpty())
+                {
+                    continue;
+                }
+                pattern = @"\[(?<mm>\d*):(?<ss>\d*).(?<fff>\d*)\](?<lyric>.*)";
+                var (success, result) = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(lyricRow, pattern, lyricGroupNames);
+                if (success == false)
+                {
+                    continue;
+                }
+
+                int totalMillisecond = Convert.ToInt32(result.mm) * 60 * 1000 + Convert.ToInt32(result.ss) * 1000 + Convert.ToInt32(result.fff);
+                LyricRows.Add(totalMillisecond, result.lyric);
+            }
+        }
+
         /// <summary>
         /// 更新播放进度
         /// </summary>
