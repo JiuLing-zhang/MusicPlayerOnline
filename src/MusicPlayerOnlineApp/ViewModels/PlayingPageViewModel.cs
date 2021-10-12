@@ -3,6 +3,7 @@ using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
 using Xamarin.Forms;
 
@@ -12,10 +13,12 @@ namespace MusicPlayerOnlineApp.ViewModels
     {
         private readonly IMusicService _musicService;
         public Command PlayerStateChangeCommand => new Command(PlayerStateChange);
+        public Action<LyricDetailViewModel> ScrollLyric { get; set; }
         public PlayingPageViewModel()
         {
+            Lyrics = new ObservableCollection<LyricDetailViewModel>();
             _musicService = new MusicService();
-            Device.StartTimer(TimeSpan.FromMilliseconds(1), () =>
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     Device.BeginInvokeOnMainThread(UpdatePlayingProgress);
                     return true;
@@ -61,16 +64,16 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private SortedDictionary<int, string> _lyricRows;
+        private ObservableCollection<LyricDetailViewModel> _lyrics;
         /// <summary>
-        /// 每行歌词
+        /// 每行的歌词
         /// </summary>
-        public SortedDictionary<int, string> LyricRows
+        public ObservableCollection<LyricDetailViewModel> Lyrics
         {
-            get => _lyricRows;
+            get => _lyrics;
             set
             {
-                _lyricRows = value;
+                _lyrics = value;
                 OnPropertyChanged();
             }
         }
@@ -137,7 +140,6 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private void GetLyricDetail()
         {
-            var rows = new SortedDictionary<int, string>();
             if (CurrentMusic.Lyric.IsEmpty())
             {
                 return;
@@ -160,10 +162,9 @@ namespace MusicPlayerOnlineApp.ViewModels
                 }
 
                 int totalMillisecond = Convert.ToInt32(result.mm) * 60 * 1000 + Convert.ToInt32(result.ss) * 1000 + Convert.ToInt32(result.fff);
-                rows.Add(totalMillisecond, result.lyric);
+                var info = result.lyric;
+                Lyrics.Add(new LyricDetailViewModel() { Position = totalMillisecond, Info = info });
             }
-
-            LyricRows = rows;
         }
 
         /// <summary>
@@ -191,6 +192,19 @@ namespace MusicPlayerOnlineApp.ViewModels
             CurrentTime = $"{tsCurrentTime.Minutes:D2}:{tsCurrentTime.Seconds:D2}";
 
             IsPlaying = PlayerService.Instance().IsPlaying;
+
+            int highlightIndex = 0;
+            foreach (var lyric in Lyrics)
+            {
+                lyric.IsHighlight = false;
+                if (lyric.Position > position)
+                {
+                    break;
+                }
+                highlightIndex++;
+            }
+            Lyrics[highlightIndex - 1].IsHighlight = true;
+            ScrollLyric.Invoke(Lyrics[highlightIndex - 1]);
         }
 
         private async void PlayerStateChange()

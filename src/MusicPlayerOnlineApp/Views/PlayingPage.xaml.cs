@@ -15,6 +15,10 @@ namespace MusicPlayerOnlineApp.Views
             InitializeComponent();
             BindingContext = _myModel;
 
+            _myModel.ScrollLyric += (lyricItem) =>
+            {
+                ListViewLyrics.ScrollTo(lyricItem, ScrollToPosition.Center, true);
+            };
             this.Appearing += (_, __) =>
             {
                 _myModel.OnAppearing();

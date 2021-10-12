@@ -166,6 +166,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             var music = await _searchService.GetMusicDetail(MusicSelectedResult.SourceData);
             if (music == null)
             {
+                GlobalMethods.HideLoading();
                 if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
                 {
                     await Shell.Current.GoToAsync("..", true);
@@ -178,6 +179,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
             if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.Play.IsWifiPlayOnly)
             {
+                GlobalMethods.HideLoading();
                 await Shell.Current.GoToAsync("..", true);
                 DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
                 return;
@@ -192,7 +194,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             GlobalMethods.PlayMusic(music);
             GlobalMethods.HideLoading();
 
-            await Shell.Current.GoToAsync("..", true);
+            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
         }
     }
