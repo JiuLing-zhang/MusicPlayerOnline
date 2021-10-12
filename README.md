@@ -1,6 +1,6 @@
-![](https://img.shields.io/badge/build-passing-brightgreen)  
-![](https://img.shields.io/github/license/JiuLing-zhang/MusicPlayerOnline)  
-![](https://img.shields.io/github/v/release/JiuLing-zhang/MusicPlayerOnline)  
+![](https://img.shields.io/badge/build-passing-brightgreen)
+![](https://img.shields.io/github/license/JiuLing-zhang/MusicPlayerOnline)
+![](https://img.shields.io/github/v/release/JiuLing-zhang/MusicPlayerOnline)   
 
 # 该项目禁止Fork、禁止Fork、禁止Fork
 因为该项目牵扯多家平台的协议分析，所以禁止Fork  
