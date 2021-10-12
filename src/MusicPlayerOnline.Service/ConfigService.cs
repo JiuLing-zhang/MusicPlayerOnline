@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
 
@@ -7,7 +6,6 @@ namespace MusicPlayerOnline.Service
 {
     public class ConfigService : IConfigService
     {
-
         public async Task<GeneralConfig> ReadGeneralConfig()
         {
             return await DatabaseProvide.Database.Table<GeneralConfig>().FirstOrDefaultAsync();

@@ -21,15 +21,18 @@ namespace MusicPlayerOnlineApp.Common
 
             if (GlobalArgs.AppConfig.General == null)
             {
-                await MyConfigService.WriteGeneralConfig(new GeneralConfig());
+                GlobalArgs.AppConfig.General = new GeneralConfig();
+                await MyConfigService.WriteGeneralConfig(GlobalArgs.AppConfig.General);
             }
             if (GlobalArgs.AppConfig.Play == null)
             {
-                await MyConfigService.WritePlayConfig(new PlayConfig());
+                GlobalArgs.AppConfig.Play = new PlayConfig();
+                await MyConfigService.WritePlayConfig(GlobalArgs.AppConfig.Play);
             }
             if (GlobalArgs.AppConfig.Player == null)
             {
-                await MyConfigService.WritePlayerConfig(new PlayerConfig());
+                GlobalArgs.AppConfig.Player = new PlayerConfig();
+                await MyConfigService.WritePlayerConfig(GlobalArgs.AppConfig.Player);
             }
         }
 

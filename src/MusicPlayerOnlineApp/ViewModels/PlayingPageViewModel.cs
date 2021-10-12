@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -13,6 +16,7 @@ namespace MusicPlayerOnlineApp.ViewModels
     {
         private readonly IMusicService _musicService;
         public Command PlayerStateChangeCommand => new Command(PlayerStateChange);
+        public Command RepeatTypeChangeCommand => new Command(RepeatTypeChange);
         public Action<LyricDetailViewModel> ScrollLyric { get; set; }
         public PlayingPageViewModel()
         {
@@ -121,6 +125,20 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
+        private int _playModeInt;
+        /// <summary>
+        /// 播放模式
+        /// </summary>
+        public int PlayModeInt
+        {
+            get => _playModeInt;
+            set
+            {
+                _playModeInt = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void UpdatePlayingMusicInfo()
         {
             if (PlayerService.Instance().PlayingMusic == null)
@@ -193,6 +211,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             IsPlaying = PlayerService.Instance().IsPlaying;
 
+            //取大于当前进度的第一行索引，在此基础上-1则为需要高亮的行
             int highlightIndex = 0;
             foreach (var lyric in Lyrics)
             {
@@ -203,10 +222,15 @@ namespace MusicPlayerOnlineApp.ViewModels
                 }
                 highlightIndex++;
             }
-            Lyrics[highlightIndex - 1].IsHighlight = true;
-            ScrollLyric.Invoke(Lyrics[highlightIndex - 1]);
-        }
+            if (highlightIndex > 0)
+            {
+                highlightIndex = highlightIndex - 1;
+            }
 
+            Lyrics[highlightIndex].IsHighlight = true;
+            ScrollLyric.Invoke(Lyrics[highlightIndex]);
+        }
+        //暂停、恢复
         private async void PlayerStateChange()
         {
             if (IsPlaying == true)
@@ -219,6 +243,24 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
 
             IsPlaying = !IsPlaying;
+        }
+        //循环方式
+        private void RepeatTypeChange()
+        {
+            switch (GlobalArgs.AppConfig.Player.PlayMode)
+            {
+                case PlayModeEnum.RepeatOne:
+                    GlobalArgs.AppConfig.Player.PlayMode = PlayModeEnum.RepeatList;
+                    break;
+                case PlayModeEnum.RepeatList:
+                    GlobalArgs.AppConfig.Player.PlayMode = PlayModeEnum.Shuffle;
+                    break;
+                case PlayModeEnum.Shuffle:
+                    GlobalArgs.AppConfig.Player.PlayMode = PlayModeEnum.RepeatOne;
+                    break;
+            }
+            PlayModeInt = (int)GlobalArgs.AppConfig.Player.PlayMode;
+            DependencyService.Get<IToast>().Show($"{GlobalArgs.AppConfig.Player.PlayMode.GetDescription()}");
         }
     }
 }

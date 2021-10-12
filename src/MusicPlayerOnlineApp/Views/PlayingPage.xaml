@@ -16,6 +16,21 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="RepeatTypeImage" TargetType="ImageButton">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding PlayModeInt}" Value="0" TargetType="ImageButton">
+                    <Setter Property="Source" Value="repeat_one"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding PlayModeInt}" Value="1" TargetType="ImageButton">
+                    <Setter Property="Source" Value="repeat"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding PlayModeInt}" Value="2" TargetType="ImageButton">
+                    <Setter Property="Source" Value="shuffle"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="LyricItem" TargetType="Label">
             <Setter Property="TextColor" Value="#929292"/>
             <Setter Property="FontSize" Value="15"/>
@@ -65,12 +80,12 @@
                     <Label TextColor="#E0E0E0" Text="{Binding DurationTime}" HorizontalOptions="End"></Label>
                 </StackLayout>
                 <!-- 播放按钮 -->
-                <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60" >
-                    <ImageButton Source="repeat_one" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="StartAndExpand"></ImageButton>
-                    <ImageButton Source="previous" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
-                    <ImageButton BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand"  Command="{Binding PlayerStateChangeCommand}" Style="{StaticResource PlayerStateImage}"></ImageButton>
-                    <ImageButton Source="next" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="CenterAndExpand"></ImageButton>
-                    <ImageButton Source="puzzled" BackgroundColor="Transparent" HeightRequest="30" HorizontalOptions="EndAndExpand"></ImageButton>
+                <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60">
+                    <ImageButton Aspect="AspectFill" Source="repeat_one" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" Command="{Binding RepeatTypeChangeCommand}" HorizontalOptions="StartAndExpand" Style="{StaticResource RepeatTypeImage}"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="previous" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand"></ImageButton>
+                    <ImageButton Aspect="AspectFill" BackgroundColor="Transparent" WidthRequest="60" HeightRequest="60" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand" Command="{Binding PlayerStateChangeCommand}" Style="{StaticResource PlayerStateImage}"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="next" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="puzzled" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="EndAndExpand"></ImageButton>
                 </StackLayout>
             </StackLayout>
         </AbsoluteLayout>
