@@ -3,6 +3,7 @@ using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Services;
 using MusicPlayerOnlineApp.Views;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.Common
@@ -18,22 +19,27 @@ namespace MusicPlayerOnlineApp.Common
                 Play = await MyConfigService.ReadPlayConfig(),
                 Player = await MyConfigService.ReadPlayerConfig()
             };
-
-            if (GlobalArgs.AppConfig.General == null)
-            {
-                GlobalArgs.AppConfig.General = new GeneralConfig();
-                await MyConfigService.WriteGeneralConfig(GlobalArgs.AppConfig.General);
-            }
-            if (GlobalArgs.AppConfig.Play == null)
-            {
-                GlobalArgs.AppConfig.Play = new PlayConfig();
-                await MyConfigService.WritePlayConfig(GlobalArgs.AppConfig.Play);
-            }
-            if (GlobalArgs.AppConfig.Player == null)
-            {
-                GlobalArgs.AppConfig.Player = new PlayerConfig();
-                await MyConfigService.WritePlayerConfig(GlobalArgs.AppConfig.Player);
-            }
+        }
+        /// <summary>
+        /// 保存通用配置
+        /// </summary>
+        public static async Task WriteGeneralConfig()
+        {
+            await MyConfigService.WriteGeneralConfig(GlobalArgs.AppConfig.General);
+        }
+        /// <summary>
+        /// 保存播放配置
+        /// </summary>
+        public static async Task WritePlayConfig()
+        {
+            await MyConfigService.WritePlayConfig(GlobalArgs.AppConfig.Play);
+        }
+        /// <summary>
+        /// 保存播放器配置
+        /// </summary>
+        public static async Task WritePlayerConfig()
+        {
+            await MyConfigService.WritePlayerConfig(GlobalArgs.AppConfig.Player);
         }
 
         public static void PlayMusic(MusicDetail music)

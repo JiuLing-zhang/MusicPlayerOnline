@@ -13,7 +13,7 @@ namespace MusicPlayerOnline.Service
 
         public async Task WriteGeneralConfig(GeneralConfig generalConfig)
         {
-            await DatabaseProvide.Database.InsertOrReplaceAsync(generalConfig);
+            await DatabaseProvide.Database.UpdateAsync(generalConfig);
         }
 
         public async Task<PlayConfig> ReadPlayConfig()
@@ -23,7 +23,7 @@ namespace MusicPlayerOnline.Service
 
         public async Task WritePlayConfig(PlayConfig playConfig)
         {
-            await DatabaseProvide.Database.InsertOrReplaceAsync(playConfig);
+            await DatabaseProvide.Database.UpdateAsync(playConfig);
         }
 
         public async Task<PlayerConfig> ReadPlayerConfig()
@@ -33,7 +33,7 @@ namespace MusicPlayerOnline.Service
 
         public async Task WritePlayerConfig(PlayerConfig playerConfig)
         {
-            await DatabaseProvide.Database.InsertOrReplaceAsync(playerConfig);
+            await DatabaseProvide.Database.UpdateAsync(playerConfig);
         }
     }
 }

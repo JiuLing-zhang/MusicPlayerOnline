@@ -245,7 +245,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             IsPlaying = !IsPlaying;
         }
         //循环方式
-        private void RepeatTypeChange()
+        private async void RepeatTypeChange()
         {
             switch (GlobalArgs.AppConfig.Player.PlayMode)
             {
@@ -261,6 +261,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
             PlayModeInt = (int)GlobalArgs.AppConfig.Player.PlayMode;
             DependencyService.Get<IToast>().Show($"{GlobalArgs.AppConfig.Player.PlayMode.GetDescription()}");
+            await GlobalMethods.WritePlayerConfig();
         }
     }
 }

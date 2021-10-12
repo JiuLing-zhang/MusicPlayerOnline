@@ -48,6 +48,7 @@ namespace MusicPlayerOnlineApp.Droid.Renderer
                 this.Control.TrackDrawable.SetColorFilter(view.OffColor.ToAndroid(), PorterDuff.Mode.SrcAtop);
                 this.Control.ThumbDrawable.SetColorFilter(view.OffThumbColor.ToAndroid(), PorterDuff.Mode.Multiply);
             }
+            Element.IsToggled = Control.Checked;
         }
         protected override void Dispose(bool disposing)
         {

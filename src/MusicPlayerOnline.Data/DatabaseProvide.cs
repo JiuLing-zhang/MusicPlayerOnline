@@ -40,6 +40,20 @@ namespace MusicPlayerOnline.Data
             Database.CreateTableAsync<GeneralConfig>().Wait();
             Database.CreateTableAsync<PlayConfig>().Wait();
             Database.CreateTableAsync<PlayerConfig>().Wait();
+
+            //配置表不存在时创建
+            if (Database.Table<GeneralConfig>().CountAsync().Result == 0)
+            {
+                Database.InsertAsync(new GeneralConfig());
+            }
+            if (Database.Table<PlayConfig>().CountAsync().Result == 0)
+            {
+                Database.InsertAsync(new PlayConfig());
+            }
+            if (Database.Table<PlayerConfig>().CountAsync().Result == 0)
+            {
+                Database.InsertAsync(new PlayerConfig());
+            }
         }
     }
 }

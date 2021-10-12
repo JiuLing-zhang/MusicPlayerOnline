@@ -1,4 +1,5 @@
 ﻿using MusicPlayerOnline.Model.Enum;
+using SQLite;
 
 namespace MusicPlayerOnline.Model.Model
 {
@@ -20,6 +21,8 @@ namespace MusicPlayerOnline.Model.Model
 
     public class GeneralConfig
     {
+        [PrimaryKey]
+        public string Name { get; set; } = nameof(GeneralConfig);
         /// <summary>
         /// 是否自动检查更新
         /// </summary>
@@ -31,9 +34,11 @@ namespace MusicPlayerOnline.Model.Model
         public bool IsHideWindowWhenMinimize { get; set; } = true;
 
     }
-    
+
     public class PlayConfig
     {
+        [PrimaryKey]
+        public string Name { get; set; } = nameof(PlayConfig);
         /// <summary>
         /// 是否保存播放记录到本地
         /// </summary>
@@ -62,6 +67,8 @@ namespace MusicPlayerOnline.Model.Model
 
     public class PlayerConfig
     {
+        [PrimaryKey]
+        public string Name { get; set; } = nameof(PlayerConfig);
         /// <summary>
         /// 音量
         /// </summary>
