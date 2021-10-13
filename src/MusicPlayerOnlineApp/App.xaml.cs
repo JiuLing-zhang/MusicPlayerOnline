@@ -3,7 +3,6 @@ using System.IO;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
-using IAudio = MusicPlayerOnlineApp.AppInterface.IAudio;
 
 namespace MusicPlayerOnlineApp
 {

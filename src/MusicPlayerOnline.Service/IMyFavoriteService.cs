@@ -9,6 +9,7 @@ namespace MusicPlayerOnline.Service
     public interface IMyFavoriteService
     {
         Task<MyFavorite> GetMyFavorite(string id);
+        Task<MyFavorite> GetMyFavoriteByName(string name);
         Task Add(MyFavorite myFavorite);
         Task Update(MyFavorite myFavorite);
         Task<(bool Succeed, string Message)> DeleteMyFavorite(string id);

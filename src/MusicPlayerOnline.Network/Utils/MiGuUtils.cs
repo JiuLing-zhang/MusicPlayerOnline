@@ -31,42 +31,49 @@ namespace MusicPlayerOnline.Network.Utils
 
             foreach (var musicHtml in musicHtmlList)
             {
-                pattern = @"<span class=""search_type"">【音乐】";
-                if (!JiuLing.CommonLibs.Text.RegexUtils.IsMatch(musicHtml, pattern))
+                try
                 {
-                    continue;
+                    pattern = @"<span class=""search_type"">【音乐】";
+                    if (!JiuLing.CommonLibs.Text.RegexUtils.IsMatch(musicHtml, pattern))
+                    {
+                        continue;
+                    }
+                    pattern = @"a href=""(?<musicPageUrl>\S*)""[\s\S]*<img src=""(?<imageUrl>\S*)""[\s\S]*class=""search_type"">(?<name>[\S\s]*)</h3>[\s\S]*class=""desc"">(?<artist>[\S\s]*)</p>";
+                    var groupList = new List<string>() { "musicPageUrl", "imageUrl", "name", "artist" };
+                    var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(musicHtml, pattern, groupList);
+
+                    if (resultGroup.success == false)
+                    {
+                        continue;
+                    }
+                    pattern = @"<\/?.+?\/?>";
+                    var regex = new System.Text.RegularExpressions.Regex(pattern);
+
+                    string musicPageUrl = resultGroup.result.musicPageUrl;
+                    string imageUrl = resultGroup.result.imageUrl;
+
+                    string name = resultGroup.result.name;
+                    name = regex.Replace(name, "");
+                    name = name.Replace("【音乐】", "");
+                    name = name.Trim();
+
+                    string artist = resultGroup.result.artist;
+                    artist = regex.Replace(artist, "");
+                    artist = artist.Replace("歌手：", "");
+                    artist = artist.Trim();
+
+                    musics.Add(new HttpMusicSearchResult()
+                    {
+                        Name = name,
+                        Artist = artist,
+                        ImageUrl = imageUrl,
+                        MusicPageUrl = musicPageUrl
+                    });
                 }
-                pattern = @"a href=""(?<musicPageUrl>\S*)""[\s\S]*<img src=""(?<imageUrl>\S*)""[\s\S]*class=""search_type"">(?<name>[\S\s]*)</h3>[\s\S]*class=""desc"">(?<artist>[\S\s]*)</p>";
-                var groupList = new List<string>() { "musicPageUrl", "imageUrl", "name", "artist" };
-                var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(musicHtml, pattern, groupList);
-
-                if (resultGroup.success == false)
+                catch (Exception e)
                 {
-                    continue;
+                    //TODO HTML解析偶尔会出错，这里需要记录日志
                 }
-                pattern = @"<\/?.+?\/?>";
-                var regex = new System.Text.RegularExpressions.Regex(pattern);
-
-                string musicPageUrl = resultGroup.result.musicPageUrl;
-                string imageUrl = resultGroup.result.imageUrl;
-
-                string name = resultGroup.result.name;
-                name = regex.Replace(name, "");
-                name = name.Replace("【音乐】", "");
-                name = name.Trim();
-
-                string artist = resultGroup.result.artist;
-                artist = regex.Replace(artist, "");
-                artist = artist.Replace("歌手：", "");
-                artist = artist.Trim();
-
-                musics.Add(new HttpMusicSearchResult()
-                {
-                    Name = name,
-                    Artist = artist,
-                    ImageUrl = imageUrl,
-                    MusicPageUrl = musicPageUrl
-                });
             }
             return true;
         }

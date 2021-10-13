@@ -33,7 +33,12 @@ namespace MusicPlayerOnline.Service
             {
                 System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(cachePath));
             }
-            music = await _musicNetPlatform.UpdateMusicDetail(music);
+
+            if (music.Platform == Model.Enum.PlatformEnum.Netease)
+            {
+                //TODO 这里需要优化，在链中处理网易云
+                music = await _musicNetPlatform.UpdateMusicDetail(music);
+            }
             var data = await _httpClient.GetReadByteArray(music.PlayUrl);
             System.IO.File.WriteAllBytes(cachePath, data);
             music.CachePath = cachePath;

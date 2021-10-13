@@ -19,6 +19,7 @@ using Java.IO;
 using MusicPlayerOnlineApp;
 using MusicPlayerOnlineApp.Droid;
 using MusicPlayerOnlineApp.Services;
+using Console = System.Console;
 
 [assembly: ExportRenderer(typeof(BlurredImage), typeof(BlurredImageRenderer))]
 namespace MusicPlayerOnlineApp.Droid
@@ -106,45 +107,53 @@ namespace MusicPlayerOnlineApp.Droid
 
         private async void UpdateBitmap(Image previous = null)
         {
-            Bitmap bitmap = null;
-            ImageSource source = Element.Source;
-            if (previous == null || !object.Equals(previous.Source, Element.Source))
+            try
             {
-                SetIsLoading(true);
-                ((BlurredImageView)base.Control).SkipInvalidate();
+                Bitmap bitmap = null;
+                ImageSource source = Element.Source;
+                if (previous == null || !object.Equals(previous.Source, Element.Source))
+                {
+                    SetIsLoading(true);
+                    ((BlurredImageView)base.Control).SkipInvalidate();
 
-                // I'm not sure where this comes from.  
-                Control.SetImageResource(17170445);
-                if (source != null)
-                {
-                    try
+                    // I'm not sure where this comes from.  
+                    Control.SetImageResource(17170445);
+                    if (source != null)
                     {
-                        bitmap = await GetImageFromImageSource(source, Context);
-                    }
-                    catch (TaskCanceledException)
-                    {
-                    }
-                    catch (IOException)
-                    {
-                    }
-                    catch (NotImplementedException)
-                    {
-                    }
-                }
-                if (Element != null && object.Equals(Element.Source, source))
-                {
-                    if (!_isDisposed)
-                    {
-                        Control.SetImageBitmap(bitmap);
-                        if (bitmap != null)
+                        try
                         {
-                            bitmap.Dispose();
+                            bitmap = await GetImageFromImageSource(source, Context);
                         }
-                        SetIsLoading(false);
-                        ((IVisualElementController)base.Element).NativeSizeChanged();
+                        catch (TaskCanceledException)
+                        {
+                        }
+                        catch (IOException)
+                        {
+                        }
+                        catch (NotImplementedException)
+                        {
+                        }
+                    }
+                    if (Element != null && object.Equals(Element.Source, source))
+                    {
+                        if (!_isDisposed)
+                        {
+                            Control.SetImageBitmap(bitmap);
+                            if (bitmap != null)
+                            {
+                                bitmap.Dispose();
+                            }
+                            SetIsLoading(false);
+                            ((IVisualElementController)base.Element).NativeSizeChanged();
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Android.Widget.Toast.MakeText(Android.App.Application.Context, "图片加载失败", ToastLength.Short).Show();
+            }
+
         }
 
         private async Task<Bitmap> GetImageFromImageSource(ImageSource imageSource, Context context)

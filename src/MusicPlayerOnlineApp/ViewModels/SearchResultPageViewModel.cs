@@ -46,7 +46,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private PlatformEnum _searchPlatform = PlatformEnum.Netease;
+        private PlatformEnum _searchPlatform;
         /// <summary>
         /// 搜索平台
         /// </summary>
@@ -130,6 +130,12 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
+
+            foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
+            {
+                SearchPlatform = SearchPlatform | item;
+            }
+
             try
             {
                 IsMusicSearching = true;

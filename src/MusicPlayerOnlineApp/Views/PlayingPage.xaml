@@ -82,10 +82,10 @@
                 <!-- 播放按钮 -->
                 <StackLayout Padding="5" Orientation="Horizontal" VerticalOptions="End" HeightRequest="60">
                     <ImageButton Aspect="AspectFill" Source="repeat_one" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" Command="{Binding RepeatTypeChangeCommand}" HorizontalOptions="StartAndExpand" Style="{StaticResource RepeatTypeImage}"></ImageButton>
-                    <ImageButton Aspect="AspectFill" Source="previous" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="previous" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand" Command="{Binding PreviousCommand}"></ImageButton>
                     <ImageButton Aspect="AspectFill" BackgroundColor="Transparent" WidthRequest="60" HeightRequest="60" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand" Command="{Binding PlayerStateChangeCommand}" Style="{StaticResource PlayerStateImage}"></ImageButton>
-                    <ImageButton Aspect="AspectFill" Source="next" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand"></ImageButton>
-                    <ImageButton Aspect="AspectFill" Source="puzzled" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="EndAndExpand"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="next" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="CenterAndExpand" Command="{Binding NextCommand}"></ImageButton>
+                    <ImageButton Aspect="AspectFill" Source="puzzled" BackgroundColor="Transparent" WidthRequest="30" HeightRequest="30" VerticalOptions="Center"  HorizontalOptions="EndAndExpand" Command="{Binding TempButtonCommand}"></ImageButton>
                 </StackLayout>
             </StackLayout>
         </AbsoluteLayout>

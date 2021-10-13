@@ -1,5 +1,4 @@
 ﻿using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Services;
 using System;
 using System.Collections.Generic;
@@ -14,25 +13,35 @@ namespace MusicPlayerOnlineApp.ViewModels
 {
     public class PlayingPageViewModel : ViewModelBase
     {
-        private readonly IMusicService _musicService;
         public Command PlayerStateChangeCommand => new Command(PlayerStateChange);
         public Command RepeatTypeChangeCommand => new Command(RepeatTypeChange);
+        public Command PreviousCommand => new Command(Previous);
+        public Command NextCommand => new Command(Next);
+
+        public Command TempButtonCommand => new Command(() =>
+        {
+            DependencyService.Get<IToast>().Show("不知道放啥了，占个位而已~~");
+        });
+
         public Action<LyricDetailViewModel> ScrollLyric { get; set; }
         public PlayingPageViewModel()
         {
             Lyrics = new ObservableCollection<LyricDetailViewModel>();
-            _musicService = new MusicService();
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
                 {
                     Device.BeginInvokeOnMainThread(UpdatePlayingProgress);
                     return true;
                 }
            );
+
+            PlayerService.Instance().MediaBegin += UpdatePlayingMusicInfo;
+
         }
 
         public void OnAppearing()
         {
             UpdatePlayingMusicInfo();
+            PlayModeInt = (int)GlobalArgs.AppConfig.Player.PlayMode;
         }
 
         /// <summary>
@@ -211,24 +220,27 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             IsPlaying = PlayerService.Instance().IsPlaying;
 
-            //取大于当前进度的第一行索引，在此基础上-1则为需要高亮的行
-            int highlightIndex = 0;
-            foreach (var lyric in Lyrics)
+            if (Lyrics.Count > 0)
             {
-                lyric.IsHighlight = false;
-                if (lyric.Position > position)
+                //取大于当前进度的第一行索引，在此基础上-1则为需要高亮的行
+                int highlightIndex = 0;
+                foreach (var lyric in Lyrics)
                 {
-                    break;
+                    lyric.IsHighlight = false;
+                    if (lyric.Position > position)
+                    {
+                        break;
+                    }
+                    highlightIndex++;
                 }
-                highlightIndex++;
-            }
-            if (highlightIndex > 0)
-            {
-                highlightIndex = highlightIndex - 1;
-            }
+                if (highlightIndex > 0)
+                {
+                    highlightIndex = highlightIndex - 1;
+                }
 
-            Lyrics[highlightIndex].IsHighlight = true;
-            ScrollLyric.Invoke(Lyrics[highlightIndex]);
+                Lyrics[highlightIndex].IsHighlight = true;
+                ScrollLyric.Invoke(Lyrics[highlightIndex]);
+            }
         }
         //暂停、恢复
         private async void PlayerStateChange()
@@ -262,6 +274,21 @@ namespace MusicPlayerOnlineApp.ViewModels
             PlayModeInt = (int)GlobalArgs.AppConfig.Player.PlayMode;
             DependencyService.Get<IToast>().Show($"{GlobalArgs.AppConfig.Player.PlayMode.GetDescription()}");
             await GlobalMethods.WritePlayerConfig();
+        }
+        /// <summary>
+        /// 上一首
+        /// </summary>
+        private async void Previous()
+        {
+            await PlayerService.Instance().Previous();
+        }
+
+        /// <summary>
+        /// 下一首
+        /// </summary>
+        private async void Next()
+        {
+            await PlayerService.Instance().Next();
         }
     }
 }

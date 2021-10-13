@@ -1,6 +1,4 @@
-﻿using System;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.ViewModels;
+﻿using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

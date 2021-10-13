@@ -14,7 +14,6 @@ namespace MusicPlayerOnlineApp.ViewModels
         private readonly IMusicService _musicService;
 
         public Command<MusicDetailViewModel> AddToMyFavoriteCommand => new Command<MusicDetailViewModel>(AddToMyFavorite);
-        public Command SelectedChangedCommand => new Command(SelectedChangedDo);
         public Command ClearPlaylistCommand => new Command(ClearPlaylist);
         public PlaylistPageViewModel()
         {
@@ -35,7 +34,10 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         public void OnAppearing()
         {
-            SearchKeyword = "";
+            if (SearchKeyword.IsNotEmpty())
+            {
+                SearchKeyword = "";
+            }
         }
         private async void GetPlaylist()
         {
@@ -99,6 +101,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 _selectedItem = value;
                 OnPropertyChanged();
+
+                SelectedChangedDo();
             }
         }
 
@@ -114,13 +118,17 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private async void SelectedChangedDo()
         {
+            if (SelectedItem == null)
+            {
+                return;
+            }
             var music = await _musicService.GetMusicDetail(SelectedItem.Id);
             if (music == null)
             {
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
-            Common.GlobalMethods.PlayMusic(music);
+            GlobalMethods.PlayMusic(music);
             await Shell.Current.GoToAsync($"{nameof(PlayingPage)}", true);
         }
 

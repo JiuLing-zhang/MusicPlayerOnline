@@ -54,13 +54,19 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("输入歌单名称");
                 return;
             }
-            string id = Guid.NewGuid().ToString("d");
-            var myFavorite = new MyFavorite()
+
+            var myFavorite = await _myFavoriteService.GetMyFavoriteByName(Name);
+            if (myFavorite == null)
             {
-                Id = id,
-                Name = Name,
-                MusicCount = 0
-            };
+                string id = Guid.NewGuid().ToString("d");
+                myFavorite = new MyFavorite()
+                {
+                    Id = id,
+                    Name = Name,
+                    MusicCount = 0
+                };
+            }
+
 
             await _myFavoriteService.Add(myFavorite);
 
@@ -73,7 +79,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             //添加完歌单后需要将歌曲添加到歌单
             var music = await _musicService.GetMusicDetail(AddedMusicId);
-            var result = await _myFavoriteService.AddToMyFavorite(music, id);
+            var result = await _myFavoriteService.AddToMyFavorite(music, myFavorite.Id);
             if (result.Succeed == false)
             {
                 DependencyService.Get<IToast>().Show("添加失败");

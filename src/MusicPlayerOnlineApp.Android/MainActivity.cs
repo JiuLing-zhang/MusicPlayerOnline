@@ -1,10 +1,13 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Runtime;
 using Android.OS;
 using Android.Views;
+using Android.Widget;
+using Java.IO;
 using Plugin.CurrentActivity;
 
 namespace MusicPlayerOnlineApp.Droid
@@ -15,6 +18,9 @@ namespace MusicPlayerOnlineApp.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
             var uiOpts = SystemUiFlags.LayoutStable | SystemUiFlags.LayoutFullscreen;
             //LayoutStable表示布局稳定，不随其他变动而变动
@@ -34,6 +40,17 @@ namespace MusicPlayerOnlineApp.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        {
+            var newExc = new Exception("CurrentDomainOnUnhandledException", unhandledExceptionEventArgs.ExceptionObject as Exception);
+
+        }
+
+        private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
+        {
+            var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", unobservedTaskExceptionEventArgs.Exception);
         }
     }
 }

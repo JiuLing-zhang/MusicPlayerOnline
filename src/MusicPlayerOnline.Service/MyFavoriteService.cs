@@ -14,6 +14,11 @@ namespace MusicPlayerOnline.Service
             return await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<MyFavorite> GetMyFavoriteByName(string name)
+        {
+            return await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == name).FirstOrDefaultAsync();
+        }
+
         public async Task Add(MyFavorite myFavorite)
         {
             if (await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == myFavorite.Name).CountAsync() > 0)
