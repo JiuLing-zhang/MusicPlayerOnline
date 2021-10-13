@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using MusicPlayerOnline.Data;
-using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;

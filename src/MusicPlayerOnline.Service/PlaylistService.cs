@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
@@ -25,6 +23,11 @@ namespace MusicPlayerOnline.Service
             {
                 await DatabaseProvide.Database.InsertAsync(new Playlist() { MusicDetailId = music.Id, Name = music.Name, Artist = music.Artist });
             }
+        }
+
+        public async Task Delete(string musicDetailId)
+        {
+            await DatabaseProvide.Database.DeleteAsync<Playlist>(musicDetailId);
         }
     }
 }

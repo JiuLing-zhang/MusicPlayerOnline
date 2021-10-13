@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
 {
+    [QueryProperty(nameof(MyFavoriteId), nameof(MyFavoriteId))]
     public class EditMyFavoritePageViewModel : ViewModelBase
     {
         private readonly IMyFavoriteService _myFavoriteService;
@@ -25,6 +26,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 _myFavoriteId = value;
                 OnPropertyChanged();
+
+                GetMyFavoriteDetail();
             }
         }
 
@@ -50,6 +53,23 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
+        private string _imageUrl;
+        public string ImageUrl
+        {
+            get => _imageUrl;
+            set
+            {
+                _imageUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async void GetMyFavoriteDetail()
+        {
+            var myFavorite = await _myFavoriteService.GetMyFavorite(MyFavoriteId);
+            Name = myFavorite.Name;
+            ImageUrl = myFavorite.ImageUrl.IsEmpty() ? "icon" : myFavorite.ImageUrl;
+        }
         private async void Rename()
         {
             if (NewName.IsEmpty())
@@ -61,12 +81,15 @@ namespace MusicPlayerOnlineApp.ViewModels
             var myFavorite = await _myFavoriteService.GetMyFavorite(MyFavoriteId);
             if (myFavorite.Name == NewName)
             {
+                await Shell.Current.GoToAsync($"..", true);
                 DependencyService.Get<IToast>().Show("修改成功");
                 return;
             }
 
             myFavorite.Name = NewName;
             await _myFavoriteService.Update(myFavorite);
+            await Shell.Current.GoToAsync($"..", true);
+            DependencyService.Get<IToast>().Show("修改成功");
         }
 
         private async void Remove()
@@ -78,6 +101,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
 
             var result = await _myFavoriteService.DeleteMyFavorite(MyFavoriteId);
+            await Shell.Current.GoToAsync($"..", true);
             DependencyService.Get<IToast>().Show("删除成功");
         }
     }

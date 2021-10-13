@@ -24,5 +24,12 @@ namespace MusicPlayerOnlineApp.Views
         {
             _myModel.Search();
         }
+
+        private void MenuItem_Clicked(object sender, EventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            MusicDetailViewModel contextItem = menuItem.BindingContext as MusicDetailViewModel;
+            _myModel.RemovePlaylistItem(contextItem);
+        }
     }
 }

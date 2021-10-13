@@ -10,11 +10,10 @@ namespace MusicPlayerOnline.Model.Model
     /// </summary>
     public class Playlist
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
         /// <summary>
         /// 歌曲ID
         /// </summary>
+        [PrimaryKey]
         public string MusicDetailId { get; set; }
 
         /// <summary>

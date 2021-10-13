@@ -59,7 +59,7 @@
                             <StackLayout HorizontalOptions="End" VerticalOptions="Center">
                                 <ImageButton HeightRequest="35" BackgroundColor="Transparent" ClassId="{Binding Id}" Source="menu_vertical"
                                              Aspect="AspectFill"
-                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyFavoritePageViewModel}}, Path=AddToMyFavoriteCommand}"		
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyFavoritePageViewModel}}, Path=EditFavoriteCommand}"		
                                              CommandParameter="{Binding .}"/>
                             </StackLayout>
                         </StackLayout>

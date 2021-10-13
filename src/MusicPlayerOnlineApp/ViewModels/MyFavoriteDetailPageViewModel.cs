@@ -122,7 +122,10 @@ namespace MusicPlayerOnlineApp.ViewModels
         {
             GlobalMethods.ShowLoading();
 
-            await _playlistService.Clear();
+            if (GlobalArgs.AppConfig.Play.IsCleanPlaylistWhenPlayMyFavorite)
+            {
+                await _playlistService.Clear();
+            }
 
             int index = 0;
             foreach (var myFavoriteMusic in MyFavoriteMusics)

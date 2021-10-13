@@ -2,11 +2,7 @@
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.Common;
 using MusicPlayerOnlineApp.Views;
-using Plugin.Connectivity;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnlineApp.AppInterface;
 using Xamarin.Forms;
 
@@ -19,6 +15,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         public Command<MusicDetailViewModel> AddToMyFavoriteCommand => new Command<MusicDetailViewModel>(AddToMyFavorite);
         public Command SelectedChangedCommand => new Command(SelectedChangedDo);
+        public Command ClearPlaylistCommand => new Command(ClearPlaylist);
         public PlaylistPageViewModel()
         {
             Playlist = new ObservableCollection<MusicDetailViewModel>();
@@ -36,7 +33,6 @@ namespace MusicPlayerOnlineApp.ViewModels
             });
             GetPlaylist();
         }
-
         public void OnAppearing()
         {
             SearchKeyword = "";
@@ -135,6 +131,35 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
             await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
+        }
+
+        public async void RemovePlaylistItem(MusicDetailViewModel music)
+        {
+            if (music == null)
+            {
+                return;
+            }
+
+            await _playlistService.Delete(music.Id);
+            GetPlaylist();
+        }
+
+        private async void ClearPlaylist()
+        {
+            if (Playlist.Count == 0)
+            {
+                DependencyService.Get<IToast>().Show("别删除了，播放列表是空哒");
+                return;
+            }
+
+            var isOk = await App.Current.MainPage.DisplayAlert("提示", "确定要删除播放列表吗？", "确定", "取消");
+            if (isOk == false)
+            {
+                return;
+            }
+            await _playlistService.Clear();
+            DependencyService.Get<IToast>().Show("播放列表已删除");
+            GetPlaylist();
         }
     }
 }

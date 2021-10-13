@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicPlayerOnline.Model.Model;
 
@@ -11,5 +9,6 @@ namespace MusicPlayerOnline.Service
         Task Clear();
         Task<List<Playlist>> GetList();
         Task Add(MusicDetail music);
+        Task Delete(string musicDetailId);
     }
 }
