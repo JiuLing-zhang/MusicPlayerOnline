@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-
 	<style name="MainTheme" parent="MainTheme.Base">
 		<item name="android:windowBackground">@drawable/bg</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="android:windowIsTranslucent">false</item>
 		<item name="android:windowIsFloating">false</item>
-		<item name="android:backgroundDimEnabled">true</item> 
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="colorAccent">#727272</item>
+		<item name="android:statusBarColor">#212121</item>
+		<item name="colorPrimaryDark">#212121</item>
 	</style>
 </resources>

@@ -129,7 +129,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
             GlobalMethods.PlayMusic(music);
-            await Shell.Current.GoToAsync($"{nameof(PlayingPage)}", true);
+            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
         }
 
         private async void AddToMyFavorite(MusicDetailViewModel music)
@@ -138,6 +138,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
+            
             await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
         }
 

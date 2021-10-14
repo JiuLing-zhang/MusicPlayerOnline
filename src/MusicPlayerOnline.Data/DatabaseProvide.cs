@@ -38,6 +38,7 @@ namespace MusicPlayerOnline.Data
             Database.CreateTableAsync<MyFavoriteDetail>().Wait();
 
             Database.CreateTableAsync<GeneralConfig>().Wait();
+            Database.CreateTableAsync<PlatformConfig>().Wait();
             Database.CreateTableAsync<PlayConfig>().Wait();
             Database.CreateTableAsync<PlayerConfig>().Wait();
 
@@ -45,6 +46,10 @@ namespace MusicPlayerOnline.Data
             if (Database.Table<GeneralConfig>().CountAsync().Result == 0)
             {
                 Database.InsertAsync(new GeneralConfig());
+            }
+            if (Database.Table<PlatformConfig>().CountAsync().Result == 0)
+            {
+                Database.InsertAsync(new PlatformConfig());
             }
             if (Database.Table<PlayConfig>().CountAsync().Result == 0)
             {

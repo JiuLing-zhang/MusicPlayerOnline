@@ -1,14 +1,6 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using Android.Media;
+using Java.Lang;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Droid;
 using Xamarin.Forms;
@@ -18,22 +10,32 @@ namespace MusicPlayerOnlineApp.Droid
 {
     public class AudioService : IAudio
     {
-        private readonly MediaPlayer _player;
+        private MediaPlayer _player;
         public event MediaBeginEventHandler MediaBegin;
         public event MediaEndedEventHandler MediaEnded;
         public event MediaFailedEventHandler MediaFailed;
         public AudioService()
         {
-            _player = new MediaPlayer();
+            InitMediaPlayer();
+        }
 
+        private void InitMediaPlayer()
+        {
+            _player = new MediaPlayer();
             _player.Prepared += (s, e) =>
             {
-                _player.Start();
+                try
+                {
+                    _player.Start();
+                }
+                catch (IllegalStateException ex)
+                {
+                }
             };
             _player.Completion += (sender, e) =>
             {
-                MediaEnded?.Invoke();
                 _player.Release();
+                MediaEnded?.Invoke();
             };
             _player.Error += (sender, e) =>
             {
@@ -41,34 +43,77 @@ namespace MusicPlayerOnlineApp.Droid
             };
         }
 
-        public bool IsPlaying => _player.IsPlaying;
+        public bool IsPlaying => CheckIsPlaying();
+
+        private bool CheckIsPlaying()
+        {
+            try
+            {
+                return _player.IsPlaying;
+            }
+            catch (IllegalStateException ex)
+            {
+                //未初始化时，说明已经播放结束，当前未播放
+                return false;
+            }
+        }
 
         public async void Play(string path)
         {
-            Stop();
-            await _player.SetDataSourceAsync(path);
-            MediaBegin?.Invoke();
-            _player.PrepareAsync();
+            if (CheckIsPlaying())
+            {
+                Stop();
+            }
+
+            try
+            {
+                await _player.SetDataSourceAsync(path);
+                MediaBegin?.Invoke();
+                _player.PrepareAsync();
+            }
+            catch (IllegalStateException ex)
+            {
+                //这里处理一下播放器状态不一致导致的无法播放的问题
+                InitMediaPlayer();
+                Play(path);
+            }
         }
 
         public void Pause()
         {
-            _player.Pause();
+            try
+            {
+                _player.Pause();
+            }
+            catch (IllegalStateException ex)
+            {
+            }
+
         }
         /// <summary>
         /// 恢复播放
         /// </summary>
         public void Start()
         {
-            _player.Start();
+            try
+            {
+                _player.Start();
+            }
+            catch (IllegalStateException ex)
+            {
+            }
         }
 
         public void Stop()
         {
-            if (_player.IsPlaying)
+            try
             {
                 _player.Stop();
                 _player.Reset();
+            }
+            catch (IllegalStateException ex)
+            {
+                //未初始化时不用停止
             }
         }
         public void SeekTo(int millisecond)

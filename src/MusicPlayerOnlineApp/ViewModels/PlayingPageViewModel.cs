@@ -243,8 +243,14 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
         //暂停、恢复
-        private async void PlayerStateChange()
+        private void PlayerStateChange()
         {
+            if (CurrentMusic == null)
+            {
+                DependencyService.Get<IToast>().Show("亲，当前没有歌曲可以播放");
+                return;
+            }
+
             if (IsPlaying == true)
             {
                 PlayerService.Instance().Pause();

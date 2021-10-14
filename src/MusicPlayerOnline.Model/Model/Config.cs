@@ -10,6 +10,10 @@ namespace MusicPlayerOnline.Model.Model
         /// </summary>
         public GeneralConfig General { get; set; }
         /// <summary>
+        /// 平台设置
+        /// </summary>
+        public PlatformConfig Platform { get; set; }
+        /// <summary>
         /// 播放设置
         /// </summary>
         public PlayConfig Play { get; set; }
@@ -32,6 +36,16 @@ namespace MusicPlayerOnline.Model.Model
         /// 关闭时最小化到托盘
         /// </summary>
         public bool IsHideWindowWhenMinimize { get; set; } = true;
+    }
+
+    public class PlatformConfig
+    {
+        [PrimaryKey]
+        public string Name { get; set; } = nameof(PlatformConfig);
+        /// <summary>
+        /// 启用的平台
+        /// </summary>
+        public PlatformEnum EnablePlatform { get; set; } = PlatformEnum.Netease | PlatformEnum.KuGou | PlatformEnum.MiGu;
 
     }
 

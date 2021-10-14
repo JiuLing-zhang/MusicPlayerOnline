@@ -22,13 +22,6 @@ namespace MusicPlayerOnlineApp.Droid
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
-            var uiOpts = SystemUiFlags.LayoutStable | SystemUiFlags.LayoutFullscreen;
-            //LayoutStable表示布局稳定，不随其他变动而变动
-            //LayoutFullscreen表示把布局拓宽到全屏幕
-            Window.DecorView.SystemUiVisibility = (StatusBarVisibility)uiOpts;
-            //把标题栏设置为透明色
-            Window.SetStatusBarColor(Android.Graphics.Color.Argb(0, 0, 0, 0));
-
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);

@@ -16,6 +16,7 @@ namespace MusicPlayerOnlineApp.Common
             GlobalArgs.AppConfig = new Config
             {
                 General = await MyConfigService.ReadGeneralConfig(),
+                Platform = await MyConfigService.ReadPlatformConfig(),
                 Play = await MyConfigService.ReadPlayConfig(),
                 Player = await MyConfigService.ReadPlayerConfig()
             };
@@ -26,6 +27,13 @@ namespace MusicPlayerOnlineApp.Common
         public static async Task WriteGeneralConfig()
         {
             await MyConfigService.WriteGeneralConfig(GlobalArgs.AppConfig.General);
+        }
+        /// <summary>
+        /// 保存平台设置
+        /// </summary>
+        public static async Task WritePlatformConfig()
+        {
+            await MyConfigService.WritePlatformConfig(GlobalArgs.AppConfig.Platform);
         }
         /// <summary>
         /// 保存播放配置

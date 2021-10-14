@@ -1,9 +1,15 @@
-﻿using MusicPlayerOnlineApp.Common;
+﻿using System.Windows.Input;
+using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnlineApp.Common;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
 {
     public class SettingPageViewModel : ViewModelBase
     {
+        public ICommand OpenUrlCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
+
         public SettingPageViewModel()
         {
             GetAppConfig();
@@ -28,6 +34,54 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 GlobalArgs.AppConfig.General.IsAutoCheckUpdate = value;
                 WriteGeneralConfig();
+            }
+        }
+
+        private bool _isEnableNetease;
+        /// <summary>
+        /// 网易云
+        /// </summary>
+        public bool IsEnableNetease
+        {
+            get => _isEnableNetease;
+            set
+            {
+                _isEnableNetease = value;
+                OnPropertyChanged();
+
+                EnableNetease();
+            }
+        }
+
+        private bool _isEnableKuGou;
+        /// <summary>
+        /// 酷狗
+        /// </summary>
+        public bool IsEnableKuGou
+        {
+            get => _isEnableKuGou;
+            set
+            {
+                _isEnableKuGou = value;
+                OnPropertyChanged();
+
+                EnableKuGou();
+            }
+        }
+
+        private bool _isEnableMiGu;
+        /// <summary>
+        /// 咪咕
+        /// </summary>
+        public bool IsEnableMiGu
+        {
+            get => _isEnableMiGu;
+            set
+            {
+                _isEnableMiGu = value;
+                OnPropertyChanged();
+
+                EnableMiGu();
             }
         }
 
@@ -104,11 +158,27 @@ namespace MusicPlayerOnlineApp.ViewModels
         {
             //常规设置
             IsAutoCheckUpdate = GlobalArgs.AppConfig.General.IsAutoCheckUpdate;
+
+            //搜索平台设置
+            IsEnableNetease = CheckEnablePlatform(PlatformEnum.Netease);
+            IsEnableKuGou = CheckEnablePlatform(PlatformEnum.KuGou);
+            IsEnableMiGu = CheckEnablePlatform(PlatformEnum.MiGu);
+
             //播放设置
             IsWifiPlayOnly = GlobalArgs.AppConfig.Play.IsWifiPlayOnly;
             IsAutoNextWhenFailed = GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed;
             IsCloseSearchPageWhenPlayFailed = GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed;
             IsCleanPlaylistWhenPlayMyFavorite = GlobalArgs.AppConfig.Play.IsCleanPlaylistWhenPlayMyFavorite;
+        }
+
+        private bool CheckEnablePlatform(PlatformEnum platform)
+        {
+            if ((GlobalArgs.AppConfig.Platform.EnablePlatform & platform) == platform)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -125,6 +195,63 @@ namespace MusicPlayerOnlineApp.ViewModels
         private async void WritePlayConfig()
         {
             await GlobalMethods.WritePlayConfig();
+        }
+
+        private async void EnableNetease()
+        {
+            if (IsEnableNetease)
+            {
+                if (!CheckEnablePlatform(PlatformEnum.Netease))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.Netease;
+                }
+            }
+            else
+            {
+                if (CheckEnablePlatform(PlatformEnum.Netease))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.Netease;
+                }
+            }
+            await GlobalMethods.WritePlatformConfig();
+        }
+
+        private async void EnableKuGou()
+        {
+            if (IsEnableKuGou)
+            {
+                if (!CheckEnablePlatform(PlatformEnum.KuGou))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.KuGou;
+                }
+            }
+            else
+            {
+                if (CheckEnablePlatform(PlatformEnum.KuGou))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.KuGou;
+                }
+            }
+            await GlobalMethods.WritePlatformConfig();
+        }
+
+        private async void EnableMiGu()
+        {
+            if (IsEnableMiGu)
+            {
+                if (!CheckEnablePlatform(PlatformEnum.MiGu))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.MiGu;
+                }
+            }
+            else
+            {
+                if (CheckEnablePlatform(PlatformEnum.MiGu))
+                {
+                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.MiGu;
+                }
+            }
+            await GlobalMethods.WritePlatformConfig();
         }
     }
 }

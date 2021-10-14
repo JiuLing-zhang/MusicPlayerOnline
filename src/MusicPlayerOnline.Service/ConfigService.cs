@@ -16,6 +16,16 @@ namespace MusicPlayerOnline.Service
             await DatabaseProvide.Database.UpdateAsync(generalConfig);
         }
 
+        public async Task<PlatformConfig> ReadPlatformConfig()
+        {
+            return await DatabaseProvide.Database.Table<PlatformConfig>().FirstOrDefaultAsync();
+        }
+
+        public async Task WritePlatformConfig(PlatformConfig platformConfig)
+        {
+            await DatabaseProvide.Database.UpdateAsync(platformConfig);
+        }
+
         public async Task<PlayConfig> ReadPlayConfig()
         {
             return await DatabaseProvide.Database.Table<PlayConfig>().FirstOrDefaultAsync();

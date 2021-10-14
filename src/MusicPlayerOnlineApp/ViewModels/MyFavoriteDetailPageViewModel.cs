@@ -114,7 +114,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             GlobalMethods.PlayMusic(music);
 
-            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
+            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
         }
 
@@ -145,7 +145,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
             GlobalMethods.HideLoading();
 
-            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
+            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
         }
     }

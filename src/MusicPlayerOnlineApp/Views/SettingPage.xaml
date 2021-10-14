@@ -19,33 +19,83 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="10,20,10,10" BackgroundColor="#000000">
-            <!-- 常规设置 -->
-            <Label Text="常规" TextColor="#929292" FontSize="14"  FontAttributes="Bold"/>
-            <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
-                <Label Text="自动检查更新（暂时不可用）" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                <appExtends:CustomSwitch IsToggled="{Binding IsAutoCheckUpdate}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-            </StackLayout>
-            <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
-            <!-- 播放设置 -->
-            <Label Text="播放" TextColor="#929292" FontSize="14" FontAttributes="Bold"  Margin="0,10,0,0"/>
-            <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
-                <Label Text="仅在WIFI下播放未缓存的歌曲" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                <appExtends:CustomSwitch IsToggled="{Binding IsWifiPlayOnly}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
-                <Label Text="播放失败时自动跳到下一首" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                <appExtends:CustomSwitch IsToggled="{Binding IsAutoNextWhenFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
-                <Label Text="播放失败时关闭搜索页面" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                <appExtends:CustomSwitch IsToggled="{Binding IsCloseSearchPageWhenPlayFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
-                <Label Text="播放我的歌单前清空播放列表" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                <appExtends:CustomSwitch IsToggled="{Binding IsCleanPlaylistWhenPlayMyFavorite}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-            </StackLayout>
+        <ScrollView  Padding="10,20,10,10" BackgroundColor="#000000">
+            <StackLayout>
+                <!-- 常规设置 -->
+                <Label Text="常规" TextColor="#929292" FontSize="14"  FontAttributes="Bold"/>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label Text="自动检查更新（暂时不可用）" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsAutoCheckUpdate}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
 
-        </StackLayout>
+                <!-- 搜索平台设置 -->
+                <Label Text="搜索平台" TextColor="#929292" FontSize="14" FontAttributes="Bold"  Margin="0,10,0,0"/>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="网易云音乐" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsEnableNetease}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="酷狗音乐" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsEnableKuGou}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="咪咕音乐" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsEnableMiGu}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
+
+                <!-- 播放设置 -->
+                <Label Text="播放" TextColor="#929292" FontSize="14" FontAttributes="Bold"  Margin="0,10,0,0"/>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="仅在WIFI下播放未缓存的歌曲" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsWifiPlayOnly}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="播放失败时自动跳到下一首" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsAutoNextWhenFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="播放失败时关闭搜索页面" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsCloseSearchPageWhenPlayFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="播放我的歌单前清空播放列表" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsCleanPlaylistWhenPlayMyFavorite}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
+
+                <!-- 关于 -->
+                <StackLayout>
+                    <Label Text="本软件开源、免费" TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand"/>
+                    <Label Text="开源协议：GPL-3.0" TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand"/>
+                    <Label Text="作者：九零" TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand"/>
+                    <Label TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Maybe you want to see my " />
+                                <Span Text="GitHub"
+                                      TextColor="Blue"
+                                      TextDecorations="Underline">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenUrlCommand}"
+                                                              CommandParameter="https://github.com/JiuLing-zhang" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                                <Span Text=" or app " />
+                                <Span Text="Source code"
+                                      TextColor="Blue"
+                                      TextDecorations="Underline">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenUrlCommand}"
+                                                              CommandParameter="https://github.com/JiuLing-zhang/MusicPlayerOnline" />
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

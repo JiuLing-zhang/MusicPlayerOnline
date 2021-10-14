@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
-using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
@@ -131,10 +130,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
 
-            foreach (PlatformEnum item in Enum.GetValues(typeof(PlatformEnum)))
-            {
-                SearchPlatform = SearchPlatform | item;
-            }
+            SearchPlatform = GlobalArgs.AppConfig.Platform.EnablePlatform;
 
             try
             {
@@ -199,8 +195,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             music.CachePath = cachePath;
             GlobalMethods.PlayMusic(music);
             GlobalMethods.HideLoading();
-
-            await Shell.Current.GoToAsync($"../{nameof(PlayingPage)}", true);
+            await Shell.Current.GoToAsync($"..", false);
+            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
         }
     }
