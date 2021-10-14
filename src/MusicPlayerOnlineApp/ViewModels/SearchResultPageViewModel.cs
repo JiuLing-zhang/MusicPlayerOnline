@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
@@ -22,6 +24,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         private readonly IMusicService _musicService;
         private readonly IPlaylistService _playlistService;
 
+        public Command<SearchResultViewModel> AddToMyFavoriteCommand => new Command<SearchResultViewModel>(AddToMyFavorite);
         public Command SelectedChangedCommand => new Command(SearchFinished);
         public SearchResultPageViewModel()
         {
@@ -145,6 +148,11 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 foreach (var musicInfo in musics)
                 {
+                    if (GlobalArgs.AppConfig.Platform.IsHideShortMusic && musicInfo.Duration <= 60 * 1000)
+                    {
+                        continue;
+                    }
+
                     MusicSearchResult.Add(new SearchResultViewModel()
                     {
                         Platform = musicInfo.Platform.GetDescription(),
@@ -162,29 +170,77 @@ namespace MusicPlayerOnlineApp.ViewModels
                 IsMusicSearching = false;
             }
         }
+
+        private async void AddToMyFavorite(SearchResultViewModel searchResult)
+        {
+            GlobalMethods.ShowLoading();
+            MusicDetail music;
+            try
+            {
+                bool succeed;
+                string message;
+                (succeed, message, music) = await SaveMusic(searchResult.SourceData);
+                if (succeed == false)
+                {
+                    if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
+                    {
+                        await Shell.Current.GoToAsync("..", true);
+                    }
+                    DependencyService.Get<IToast>().Show(message);
+                    return;
+                }
+            }
+            finally
+            {
+                GlobalMethods.HideLoading();
+            }
+            MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
+            await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
+            GlobalMethods.PlayMusic(music);
+        }
+
         private async void SearchFinished()
         {
             GlobalMethods.ShowLoading();
-            var music = await _searchService.GetMusicDetail(MusicSelectedResult.SourceData);
-            if (music == null)
+            MusicDetail music;
+            try
+            {
+                bool succeed;
+                string message;
+                (succeed, message, music) = await SaveMusic(MusicSelectedResult.SourceData);
+                if (succeed == false)
+                {
+                    if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
+                    {
+                        await Shell.Current.GoToAsync("..", true);
+                    }
+                    DependencyService.Get<IToast>().Show(message);
+                    return;
+                }
+            }
+            finally
             {
                 GlobalMethods.HideLoading();
-                if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
-                {
-                    await Shell.Current.GoToAsync("..", true);
-                }
-                DependencyService.Get<IToast>().Show("emm没有解析出歌曲信息");
-                return;
+            }
+            GlobalMethods.PlayMusic(music);
+            MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
+            await Shell.Current.GoToAsync($"..", false);
+            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
+        }
+
+        private async Task<(bool Succeed, string Message, MusicDetail MusicDetailResult)> SaveMusic(MusicSearchResult searchResult)
+        {
+            var music = await _searchService.GetMusicDetail(searchResult);
+            if (music == null)
+            {
+                return (false, "emm没有解析出歌曲信息", null);
             }
 
             var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
             var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
             if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.Play.IsWifiPlayOnly)
             {
-                GlobalMethods.HideLoading();
-                await Shell.Current.GoToAsync("..", true);
-                DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
-                return;
+                return (false, "仅在WIFI下允许播放", null);
             }
 
             await _musicService.Add(music);
@@ -193,11 +249,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
             await _musicService.CacheMusic(music, cachePath);
             music.CachePath = cachePath;
-            GlobalMethods.PlayMusic(music);
-            GlobalMethods.HideLoading();
-            await Shell.Current.GoToAsync($"..", false);
-            await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
-            MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
+            return (true, "", music);
         }
     }
 }

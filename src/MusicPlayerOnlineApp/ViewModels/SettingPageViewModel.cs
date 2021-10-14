@@ -85,6 +85,24 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
+        private bool _isHideShortMusic;
+        /// <summary>
+        /// 隐藏小于1分钟的歌曲
+        /// </summary>
+        public bool IsHideShortMusic
+        {
+            get => _isHideShortMusic;
+            set
+            {
+                _isHideShortMusic = value;
+                OnPropertyChanged();
+
+                GlobalArgs.AppConfig.Platform.IsHideShortMusic = value;
+                WritePlatformConfig();
+            }
+        }
+
+
         private bool _isWifiPlayOnly;
         /// <summary>
         /// 仅WIFI下可播放
@@ -163,7 +181,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             IsEnableNetease = CheckEnablePlatform(PlatformEnum.Netease);
             IsEnableKuGou = CheckEnablePlatform(PlatformEnum.KuGou);
             IsEnableMiGu = CheckEnablePlatform(PlatformEnum.MiGu);
-
+            IsHideShortMusic = GlobalArgs.AppConfig.Platform.IsHideShortMusic;
             //播放设置
             IsWifiPlayOnly = GlobalArgs.AppConfig.Play.IsWifiPlayOnly;
             IsAutoNextWhenFailed = GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed;
@@ -213,7 +231,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                     GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.Netease;
                 }
             }
-            await GlobalMethods.WritePlatformConfig();
+            WritePlatformConfig();
         }
 
         private async void EnableKuGou()
@@ -232,7 +250,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                     GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.KuGou;
                 }
             }
-            await GlobalMethods.WritePlatformConfig();
+            WritePlatformConfig();
         }
 
         private async void EnableMiGu()
@@ -251,6 +269,11 @@ namespace MusicPlayerOnlineApp.ViewModels
                     GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.MiGu;
                 }
             }
+            WritePlatformConfig();
+        }
+
+        private async void WritePlatformConfig()
+        {
             await GlobalMethods.WritePlatformConfig();
         }
     }

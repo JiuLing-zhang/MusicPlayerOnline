@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MusicPlayerOnlineApp.ViewModels;assembly=MusicPlayerOnlineApp"
              x:Class="MusicPlayerOnlineApp.Views.SearchResultPage"
              Title="{Binding Title}">
     <ContentPage.Resources>
@@ -38,7 +39,7 @@
                     <DataTemplate>
                         <Grid Padding="10"
                               RowDefinitions="*"
-                              ColumnDefinitions="35,*" 
+                              ColumnDefinitions="35,*,24" 
                               >
                             <StackLayout Grid.Column="0">
                                 <Label Text="{Binding Platform}" BackgroundColor="#404040" TextColor="#DADADA" HorizontalTextAlignment="Center"/>
@@ -55,7 +56,14 @@
                                             <Binding Path="Album" />
                                         </MultiBinding>
                                     </Label>
+
                                 </StackLayout>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                <ImageButton BackgroundColor="Transparent" Source="plus_math" VerticalOptions="Center" HorizontalOptions="Center"
+                                             Aspect="AspectFill"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type local:SearchResultPageViewModel}}, Path=AddToMyFavoriteCommand}"		
+                                             CommandParameter="{Binding .}"/>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>

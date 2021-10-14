@@ -47,6 +47,11 @@ namespace MusicPlayerOnline.Model.Model
         /// </summary>
         public PlatformEnum EnablePlatform { get; set; } = PlatformEnum.Netease | PlatformEnum.KuGou | PlatformEnum.MiGu;
 
+        /// <summary>
+        /// 隐藏小于1分钟的歌曲
+        /// </summary>
+        public bool IsHideShortMusic { get; set; } = true;
+
     }
 
     public class PlayConfig
