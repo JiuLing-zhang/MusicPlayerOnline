@@ -41,24 +41,31 @@ namespace MusicPlayerOnline.Network.MusicProvider
             }
             foreach (var httpMusic in httpResult.data.lists)
             {
-                var ts = TimeSpan.FromSeconds(httpMusic.Duration);
-                var music = new MusicSearchResult()
+                try
                 {
-                    Platform = Platform,
-                    PlatformId = httpMusic.ID,
-                    Name = KuGouUtils.RemoveSongNameTag(httpMusic.SongName),
-                    Alias = "",
-                    Artist = KuGouUtils.RemoveSongNameTag(httpMusic.SingerName),
-                    Album = httpMusic.AlbumName,
-                    Duration = httpMusic.Duration,
-                    DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
-                    PlatformData = new SearchResultExtended()
+                    var ts = TimeSpan.FromSeconds(httpMusic.Duration);
+                    var music = new MusicSearchResult()
                     {
-                        Hash = httpMusic.FileHash,
-                        AlbumId = httpMusic.AlbumID
-                    }
-                };
-                musics.Add(music);
+                        Platform = Platform,
+                        PlatformId = httpMusic.ID,
+                        Name = KuGouUtils.RemoveSongNameTag(httpMusic.SongName),
+                        Alias = "",
+                        Artist = KuGouUtils.RemoveSongNameTag(httpMusic.SingerName),
+                        Album = httpMusic.AlbumName,
+                        Duration = httpMusic.Duration,
+                        DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
+                        PlatformData = new SearchResultExtended()
+                        {
+                            Hash = httpMusic.FileHash,
+                            AlbumId = httpMusic.AlbumID
+                        }
+                    };
+                    musics.Add(music);
+                }
+                catch (Exception e)
+                {
+                    //TODO 出错时先跳过添加当前歌曲，后续可能需要加入日志
+                }
             }
             return (true, "", musics);
         }

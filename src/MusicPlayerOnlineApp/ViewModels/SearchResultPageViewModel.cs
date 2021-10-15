@@ -24,6 +24,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         private readonly IMusicService _musicService;
         private readonly IPlaylistService _playlistService;
 
+        private string _lastSearchKeyword = "";
         public Command<SearchResultViewModel> AddToMyFavoriteCommand => new Command<SearchResultViewModel>(AddToMyFavorite);
         public Command SelectedChangedCommand => new Command(SearchFinished);
         public SearchResultPageViewModel()
@@ -132,6 +133,13 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
+
+            if (SearchKeyword == _lastSearchKeyword)
+            {
+                return;
+            }
+
+            _lastSearchKeyword = SearchKeyword;
 
             SearchPlatform = GlobalArgs.AppConfig.Platform.EnablePlatform;
 

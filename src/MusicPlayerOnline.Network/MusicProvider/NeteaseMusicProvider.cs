@@ -41,36 +41,44 @@ namespace MusicPlayerOnline.Network.MusicProvider
             }
             foreach (var song in result.result.songs)
             {
-                var ts = TimeSpan.FromMilliseconds(song.dt);
+                try
+                {
+                    var ts = TimeSpan.FromMilliseconds(song.dt);
 
-                string alia = "";
-                if (song.alia.Length > 0)
-                {
-                    alia = song.alia[0];
-                }
-
-                string artistName = "";
-                if (song.ar.Length > 0)
-                {
-                    artistName = string.Join("、", song.ar.Select(x => x.name).ToList());
-                }
-                var music = new MusicSearchResult()
-                {
-                    Platform = Platform,
-                    PlatformId = song.id.ToString(),
-                    Name = song.name,
-                    Alias = alia,
-                    Artist = artistName,
-                    Album = song.al.name,
-                    ImageUrl = song.al.picUrl,
-                    Duration = song.dt,
-                    DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
-                    PlatformData = new SearchResultExtended()
+                    string alia = "";
+                    if (song.alia.Length > 0)
                     {
-                        Fee = song.fee
+                        alia = song.alia[0];
                     }
-                };
-                musics.Add(music);
+
+                    string artistName = "";
+                    if (song.ar.Length > 0)
+                    {
+                        artistName = string.Join("、", song.ar.Select(x => x.name).ToList());
+                    }
+                    var music = new MusicSearchResult()
+                    {
+                        Platform = Platform,
+                        PlatformId = song.id.ToString(),
+                        Name = song.name,
+                        Alias = alia,
+                        Artist = artistName,
+                        Album = song.al.name,
+                        ImageUrl = song.al.picUrl,
+                        Duration = song.dt,
+                        DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
+                        PlatformData = new SearchResultExtended()
+                        {
+                            Fee = song.fee
+                        }
+                    };
+                    musics.Add(music);
+                }
+                catch (Exception e)
+                {
+                    //TODO 出错时先跳过添加当前歌曲，后续可能需要加入日志
+                }
+
             }
             return (true, "", musics);
         }
