@@ -71,6 +71,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppVersionInfo.cs" />
     <Compile Include="AudioService.cs" />
     <Compile Include="BlurredImageRenderer.cs" />
     <Compile Include="LoadingPageService.cs" />

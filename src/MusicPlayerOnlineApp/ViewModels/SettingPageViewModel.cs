@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using MusicPlayerOnline.Model.Enum;
+using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -13,6 +15,7 @@ namespace MusicPlayerOnlineApp.ViewModels
         public SettingPageViewModel()
         {
             GetAppConfig();
+            VersionName = DependencyService.Get<IAppVersionInfo>().GetVersionName();
         }
 
         /// <summary>
@@ -169,6 +172,20 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 GlobalArgs.AppConfig.Play.IsCleanPlaylistWhenPlayMyFavorite = value;
                 WritePlayConfig();
+            }
+        }
+
+        private string _versionName;
+        /// <summary>
+        /// 版本号
+        /// </summary>
+        public string VersionName
+        {
+            get => _versionName;
+            set
+            {
+                _versionName = value;
+                OnPropertyChanged();
             }
         }
 
