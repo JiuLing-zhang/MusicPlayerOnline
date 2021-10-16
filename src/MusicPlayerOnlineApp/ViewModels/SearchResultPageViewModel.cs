@@ -173,6 +173,10 @@ namespace MusicPlayerOnlineApp.ViewModels
                     });
                 }
             }
+            catch (Exception ex)
+            {
+                DependencyService.Get<IToast>().Show("抱歉，网络可能出小差了~");
+            }
             finally
             {
                 IsMusicSearching = false;
