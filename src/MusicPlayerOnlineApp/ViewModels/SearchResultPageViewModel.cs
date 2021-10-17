@@ -49,19 +49,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private PlatformEnum _searchPlatform;
-        /// <summary>
-        /// 搜索平台
-        /// </summary>
-        public PlatformEnum SearchPlatform
-        {
-            get => _searchPlatform;
-            set
-            {
-                _searchPlatform = value;
-                OnPropertyChanged();
-            }
-        }
+
 
         public IEnumerable<PlatformEnum> MyEnumTypeValues
         {
@@ -141,22 +129,21 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             _lastSearchKeyword = SearchKeyword;
 
-            SearchPlatform = GlobalArgs.AppConfig.Platform.EnablePlatform;
-
             try
             {
                 IsMusicSearching = true;
                 Title = $"搜索: {SearchKeyword}";
                 MusicSearchResult.Clear();
-                var musics = await _searchService.Search(SearchPlatform, SearchKeyword);
+                var musics = await _searchService.Search(GlobalArgs.AppConfig.Platform.EnablePlatform, SearchKeyword);
                 if (musics.Count == 0)
                 {
+                    DependencyService.Get<IToast>().Show("哦吼，啥也没有搜到");
                     return;
                 }
 
                 foreach (var musicInfo in musics)
                 {
-                    if (GlobalArgs.AppConfig.Platform.IsHideShortMusic && musicInfo.Duration <= 60 * 1000)
+                    if (GlobalArgs.AppConfig.Platform.IsHideShortMusic && musicInfo.Duration != 0 && musicInfo.Duration <= 60 * 1000)
                     {
                         continue;
                     }

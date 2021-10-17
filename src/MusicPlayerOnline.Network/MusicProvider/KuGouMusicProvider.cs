@@ -52,7 +52,7 @@ namespace MusicPlayerOnline.Network.MusicProvider
                         Alias = "",
                         Artist = KuGouUtils.RemoveSongNameTag(httpMusic.SingerName),
                         Album = httpMusic.AlbumName,
-                        Duration = httpMusic.Duration,
+                        Duration = (int) ts.TotalMilliseconds,
                         DurationText = $"{ts.Minutes}:{ts.Seconds:D2}",
                         PlatformData = new SearchResultExtended()
                         {
