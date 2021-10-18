@@ -45,19 +45,19 @@ namespace MusicPlayerOnline.Data
             //配置表不存在时创建
             if (Database.Table<GeneralConfig>().CountAsync().Result == 0)
             {
-                Database.InsertAsync(new GeneralConfig());
+                Database.InsertAsync(new GeneralConfig()).Wait();
             }
             if (Database.Table<PlatformConfig>().CountAsync().Result == 0)
             {
-                Database.InsertAsync(new PlatformConfig());
+                Database.InsertAsync(new PlatformConfig()).Wait();
             }
             if (Database.Table<PlayConfig>().CountAsync().Result == 0)
             {
-                Database.InsertAsync(new PlayConfig());
+                Database.InsertAsync(new PlayConfig()).Wait();
             }
             if (Database.Table<PlayerConfig>().CountAsync().Result == 0)
             {
-                Database.InsertAsync(new PlayerConfig());
+                Database.InsertAsync(new PlayerConfig()).Wait();
             }
         }
     }

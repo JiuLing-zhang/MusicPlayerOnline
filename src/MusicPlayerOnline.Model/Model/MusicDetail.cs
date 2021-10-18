@@ -1,4 +1,5 @@
-﻿using MusicPlayerOnline.Model.Enum;
+﻿using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Model.Enum;
 
 namespace MusicPlayerOnline.Model.Model
 {
@@ -8,6 +9,11 @@ namespace MusicPlayerOnline.Model.Model
         /// 平台
         /// </summary>
         public PlatformEnum Platform { get; set; }
+
+        /// <summary>
+        /// 平台名称
+        /// </summary>
+        public string PlatformName => Platform.GetDescription();
         /// <summary>
         /// 对应平台的ID
         /// </summary>
