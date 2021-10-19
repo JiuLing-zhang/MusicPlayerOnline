@@ -39,7 +39,7 @@ namespace MusicPlayerOnline.Data
             Database.CreateTable<MyFavoriteDetail>();
 
             Database.CreateTable<GeneralConfig>();
-            Database.CreateTable<PlatformConfig>();
+            Database.CreateTable<SearchConfig>();
             Database.CreateTable<PlayConfig>();
             Database.CreateTable<PlayerConfig>();
 
@@ -48,9 +48,9 @@ namespace MusicPlayerOnline.Data
             {
                 Database.Insert(new GeneralConfig());
             }
-            if (!Database.Table<PlatformConfig>().Any())
+            if (!Database.Table<SearchConfig>().Any())
             {
-                Database.Insert(new PlatformConfig());
+                Database.Insert(new SearchConfig());
             }
             if (!Database.Table<PlayConfig>().Any())
             {
@@ -88,7 +88,7 @@ namespace MusicPlayerOnline.Data
             DatabaseAsync.CreateTableAsync<MyFavoriteDetail>().Wait();
 
             DatabaseAsync.CreateTableAsync<GeneralConfig>().Wait();
-            DatabaseAsync.CreateTableAsync<PlatformConfig>().Wait();
+            DatabaseAsync.CreateTableAsync<SearchConfig>().Wait();
             DatabaseAsync.CreateTableAsync<PlayConfig>().Wait();
             DatabaseAsync.CreateTableAsync<PlayerConfig>().Wait();
 
@@ -97,9 +97,9 @@ namespace MusicPlayerOnline.Data
             {
                 DatabaseAsync.InsertAsync(new GeneralConfig()).Wait();
             }
-            if (DatabaseAsync.Table<PlatformConfig>().CountAsync().Result == 0)
+            if (DatabaseAsync.Table<SearchConfig>().CountAsync().Result == 0)
             {
-                DatabaseAsync.InsertAsync(new PlatformConfig()).Wait();
+                DatabaseAsync.InsertAsync(new SearchConfig()).Wait();
             }
             if (DatabaseAsync.Table<PlayConfig>().CountAsync().Result == 0)
             {

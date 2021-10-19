@@ -100,7 +100,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 _isHideShortMusic = value;
                 OnPropertyChanged();
 
-                GlobalArgs.AppConfig.Platform.IsHideShortMusic = value;
+                GlobalArgs.AppConfig.Search.IsHideShortMusic = value;
                 WritePlatformConfig();
             }
         }
@@ -153,7 +153,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 _isCloseSearchPageWhenPlayFailed = value;
                 OnPropertyChanged();
 
-                GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed = value;
+                GlobalArgs.AppConfig.Search.IsCloseSearchPageWhenPlayFailed = value;
                 WritePlatformConfig();
             }
         }
@@ -198,8 +198,8 @@ namespace MusicPlayerOnlineApp.ViewModels
             IsEnableNetease = CheckEnablePlatform(PlatformEnum.Netease);
             IsEnableKuGou = CheckEnablePlatform(PlatformEnum.KuGou);
             IsEnableMiGu = CheckEnablePlatform(PlatformEnum.MiGu);
-            IsHideShortMusic = GlobalArgs.AppConfig.Platform.IsHideShortMusic;
-            IsCloseSearchPageWhenPlayFailed = GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed;
+            IsHideShortMusic = GlobalArgs.AppConfig.Search.IsHideShortMusic;
+            IsCloseSearchPageWhenPlayFailed = GlobalArgs.AppConfig.Search.IsCloseSearchPageWhenPlayFailed;
 
             //播放设置
             IsWifiPlayOnly = GlobalArgs.AppConfig.Play.IsWifiPlayOnly;
@@ -209,7 +209,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private bool CheckEnablePlatform(PlatformEnum platform)
         {
-            if ((GlobalArgs.AppConfig.Platform.EnablePlatform & platform) == platform)
+            if ((GlobalArgs.AppConfig.Search.EnablePlatform & platform) == platform)
             {
                 return true;
             }
@@ -239,14 +239,14 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 if (!CheckEnablePlatform(PlatformEnum.Netease))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.Netease;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform | PlatformEnum.Netease;
                 }
             }
             else
             {
                 if (CheckEnablePlatform(PlatformEnum.Netease))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.Netease;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform & ~PlatformEnum.Netease;
                 }
             }
             WritePlatformConfig();
@@ -258,14 +258,14 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 if (!CheckEnablePlatform(PlatformEnum.KuGou))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.KuGou;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform | PlatformEnum.KuGou;
                 }
             }
             else
             {
                 if (CheckEnablePlatform(PlatformEnum.KuGou))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.KuGou;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform & ~PlatformEnum.KuGou;
                 }
             }
             WritePlatformConfig();
@@ -277,14 +277,14 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 if (!CheckEnablePlatform(PlatformEnum.MiGu))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform | PlatformEnum.MiGu;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform | PlatformEnum.MiGu;
                 }
             }
             else
             {
                 if (CheckEnablePlatform(PlatformEnum.MiGu))
                 {
-                    GlobalArgs.AppConfig.Platform.EnablePlatform = GlobalArgs.AppConfig.Platform.EnablePlatform & ~PlatformEnum.MiGu;
+                    GlobalArgs.AppConfig.Search.EnablePlatform = GlobalArgs.AppConfig.Search.EnablePlatform & ~PlatformEnum.MiGu;
                 }
             }
             WritePlatformConfig();

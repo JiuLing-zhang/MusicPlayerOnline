@@ -9,9 +9,9 @@ namespace MusicPlayerOnline.Service
         Task<GeneralConfig> ReadGeneralConfigAsync();
         Task WriteGeneralConfigAsync(GeneralConfig generalConfig);
 
-        PlatformConfig ReadPlatformConfig();
-        Task<PlatformConfig> ReadPlatformConfigAsync();
-        Task WritePlatformConfigAsync(PlatformConfig platformConfig);
+        SearchConfig ReadPlatformConfig();
+        Task<SearchConfig> ReadPlatformConfigAsync();
+        Task WritePlatformConfigAsync(SearchConfig searchConfig);
 
         PlayConfig ReadPlayConfig();
         Task<PlayConfig> ReadPlayConfigAsync();

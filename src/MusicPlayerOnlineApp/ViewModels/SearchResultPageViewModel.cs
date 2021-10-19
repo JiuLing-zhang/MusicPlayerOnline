@@ -134,7 +134,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 IsMusicSearching = true;
                 Title = $"搜索: {SearchKeyword}";
                 MusicSearchResult.Clear();
-                var musics = await _searchService.Search(GlobalArgs.AppConfig.Platform.EnablePlatform, SearchKeyword);
+                var musics = await _searchService.Search(GlobalArgs.AppConfig.Search.EnablePlatform, SearchKeyword);
                 if (musics.Count == 0)
                 {
                     DependencyService.Get<IToast>().Show("哦吼，啥也没有搜到");
@@ -143,7 +143,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 foreach (var musicInfo in musics)
                 {
-                    if (GlobalArgs.AppConfig.Platform.IsHideShortMusic && musicInfo.Duration != 0 && musicInfo.Duration <= 60 * 1000)
+                    if (GlobalArgs.AppConfig.Search.IsHideShortMusic && musicInfo.Duration != 0 && musicInfo.Duration <= 60 * 1000)
                     {
                         continue;
                     }
@@ -181,7 +181,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 (succeed, message, music) = await SaveMusic(searchResult.SourceData);
                 if (succeed == false)
                 {
-                    if (GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed)
+                    if (GlobalArgs.AppConfig.Search.IsCloseSearchPageWhenPlayFailed)
                     {
                         await Shell.Current.GoToAsync("..", true);
                     }
@@ -209,7 +209,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 (succeed, message, music) = await SaveMusic(MusicSelectedResult.SourceData);
                 if (succeed == false)
                 {
-                    if (GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed)
+                    if (GlobalArgs.AppConfig.Search.IsCloseSearchPageWhenPlayFailed)
                     {
                         await Shell.Current.GoToAsync("..", true);
                     }

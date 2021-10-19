@@ -490,7 +490,7 @@ namespace MusicPlayerOnline
             });
         }
 
-        private void BtnChangePlayMode_Click(object sender, RoutedEventArgs e)
+        private async void BtnChangePlayMode_Click(object sender, RoutedEventArgs e)
         {
             if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
             {
@@ -506,12 +506,14 @@ namespace MusicPlayerOnline
             }
             GlobalArgs.AppConfig.Player.PlayMode = _playerState.PlayMode;
             SetPlayerPlayMode();
+            await GlobalMethods.WritePlayerConfig();
         }
-        private void SoundOff_Click(object sender, RoutedEventArgs e)
+        private async void SoundOff_Click(object sender, RoutedEventArgs e)
         {
             _playerState.IsMute = !_playerState.IsMute;
             GlobalArgs.AppConfig.Player.IsSoundOff = _playerState.IsMute;
             SetPlayerMute();
+            await GlobalMethods.WritePlayerConfig();
         }
         private void SetPlayerMute()
         {
@@ -691,10 +693,11 @@ namespace MusicPlayerOnline
         }
 
 
-        private void SliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private async void SliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _player.VoiceValue = _myModel.VoiceValue;
             GlobalArgs.AppConfig.Player.Voice = _myModel.VoiceValue;
+            await GlobalMethods.WritePlayerConfig();
         }
 
         private void SliderPlayProgress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

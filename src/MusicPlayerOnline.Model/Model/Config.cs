@@ -12,7 +12,7 @@ namespace MusicPlayerOnline.Model.Model
         /// <summary>
         /// 平台设置
         /// </summary>
-        public PlatformConfig Platform { get; set; }
+        public SearchConfig Search { get; set; }
         /// <summary>
         /// 播放设置
         /// </summary>
@@ -38,10 +38,10 @@ namespace MusicPlayerOnline.Model.Model
         public bool IsHideWindowWhenMinimize { get; set; } = true;
     }
 
-    public class PlatformConfig
+    public class SearchConfig
     {
         [PrimaryKey]
-        public string Name { get; set; } = nameof(PlatformConfig);
+        public string Name { get; set; } = nameof(SearchConfig);
         /// <summary>
         /// 启用的平台
         /// </summary>
