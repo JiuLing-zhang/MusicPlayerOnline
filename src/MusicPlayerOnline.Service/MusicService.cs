@@ -16,14 +16,14 @@ namespace MusicPlayerOnline.Service
         private readonly HttpClientHelper _httpClient = new HttpClientHelper();
         public async Task<MusicDetail> GetMusicDetail(string id)
         {
-            return await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<MusicDetail>().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task Add(MusicDetail music)
         {
-            if (await DatabaseProvide.Database.Table<MusicDetail>().Where(x => x.Id == music.Id).CountAsync() == 0)
+            if (await DatabaseProvide.DatabaseAsync.Table<MusicDetail>().Where(x => x.Id == music.Id).CountAsync() == 0)
             {
-                await DatabaseProvide.Database.InsertAsync(music);
+                await DatabaseProvide.DatabaseAsync.InsertAsync(music);
             }
         }
 
@@ -42,7 +42,7 @@ namespace MusicPlayerOnline.Service
             var data = await _httpClient.GetReadByteArray(music.PlayUrl);
             System.IO.File.WriteAllBytes(cachePath, data);
             music.CachePath = cachePath;
-            await DatabaseProvide.Database.UpdateAsync(music);
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(music);
         }
     }
 }

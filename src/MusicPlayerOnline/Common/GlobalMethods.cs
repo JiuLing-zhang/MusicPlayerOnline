@@ -1,12 +1,8 @@
-﻿using MusicPlayerOnline.Model.Model;
+﻿using System.Threading.Tasks;
+using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Services;
-using MusicPlayerOnlineApp.Views;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.Common
+namespace MusicPlayerOnline.Common
 {
     public class GlobalMethods
     {
@@ -48,22 +44,6 @@ namespace MusicPlayerOnlineApp.Common
         public static async Task WritePlayerConfig()
         {
             await MyConfigService.WritePlayerConfigAsync(GlobalArgs.AppConfig.Player);
-        }
-
-        public static void PlayMusic(MusicDetail music)
-        {
-            PlayerService.Instance().Play(music);
-        }
-
-        public static void ShowLoading()
-        {
-            DependencyService.Get<ILoadingPageService>().InitLoadingPage(new LoadingPage());
-            DependencyService.Get<ILoadingPageService>().ShowLoadingPage();
-        }
-
-        public static void HideLoading()
-        {
-            DependencyService.Get<ILoadingPageService>().HideLoadingPage();
         }
     }
 }

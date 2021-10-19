@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using MusicPlayerOnline.Common;
-using MusicPlayerOnline.Config;
 using MusicPlayerOnline.Model.ViewModel;
 
 namespace MusicPlayerOnline
@@ -103,30 +101,34 @@ namespace MusicPlayerOnline
         private void LoadConfig()
         {
             //常规设置
-            ChkAutoCheckUpdate.IsChecked = AppSetting.Setting.General.IsAutoCheckUpdate;
-            ChkHideWindowWhenMinimize.IsChecked = AppSetting.Setting.General.IsHideWindowWhenMinimize;
+            ChkAutoCheckUpdate.IsChecked = GlobalArgs.AppConfig.General.IsAutoCheckUpdate;
+            ChkHideWindowWhenMinimize.IsChecked = GlobalArgs.AppConfig.General.IsHideWindowWhenMinimize;
 
             //播放设置
-            ChkSavePlaylistToLocal.IsChecked = AppSetting.Setting.Play.IsSavePlaylistToLocal;
-            ChkAutoNextWhenFailed.IsChecked = AppSetting.Setting.Play.IsAutoNextWhenFailed;
+            ChkSavePlaylistToLocal.IsChecked = GlobalArgs.AppConfig.Play.IsSavePlaylistToLocal;
+            ChkAutoNextWhenFailed.IsChecked = GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed;
         }
-        private void ChkAutoCheckUpdate_Click(object sender, RoutedEventArgs e)
+        private async void ChkAutoCheckUpdate_Click(object sender, RoutedEventArgs e)
         {
-            AppSetting.Setting.General.IsAutoCheckUpdate = Convert.ToBoolean(ChkAutoCheckUpdate.IsChecked);
+            GlobalArgs.AppConfig.General.IsAutoCheckUpdate = Convert.ToBoolean(ChkAutoCheckUpdate.IsChecked);
+            await GlobalMethods.WriteGeneralConfig();
         }
-        private void ChkHideWindowWhenMinimize_Click(object sender, RoutedEventArgs e)
+        private async void ChkHideWindowWhenMinimize_Click(object sender, RoutedEventArgs e)
         {
-            AppSetting.Setting.General.IsHideWindowWhenMinimize = Convert.ToBoolean(ChkHideWindowWhenMinimize.IsChecked);
-        }
-
-        private void ChkSavePlaylistToLocal_Click(object sender, RoutedEventArgs e)
-        {
-            AppSetting.Setting.Play.IsSavePlaylistToLocal = Convert.ToBoolean(ChkSavePlaylistToLocal.IsChecked);
+            GlobalArgs.AppConfig.General.IsHideWindowWhenMinimize = Convert.ToBoolean(ChkHideWindowWhenMinimize.IsChecked);
+            await GlobalMethods.WriteGeneralConfig();
         }
 
-        private void ChkAutoNextWhenFailed_Click(object sender, RoutedEventArgs e)
+        private async void ChkSavePlaylistToLocal_Click(object sender, RoutedEventArgs e)
         {
-            AppSetting.Setting.Play.IsAutoNextWhenFailed = Convert.ToBoolean(ChkAutoNextWhenFailed.IsChecked);
+            GlobalArgs.AppConfig.Play.IsSavePlaylistToLocal = Convert.ToBoolean(ChkSavePlaylistToLocal.IsChecked);
+            await GlobalMethods.WritePlayConfig();
+        }
+
+        private async void ChkAutoNextWhenFailed_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed = Convert.ToBoolean(ChkAutoNextWhenFailed.IsChecked);
+            await GlobalMethods.WritePlayConfig();
         }
     }
 }

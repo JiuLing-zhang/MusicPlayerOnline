@@ -51,8 +51,7 @@ namespace MusicPlayerOnline.Model.ViewModel
                 OnPropertyChanged();
             }
         }
-
-
+        
         private bool _isPlaying;
         /// <summary>
         /// 播放中
@@ -63,20 +62,6 @@ namespace MusicPlayerOnline.Model.ViewModel
             set
             {
                 _isPlaying = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private MusicDetail _sourceData;
-        /// <summary>
-        /// 源数据，对应的MusicSearchResult
-        /// </summary>
-        public MusicDetail SourceData
-        {
-            get => _sourceData;
-            set
-            {
-                _sourceData = value;
                 OnPropertyChanged();
             }
         }

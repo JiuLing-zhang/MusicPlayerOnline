@@ -6,44 +6,64 @@ namespace MusicPlayerOnline.Service
 {
     public class ConfigService : IConfigService
     {
-        public async Task<GeneralConfig> ReadGeneralConfig()
+        public GeneralConfig ReadGeneralConfig()
         {
-            return await DatabaseProvide.Database.Table<GeneralConfig>().FirstOrDefaultAsync();
+            return DatabaseProvide.Database.Table<GeneralConfig>().FirstOrDefault();
         }
 
-        public async Task WriteGeneralConfig(GeneralConfig generalConfig)
+        public async Task<GeneralConfig> ReadGeneralConfigAsync()
         {
-            await DatabaseProvide.Database.UpdateAsync(generalConfig);
+            return await DatabaseProvide.DatabaseAsync.Table<GeneralConfig>().FirstOrDefaultAsync();
         }
 
-        public async Task<PlatformConfig> ReadPlatformConfig()
+        public async Task WriteGeneralConfigAsync(GeneralConfig generalConfig)
         {
-            return await DatabaseProvide.Database.Table<PlatformConfig>().FirstOrDefaultAsync();
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(generalConfig);
         }
 
-        public async Task WritePlatformConfig(PlatformConfig platformConfig)
+        public PlatformConfig ReadPlatformConfig()
         {
-            await DatabaseProvide.Database.UpdateAsync(platformConfig);
+            return DatabaseProvide.Database.Table<PlatformConfig>().FirstOrDefault();
         }
 
-        public async Task<PlayConfig> ReadPlayConfig()
+        public async Task<PlatformConfig> ReadPlatformConfigAsync()
         {
-            return await DatabaseProvide.Database.Table<PlayConfig>().FirstOrDefaultAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<PlatformConfig>().FirstOrDefaultAsync();
         }
 
-        public async Task WritePlayConfig(PlayConfig playConfig)
+        public async Task WritePlatformConfigAsync(PlatformConfig platformConfig)
         {
-            await DatabaseProvide.Database.UpdateAsync(playConfig);
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(platformConfig);
         }
 
-        public async Task<PlayerConfig> ReadPlayerConfig()
+        public PlayConfig ReadPlayConfig()
         {
-            return await DatabaseProvide.Database.Table<PlayerConfig>().FirstOrDefaultAsync();
+            return DatabaseProvide.Database.Table<PlayConfig>().FirstOrDefault();
         }
 
-        public async Task WritePlayerConfig(PlayerConfig playerConfig)
+        public async Task<PlayConfig> ReadPlayConfigAsync()
         {
-            await DatabaseProvide.Database.UpdateAsync(playerConfig);
+            return await DatabaseProvide.DatabaseAsync.Table<PlayConfig>().FirstOrDefaultAsync();
+        }
+
+        public async Task WritePlayConfigAsync(PlayConfig playConfig)
+        {
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(playConfig);
+        }
+
+        public PlayerConfig ReadPlayerConfig()
+        {
+            return DatabaseProvide.Database.Table<PlayerConfig>().FirstOrDefault();
+        }
+
+        public async Task<PlayerConfig> ReadPlayerConfigAsync()
+        {
+            return await DatabaseProvide.DatabaseAsync.Table<PlayerConfig>().FirstOrDefaultAsync();
+        }
+
+        public async Task WritePlayerConfigAsync(PlayerConfig playerConfig)
+        {
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(playerConfig);
         }
     }
 }

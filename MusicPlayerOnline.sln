@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Network",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Model", "src\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj", "{63DBA9F5-D011-423E-9DD4-B276F86C6D6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Config", "src\MusicPlayerOnline.Config\MusicPlayerOnline.Config.csproj", "{E7AFC06F-BF12-45D1-B6B5-CC77006EA986}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnlineApp", "src\MusicPlayerOnlineApp\MusicPlayerOnlineApp.csproj", "{CE5B86D4-DE7E-4FF7-B9ED-1C08237586C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnlineApp.Android", "src\MusicPlayerOnlineApp.Android\MusicPlayerOnlineApp.Android.csproj", "{58040302-5E96-4F6A-BD8B-7B292670AD30}"
@@ -37,10 +35,6 @@ Global
 		{63DBA9F5-D011-423E-9DD4-B276F86C6D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63DBA9F5-D011-423E-9DD4-B276F86C6D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63DBA9F5-D011-423E-9DD4-B276F86C6D6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7AFC06F-BF12-45D1-B6B5-CC77006EA986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7AFC06F-BF12-45D1-B6B5-CC77006EA986}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7AFC06F-BF12-45D1-B6B5-CC77006EA986}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7AFC06F-BF12-45D1-B6B5-CC77006EA986}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE5B86D4-DE7E-4FF7-B9ED-1C08237586C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE5B86D4-DE7E-4FF7-B9ED-1C08237586C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE5B86D4-DE7E-4FF7-B9ED-1C08237586C0}.Release|Any CPU.ActiveCfg = Release|Any CPU

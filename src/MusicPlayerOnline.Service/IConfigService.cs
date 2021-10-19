@@ -5,16 +5,20 @@ namespace MusicPlayerOnline.Service
 {
     public interface IConfigService
     {
-        Task<GeneralConfig> ReadGeneralConfig();
-        Task WriteGeneralConfig(GeneralConfig generalConfig);
+        GeneralConfig ReadGeneralConfig();
+        Task<GeneralConfig> ReadGeneralConfigAsync();
+        Task WriteGeneralConfigAsync(GeneralConfig generalConfig);
 
-        Task<PlatformConfig> ReadPlatformConfig();
-        Task WritePlatformConfig(PlatformConfig platformConfig);
+        PlatformConfig ReadPlatformConfig();
+        Task<PlatformConfig> ReadPlatformConfigAsync();
+        Task WritePlatformConfigAsync(PlatformConfig platformConfig);
 
-        Task<PlayConfig> ReadPlayConfig();
-        Task WritePlayConfig(PlayConfig playConfig);
+        PlayConfig ReadPlayConfig();
+        Task<PlayConfig> ReadPlayConfigAsync();
+        Task WritePlayConfigAsync(PlayConfig playConfig);
 
-        Task<PlayerConfig> ReadPlayerConfig();
-        Task WritePlayerConfig(PlayerConfig playerConfig);
+        PlayerConfig ReadPlayerConfig();
+        Task<PlayerConfig> ReadPlayerConfigAsync();
+        Task WritePlayerConfigAsync(PlayerConfig playerConfig);
     }
 }

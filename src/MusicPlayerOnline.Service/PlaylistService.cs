@@ -9,25 +9,25 @@ namespace MusicPlayerOnline.Service
     {
         public async Task Clear()
         {
-            await DatabaseProvide.Database.DeleteAllAsync<Playlist>();
+            await DatabaseProvide.DatabaseAsync.DeleteAllAsync<Playlist>();
         }
 
         public async Task<List<Playlist>> GetList()
         {
-            return await DatabaseProvide.Database.Table<Playlist>().ToListAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<Playlist>().ToListAsync();
         }
 
         public async Task Add(MusicDetail music)
         {
-            if (await DatabaseProvide.Database.Table<Playlist>().Where(x => x.MusicDetailId == music.Id).CountAsync() == 0)
+            if (await DatabaseProvide.DatabaseAsync.Table<Playlist>().Where(x => x.MusicDetailId == music.Id).CountAsync() == 0)
             {
-                await DatabaseProvide.Database.InsertAsync(new Playlist() { MusicDetailId = music.Id, Name = music.Name, Artist = music.Artist });
+                await DatabaseProvide.DatabaseAsync.InsertAsync(new Playlist() { MusicDetailId = music.Id, Name = music.Name, Artist = music.Artist });
             }
         }
 
         public async Task Delete(string musicDetailId)
         {
-            await DatabaseProvide.Database.DeleteAsync<Playlist>(musicDetailId);
+            await DatabaseProvide.DatabaseAsync.DeleteAsync<Playlist>(musicDetailId);
         }
     }
 }

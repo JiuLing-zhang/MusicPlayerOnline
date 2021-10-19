@@ -1,5 +1,5 @@
 ﻿using System;
-using MusicPlayerOnline.Model;
+using System.Linq;
 using MusicPlayerOnline.Model.Model;
 using SQLite;
 
@@ -12,8 +12,8 @@ namespace MusicPlayerOnline.Data
         {
             _dbPath = dbPath;
         }
-        private static SQLiteAsyncConnection _database;
-        public static SQLiteAsyncConnection Database
+        private static SQLiteConnection _database;
+        public static SQLiteConnection Database
         {
             get
             {
@@ -24,40 +24,90 @@ namespace MusicPlayerOnline.Data
                         throw new Exception("非法的数据库路径");
                     }
 
-                    _database = new SQLiteAsyncConnection(_dbPath);
+                    _database = new SQLiteConnection(_dbPath);
                     InitTable();
                 }
                 return _database;
             }
         }
+
         private static void InitTable()
         {
-            Database.CreateTableAsync<MusicDetail>().Wait();
-            Database.CreateTableAsync<Playlist>().Wait();
-            Database.CreateTableAsync<MyFavorite>().Wait();
-            Database.CreateTableAsync<MyFavoriteDetail>().Wait();
+            Database.CreateTable<MusicDetail>();
+            Database.CreateTable<Playlist>();
+            Database.CreateTable<MyFavorite>();
+            Database.CreateTable<MyFavoriteDetail>();
 
-            Database.CreateTableAsync<GeneralConfig>().Wait();
-            Database.CreateTableAsync<PlatformConfig>().Wait();
-            Database.CreateTableAsync<PlayConfig>().Wait();
-            Database.CreateTableAsync<PlayerConfig>().Wait();
+            Database.CreateTable<GeneralConfig>();
+            Database.CreateTable<PlatformConfig>();
+            Database.CreateTable<PlayConfig>();
+            Database.CreateTable<PlayerConfig>();
 
             //配置表不存在时创建
-            if (Database.Table<GeneralConfig>().CountAsync().Result == 0)
+            if (!Database.Table<GeneralConfig>().Any())
             {
-                Database.InsertAsync(new GeneralConfig()).Wait();
+                Database.Insert(new GeneralConfig());
             }
-            if (Database.Table<PlatformConfig>().CountAsync().Result == 0)
+            if (!Database.Table<PlatformConfig>().Any())
             {
-                Database.InsertAsync(new PlatformConfig()).Wait();
+                Database.Insert(new PlatformConfig());
             }
-            if (Database.Table<PlayConfig>().CountAsync().Result == 0)
+            if (!Database.Table<PlayConfig>().Any())
             {
-                Database.InsertAsync(new PlayConfig()).Wait();
+                Database.Insert(new PlayConfig());
             }
-            if (Database.Table<PlayerConfig>().CountAsync().Result == 0)
+            if (!Database.Table<PlayerConfig>().Any())
             {
-                Database.InsertAsync(new PlayerConfig()).Wait();
+                Database.Insert(new PlayerConfig());
+            }
+        }
+
+        private static SQLiteAsyncConnection _databaseAsync;
+        public static SQLiteAsyncConnection DatabaseAsync
+        {
+            get
+            {
+                if (_databaseAsync == null)
+                {
+                    if (string.IsNullOrEmpty(_dbPath))
+                    {
+                        throw new Exception("非法的数据库路径");
+                    }
+
+                    _databaseAsync = new SQLiteAsyncConnection(_dbPath);
+                    InitTableAsync();
+                }
+                return _databaseAsync;
+            }
+        }
+        private static void InitTableAsync()
+        {
+            DatabaseAsync.CreateTableAsync<MusicDetail>().Wait();
+            DatabaseAsync.CreateTableAsync<Playlist>().Wait();
+            DatabaseAsync.CreateTableAsync<MyFavorite>().Wait();
+            DatabaseAsync.CreateTableAsync<MyFavoriteDetail>().Wait();
+
+            DatabaseAsync.CreateTableAsync<GeneralConfig>().Wait();
+            DatabaseAsync.CreateTableAsync<PlatformConfig>().Wait();
+            DatabaseAsync.CreateTableAsync<PlayConfig>().Wait();
+            DatabaseAsync.CreateTableAsync<PlayerConfig>().Wait();
+
+            //配置表不存在时创建
+            if (DatabaseAsync.Table<GeneralConfig>().CountAsync().Result == 0)
+            {
+                DatabaseAsync.InsertAsync(new GeneralConfig()).Wait();
+            }
+            if (DatabaseAsync.Table<PlatformConfig>().CountAsync().Result == 0)
+            {
+                DatabaseAsync.InsertAsync(new PlatformConfig()).Wait();
+            }
+            if (DatabaseAsync.Table<PlayConfig>().CountAsync().Result == 0)
+            {
+                DatabaseAsync.InsertAsync(new PlayConfig()).Wait();
+            }
+            if (DatabaseAsync.Table<PlayerConfig>().CountAsync().Result == 0)
+            {
+                DatabaseAsync.InsertAsync(new PlayerConfig()).Wait();
             }
         }
     }

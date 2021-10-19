@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -12,12 +9,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Common;
-using MusicPlayerOnline.Config;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Network;
 using MusicPlayerOnline.Player;
+using MusicPlayerOnline.Service;
 using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -35,6 +32,8 @@ namespace MusicPlayerOnline
         private readonly PlayerStateModel _playerState = new();
         private readonly DispatcherTimer _timerPlayProgress = new();
         private NotifyIcon _notifyIcon;
+        private readonly IPlaylistService _playlistService = new PlaylistService();
+        private readonly IMusicService _musicService = new MusicService();
 
         private MusicDetail _currentMusic;
         public MainWindow()
@@ -52,12 +51,14 @@ namespace MusicPlayerOnline
             }
 
             InitializePlayProgressTimer();
-            if (AppSetting.Setting.General.IsAutoCheckUpdate)
+            if (GlobalArgs.AppConfig.General.IsAutoCheckUpdate)
             {
                 CheckUpdate();
             }
 
             InitializeNotifyIcon();
+
+            GetPlaylist();
         }
         private void InitializeNotifyIcon()
         {
@@ -96,50 +97,17 @@ namespace MusicPlayerOnline
             _timerPlayProgress.Tick += _timerPlayProgress_Tick;
         }
 
-
-        private string _playlistFileName = "playlist.json";
         private void LoadingAppConfig()
         {
-            _playerState.IsMute = AppSetting.Setting.Player.IsSoundOff;
-            _playerState.PlayMode = AppSetting.Setting.Player.PlayMode;
-            _myModel.VoiceValue = AppSetting.Setting.Player.Voice;
+            _playerState.IsMute = GlobalArgs.AppConfig.Player.IsSoundOff;
+            _playerState.PlayMode = GlobalArgs.AppConfig.Player.PlayMode;
+            _myModel.VoiceValue = GlobalArgs.AppConfig.Player.Voice;
 
             SetPlayerPlayMode();
             SetPlayOrPause();
             SetPlayerMute();
-
-            var playlistName = $"{GlobalArgs.AppPath}{_playlistFileName}";
-            if (File.Exists(playlistName))
-            {
-                try
-                {
-                    string json = File.ReadAllText(playlistName);
-                    _myModel.Playlist = System.Text.Json.JsonSerializer.Deserialize<ObservableCollection<PlaylistViewModel>>(json);
-                    if (_myModel.Playlist == null)
-                    {
-                        throw new Exception("本地播放列表文件格式错误");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Messages.ShowError($"读取本地播放列表失败：{ex.Message}");
-                }
-            }
         }
 
-        /// <summary>
-        /// 保存播放列表到本地
-        /// </summary>
-        private void WritePlaylistToLocal()
-        {
-            if (AppSetting.Setting.Play.IsSavePlaylistToLocal == false)
-            {
-                return;
-            }
-            string json = System.Text.Json.JsonSerializer.Serialize(_myModel.Playlist);
-            string playlistName = $"{GlobalArgs.AppPath}{_playlistFileName}";
-            File.WriteAllText(playlistName, json);
-        }
         /// <summary>
         /// UI数据绑定
         /// </summary>
@@ -150,6 +118,18 @@ namespace MusicPlayerOnline
             DataContext = _myModel;
         }
 
+        private async void GetPlaylist()
+        {
+            var playlist = await _playlistService.GetList();
+            foreach (var item in playlist)
+            {
+                _myModel.Playlist.Add(new PlaylistViewModel()
+                {
+                    Id = item.MusicDetailId,
+                    MusicText = $"{item.Name}-{item.Artist}"
+                });
+            }
+        }
         private void CheckUpdate()
         {
             Task.Run(() =>
@@ -187,7 +167,7 @@ namespace MusicPlayerOnline
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            if (AppSetting.Setting.General.IsHideWindowWhenMinimize)
+            if (GlobalArgs.AppConfig.General.IsHideWindowWhenMinimize)
             {
                 this.Visibility = Visibility.Hidden;
             }
@@ -400,10 +380,10 @@ namespace MusicPlayerOnline
             string musicId = btn.Tag.ToString();
             var music = _myModel.Playlist.FirstOrDefault(x => x.Id == musicId);
             _myModel.Playlist.Remove(music);
-            WritePlaylistToLocal();
+            _playlistService.Delete(music.Id);
         }
 
-        private void Playlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void Playlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var lvi = sender as ListViewItem;
             if (lvi == null)
@@ -419,7 +399,8 @@ namespace MusicPlayerOnline
                 return;
             }
 
-            PlayMusic(selectedMusic.SourceData);
+            var music = await _musicService.GetMusicDetail(selectedMusic.Id);
+            PlayMusic(music);
         }
 
         /// <summary>
@@ -453,10 +434,10 @@ namespace MusicPlayerOnline
             {
                 Id = music.Id,
                 MusicText = $"{music.Name} - {music.Artist}",
-                MusicToolTip = toolTip,
-                SourceData = music
+                MusicToolTip = toolTip
             });
-            WritePlaylistToLocal();
+            _playlistService.Add(music);
+            _musicService.Add(music);
         }
 
         /// <summary>
@@ -523,13 +504,13 @@ namespace MusicPlayerOnline
             {
                 _playerState.PlayMode = PlayModeEnum.RepeatOne;
             }
-            AppSetting.Setting.Player.PlayMode = _playerState.PlayMode;
+            GlobalArgs.AppConfig.Player.PlayMode = _playerState.PlayMode;
             SetPlayerPlayMode();
         }
         private void SoundOff_Click(object sender, RoutedEventArgs e)
         {
             _playerState.IsMute = !_playerState.IsMute;
-            AppSetting.Setting.Player.IsSoundOff = _playerState.IsMute;
+            GlobalArgs.AppConfig.Player.IsSoundOff = _playerState.IsMute;
             SetPlayerMute();
         }
         private void SetPlayerMute()
@@ -603,8 +584,7 @@ namespace MusicPlayerOnline
 
         private void _player_MusicMediaFailed()
         {
-            //TODO:失败了，这里再来个提示或什么的？
-            if (AppSetting.Setting.Play.IsAutoNextWhenFailed == false)
+            if (GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed == false)
             {
                 return;
             }
@@ -620,7 +600,7 @@ namespace MusicPlayerOnline
             Next();
         }
 
-        private void Previous()
+        private async void Previous()
         {
             if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
             {
@@ -643,8 +623,8 @@ namespace MusicPlayerOnline
                 {
                     nextId = _myModel.Playlist.Count - 1;
                 }
-
-                PlayMusic(_myModel.Playlist[nextId].SourceData);
+                var music = await _musicService.GetMusicDetail(_myModel.Playlist[nextId].Id);
+                PlayMusic(music);
                 return;
             }
             if (_playerState.PlayMode == PlayModeEnum.Shuffle)
@@ -655,16 +635,17 @@ namespace MusicPlayerOnline
                     return;
                 }
 
-                MusicDetail randomMusic;
+                PlaylistViewModel randomMusic;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistViewModel>(_myModel.Playlist).SourceData;
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistViewModel>(_myModel.Playlist);
                 } while (randomMusic.Id == _currentMusic.Id);
-                PlayMusic(randomMusic);
+                var music = await _musicService.GetMusicDetail(randomMusic.Id);
+                PlayMusic(music);
             }
         }
 
-        private void Next()
+        private async void Next()
         {
             if (_playerState.PlayMode == PlayModeEnum.RepeatOne)
             {
@@ -687,8 +668,8 @@ namespace MusicPlayerOnline
                 {
                     nextId = 0;
                 }
-
-                PlayMusic(_myModel.Playlist[nextId].SourceData);
+                var music = await _musicService.GetMusicDetail(_myModel.Playlist[nextId].Id);
+                PlayMusic(music);
                 return;
             }
             if (_playerState.PlayMode == PlayModeEnum.Shuffle)
@@ -699,12 +680,13 @@ namespace MusicPlayerOnline
                     return;
                 }
 
-                MusicDetail randomMusic = null;
+                PlaylistViewModel randomMusic = null;
                 do
                 {
-                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistViewModel>(_myModel.Playlist).SourceData;
+                    randomMusic = JiuLing.CommonLibs.Random.RandomUtils.GetOneFromList<PlaylistViewModel>(_myModel.Playlist);
                 } while (randomMusic.Id == _currentMusic.Id);
-                PlayMusic(randomMusic);
+                var music = await _musicService.GetMusicDetail(randomMusic.Id);
+                PlayMusic(music);
             }
         }
 
@@ -712,7 +694,7 @@ namespace MusicPlayerOnline
         private void SliderVoice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _player.VoiceValue = _myModel.VoiceValue;
-            AppSetting.Setting.Player.Voice = _myModel.VoiceValue;
+            GlobalArgs.AppConfig.Player.Voice = _myModel.VoiceValue;
         }
 
         private void SliderPlayProgress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

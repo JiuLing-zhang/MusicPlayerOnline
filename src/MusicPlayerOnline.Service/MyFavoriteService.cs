@@ -11,49 +11,49 @@ namespace MusicPlayerOnline.Service
     {
         public async Task<MyFavorite> GetMyFavorite(string id)
         {
-            return await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<MyFavorite>().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<MyFavorite> GetMyFavoriteByName(string name)
         {
-            return await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == name).FirstOrDefaultAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<MyFavorite>().Where(x => x.Name == name).FirstOrDefaultAsync();
         }
 
         public async Task Add(MyFavorite myFavorite)
         {
-            if (await DatabaseProvide.Database.Table<MyFavorite>().Where(x => x.Name == myFavorite.Name).CountAsync() > 0)
+            if (await DatabaseProvide.DatabaseAsync.Table<MyFavorite>().Where(x => x.Name == myFavorite.Name).CountAsync() > 0)
             {
                 return;
             }
 
-            await DatabaseProvide.Database.InsertAsync(myFavorite);
+            await DatabaseProvide.DatabaseAsync.InsertAsync(myFavorite);
         }
 
         public async Task Update(MyFavorite myFavorite)
         {
-            await DatabaseProvide.Database.UpdateAsync(myFavorite);
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(myFavorite);
         }
 
         public async Task<(bool Succeed, string Message)> DeleteMyFavorite(string id)
         {
-            var count = await DatabaseProvide.Database.DeleteAsync<MyFavorite>(id);
+            var count = await DatabaseProvide.DatabaseAsync.DeleteAsync<MyFavorite>(id);
             if (count == 0)
             {
                 return (false, "删除失败");
             }
 
-            await DatabaseProvide.Database.Table<MyFavoriteDetail>().DeleteAsync(m => m.MyFavoriteId == id);
+            await DatabaseProvide.DatabaseAsync.Table<MyFavoriteDetail>().DeleteAsync(m => m.MyFavoriteId == id);
             return (true, "删除成功");
         }
 
         public async Task<List<MyFavorite>> GetMyFavoriteList()
         {
-            return await DatabaseProvide.Database.Table<MyFavorite>().ToListAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<MyFavorite>().ToListAsync();
         }
 
         public async Task<(bool Succeed, string Message)> AddToMyFavorite(MusicDetail music, string myFavoriteId)
         {
-            if (await DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == music.Id).CountAsync() > 0)
+            if (await DatabaseProvide.DatabaseAsync.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId && x.MusicId == music.Id).CountAsync() > 0)
             {
                 return (false, "不能重复添加");
             }
@@ -68,23 +68,23 @@ namespace MusicPlayerOnline.Service
                 Artist = music.Artist,
                 Album = music.Album
             };
-            await DatabaseProvide.Database.InsertAsync(obj);
+            await DatabaseProvide.DatabaseAsync.InsertAsync(obj);
 
             //添加后，歌曲数量+1
-            var myFavorite = await DatabaseProvide.Database.GetAsync<MyFavorite>(myFavoriteId);
+            var myFavorite = await DatabaseProvide.DatabaseAsync.GetAsync<MyFavorite>(myFavoriteId);
             myFavorite.MusicCount++;
             if (myFavorite.ImageUrl.IsEmpty())
             {
                 myFavorite.ImageUrl = music.ImageUrl;
             }
 
-            await DatabaseProvide.Database.UpdateAsync(myFavorite);
+            await DatabaseProvide.DatabaseAsync.UpdateAsync(myFavorite);
             return (true, "添加成功");
         }
 
         public async Task<List<MyFavoriteDetail>> GetMyFavoriteDetail(string myFavoriteId)
         {
-            return await DatabaseProvide.Database.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId).ToListAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<MyFavoriteDetail>().Where(x => x.MyFavoriteId == myFavoriteId).ToListAsync();
         }
     }
 }
