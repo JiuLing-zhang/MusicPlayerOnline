@@ -39,8 +39,7 @@ namespace MusicPlayerOnline.Network.Utils
                         continue;
                     }
                     pattern = @"a href=""(?<musicPageUrl>\S*)""[\s\S]*<img src=""(?<imageUrl>\S*)""[\s\S]*class=""search_type"">(?<name>[\S\s]*)</h3>[\s\S]*class=""desc"">(?<artist>[\S\s]*)</p>";
-                    var groupList = new List<string>() { "musicPageUrl", "imageUrl", "name", "artist" };
-                    var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(musicHtml, pattern, groupList);
+                    var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(musicHtml, pattern);
 
                     if (resultGroup.success == false)
                     {
@@ -49,15 +48,15 @@ namespace MusicPlayerOnline.Network.Utils
                     pattern = @"<\/?.+?\/?>";
                     var regex = new System.Text.RegularExpressions.Regex(pattern);
 
-                    string musicPageUrl = resultGroup.result.musicPageUrl;
-                    string imageUrl = resultGroup.result.imageUrl;
+                    string musicPageUrl = resultGroup.result["musicPageUrl"];
+                    string imageUrl = resultGroup.result["imageUrl"];
 
-                    string name = resultGroup.result.name;
+                    string name = resultGroup.result["name"];
                     name = regex.Replace(name, "");
                     name = name.Replace("【音乐】", "");
                     name = name.Trim();
 
-                    string artist = resultGroup.result.artist;
+                    string artist = resultGroup.result["artist"];
                     artist = regex.Replace(artist, "");
                     artist = artist.Replace("歌手：", "");
                     artist = artist.Trim();
@@ -80,15 +79,14 @@ namespace MusicPlayerOnline.Network.Utils
 
         public static (bool success, string id, string type) GetMusicRealArgs(string url)
         {
-            string pattern = @"id=(?<id>\d*)&type=(?<type>\d*)";
-            var groupList = new List<string>() { "id", "type" };
-            var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(url, pattern, groupList);
+            string pattern = @"id=(?<id>\d*)&type=(?<type>\d*)"; 
+            var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(url, pattern);
 
             if (resultGroup.success == false)
             {
                 return (false, "", "");
             }
-            return (true, resultGroup.result.id, resultGroup.result.type);
+            return (true, resultGroup.result["id"], resultGroup.result["type"]);
         }
 
         public static string GetPlayUrlData(string id, string copyrightId)

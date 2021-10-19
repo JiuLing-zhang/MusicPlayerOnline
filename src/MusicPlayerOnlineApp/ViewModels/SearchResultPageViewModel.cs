@@ -181,7 +181,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 (succeed, message, music) = await SaveMusic(searchResult.SourceData);
                 if (succeed == false)
                 {
-                    if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
+                    if (GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed)
                     {
                         await Shell.Current.GoToAsync("..", true);
                     }
@@ -209,7 +209,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 (succeed, message, music) = await SaveMusic(MusicSelectedResult.SourceData);
                 if (succeed == false)
                 {
-                    if (GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed)
+                    if (GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed)
                     {
                         await Shell.Current.GoToAsync("..", true);
                     }

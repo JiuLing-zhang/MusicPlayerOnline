@@ -52,6 +52,10 @@ namespace MusicPlayerOnline.Model.Model
         /// </summary>
         public bool IsHideShortMusic { get; set; } = true;
 
+        /// <summary>
+        /// 播放失败时关闭搜索页面
+        /// </summary>
+        public bool IsCloseSearchPageWhenPlayFailed { get; set; } = false;
     }
 
     public class PlayConfig
@@ -68,10 +72,6 @@ namespace MusicPlayerOnline.Model.Model
         /// </summary>
         public bool IsWifiPlayOnly { get; set; } = true;
 
-        /// <summary>
-        /// 播放失败时关闭搜索页面
-        /// </summary>
-        public bool IsCloseSearchPageWhenPlayFailed { get; set; } = false;
 
         /// <summary>
         /// 播放我的歌单前清空播放列表

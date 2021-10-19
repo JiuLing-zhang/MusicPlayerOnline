@@ -29,7 +29,7 @@
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
 
-                <!-- 搜索平台设置 -->
+                <!-- 搜索设置 -->
                 <Label Text="搜索" TextColor="#929292" FontSize="14" FontAttributes="Bold"  Margin="0,10,0,0"/>
                 <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
                     <Label Text="网易云音乐" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
@@ -44,8 +44,12 @@
                     <appExtends:CustomSwitch IsToggled="{Binding IsEnableMiGu}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Text="搜索结果隐藏小于1分钟的歌曲" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <Label Text="隐藏小于1分钟的歌曲" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
                     <appExtends:CustomSwitch IsToggled="{Binding IsHideShortMusic}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
+                    <Label Text="无法播放时关闭搜索页面" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <appExtends:CustomSwitch IsToggled="{Binding IsCloseSearchPageWhenPlayFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
 
@@ -58,10 +62,6 @@
                 <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
                     <Label Text="播放失败时自动跳到下一首" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
                     <appExtends:CustomSwitch IsToggled="{Binding IsAutoNextWhenFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
-                    <Label Text="播放失败时关闭搜索页面" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
-                    <appExtends:CustomSwitch IsToggled="{Binding IsCloseSearchPageWhenPlayFailed}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,10,0,0" >
                     <Label Text="播放我的歌单前清空播放列表" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>

@@ -25,8 +25,9 @@ namespace MusicPlayerOnline.Network
         public MusicNetPlatform()
         {
             //搜索
+            _miGuSearcher.SetNextHandler(_neteaseSearcher);
             _neteaseSearcher.SetNextHandler(_kuGouSearcher);
-            _kuGouSearcher.SetNextHandler(_miGuSearcher);
+            
             //详情
             _neteaseBuilder.SetNextHandler(_kuGouBuilder);
             _kuGouBuilder.SetNextHandler(_miGuBuilder);
@@ -34,7 +35,7 @@ namespace MusicPlayerOnline.Network
 
         public async Task<List<MusicSearchResult>> Search(PlatformEnum platform, string keyword)
         {
-            return await _neteaseSearcher.Search(platform, keyword);
+            return await _miGuSearcher.Search(platform, keyword);
         }
 
         public async Task<MusicDetail> BuildMusicDetail(MusicSearchResult music)

@@ -42,6 +42,16 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="LabelShowLyrics" TargetType="Label">
+            <Setter Property="IsVisible" Value="false"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Lyrics.Count}" Value="0" TargetType="Label">
+                    <Setter Property="IsVisible" Value="true"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </ContentPage.Resources>
 
     <ContentPage.Content>
@@ -74,6 +84,7 @@
                 </StackLayout>
                 <!-- 歌词 -->
                 <StackLayout VerticalOptions="FillAndExpand">
+                    <Label Text="暂无歌词" HorizontalTextAlignment="Center" TextColor="#E0E0E0" Style="{StaticResource LabelShowLyrics}"></Label>
                     <ListView x:Name="ListViewLyrics" ItemsSource="{Binding Lyrics}" HorizontalOptions="Center" SelectionMode="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>

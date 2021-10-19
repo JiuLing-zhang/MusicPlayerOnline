@@ -153,8 +153,8 @@ namespace MusicPlayerOnlineApp.ViewModels
                 _isCloseSearchPageWhenPlayFailed = value;
                 OnPropertyChanged();
 
-                GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed = value;
-                WritePlayConfig();
+                GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed = value;
+                WritePlatformConfig();
             }
         }
 
@@ -199,10 +199,11 @@ namespace MusicPlayerOnlineApp.ViewModels
             IsEnableKuGou = CheckEnablePlatform(PlatformEnum.KuGou);
             IsEnableMiGu = CheckEnablePlatform(PlatformEnum.MiGu);
             IsHideShortMusic = GlobalArgs.AppConfig.Platform.IsHideShortMusic;
+            IsCloseSearchPageWhenPlayFailed = GlobalArgs.AppConfig.Platform.IsCloseSearchPageWhenPlayFailed;
+
             //播放设置
             IsWifiPlayOnly = GlobalArgs.AppConfig.Play.IsWifiPlayOnly;
             IsAutoNextWhenFailed = GlobalArgs.AppConfig.Play.IsAutoNextWhenFailed;
-            IsCloseSearchPageWhenPlayFailed = GlobalArgs.AppConfig.Play.IsCloseSearchPageWhenPlayFailed;
             IsCleanPlaylistWhenPlayMyFavorite = GlobalArgs.AppConfig.Play.IsCleanPlaylistWhenPlayMyFavorite;
         }
 

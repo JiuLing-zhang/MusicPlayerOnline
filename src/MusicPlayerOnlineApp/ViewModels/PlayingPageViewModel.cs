@@ -167,6 +167,10 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private void GetLyricDetail()
         {
+            if (Lyrics.Count > 0)
+            {
+                Lyrics.Clear();
+            }
             if (CurrentMusic.Lyric.IsEmpty())
             {
                 return;
@@ -174,7 +178,6 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             string pattern = ".*";
             var lyricRowList = JiuLing.CommonLibs.Text.RegexUtils.GetAll(CurrentMusic.Lyric, pattern);
-            var lyricGroupNames = new List<string>() { "mm", "ss", "fff", "lyric" };
             foreach (var lyricRow in lyricRowList)
             {
                 if (lyricRow.IsEmpty())
@@ -182,14 +185,14 @@ namespace MusicPlayerOnlineApp.ViewModels
                     continue;
                 }
                 pattern = @"\[(?<mm>\d*):(?<ss>\d*).(?<fff>\d*)\](?<lyric>.*)";
-                var (success, result) = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(lyricRow, pattern, lyricGroupNames);
+                var (success, result) = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(lyricRow, pattern);
                 if (success == false)
                 {
                     continue;
                 }
 
-                int totalMillisecond = Convert.ToInt32(result.mm) * 60 * 1000 + Convert.ToInt32(result.ss) * 1000 + Convert.ToInt32(result.fff);
-                var info = result.lyric;
+                int totalMillisecond = Convert.ToInt32(result["mm"]) * 60 * 1000 + Convert.ToInt32(result["ss"]) * 1000 + Convert.ToInt32(result["fff"]);
+                var info = result["lyric"];
                 Lyrics.Add(new LyricDetailViewModel() { Position = totalMillisecond, Info = info });
             }
         }
