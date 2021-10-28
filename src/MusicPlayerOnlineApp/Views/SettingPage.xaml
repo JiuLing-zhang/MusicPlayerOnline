@@ -90,7 +90,7 @@
                                     </Span.GestureRecognizers>
                                 </Span>
                                 <Span Text=" or app " />
-                                <Span Text="Source code"
+                                <Span Text="source code"
                                       TextColor="Blue"
                                       TextDecorations="Underline">
                                     <Span.GestureRecognizers>

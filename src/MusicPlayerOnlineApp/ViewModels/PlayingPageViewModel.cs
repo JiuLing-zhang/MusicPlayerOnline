@@ -289,6 +289,11 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private async void Previous()
         {
+            if (CurrentMusic == null)
+            {
+                DependencyService.Get<IToast>().Show("目前这个歌曲似乎好像有问题哟~");
+                return;
+            }
             await PlayerService.Instance().Previous();
         }
 
@@ -297,6 +302,11 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private async void Next()
         {
+            if (CurrentMusic == null)
+            {
+                DependencyService.Get<IToast>().Show("目前这个歌曲似乎好像有问题哟~");
+                return;
+            }
             await PlayerService.Instance().Next();
         }
     }

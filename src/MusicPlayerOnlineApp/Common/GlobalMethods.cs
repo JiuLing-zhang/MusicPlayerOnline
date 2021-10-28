@@ -1,9 +1,12 @@
-﻿using MusicPlayerOnline.Model.Model;
+﻿using System.IO;
+using System.Linq;
+using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Services;
 using MusicPlayerOnlineApp.Views;
 using System.Threading.Tasks;
+using Plugin.Connectivity;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.Common
@@ -11,6 +14,7 @@ namespace MusicPlayerOnlineApp.Common
     public class GlobalMethods
     {
         private static readonly IConfigService MyConfigService = new ConfigService();
+        private static readonly IMusicService MyMusicService = new MusicService();
         public static void ReadAppConfig()
         {
             GlobalArgs.AppConfig = new Config
@@ -52,6 +56,20 @@ namespace MusicPlayerOnlineApp.Common
 
         public static void PlayMusic(MusicDetail music)
         {
+            string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
+            if (!File.Exists(cachePath))
+            {
+                var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
+                var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
+                if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.Play.IsWifiPlayOnly)
+                {
+                    DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
+                    return;
+                }
+
+                MyMusicService.CacheMusic(music, cachePath);
+                music.CachePath = cachePath;
+            }
             PlayerService.Instance().Play(music);
         }
 

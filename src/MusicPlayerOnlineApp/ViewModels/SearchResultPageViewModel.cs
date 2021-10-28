@@ -235,19 +235,9 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return (false, "emm没有解析出歌曲信息", null);
             }
 
-            var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
-            var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
-            if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.Play.IsWifiPlayOnly)
-            {
-                return (false, "仅在WIFI下允许播放", null);
-            }
-
             await _musicService.Add(music);
             await _playlistService.Add(music);
 
-            string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
-            await _musicService.CacheMusic(music, cachePath);
-            music.CachePath = cachePath;
             return (true, "", music);
         }
     }
