@@ -41,7 +41,6 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         private async void GetPlaylist()
         {
-            GlobalMethods.ShowLoading();
             if (Playlist.Count > 0)
             {
                 Playlist.Clear();
@@ -57,7 +56,6 @@ namespace MusicPlayerOnlineApp.ViewModels
                 });
             }
 
-            GlobalMethods.HideLoading();
         }
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
-            GlobalMethods.PlayMusic(music);
+            await GlobalMethods.PlayMusic(music);
             await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
         }
 
@@ -138,7 +136,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-            
+
             await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
         }
 

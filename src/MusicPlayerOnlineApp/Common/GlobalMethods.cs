@@ -54,7 +54,7 @@ namespace MusicPlayerOnlineApp.Common
             await MyConfigService.WritePlayerConfigAsync(GlobalArgs.AppConfig.Player);
         }
 
-        public static void PlayMusic(MusicDetail music)
+        public static async Task PlayMusic(MusicDetail music)
         {
             string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
             if (!File.Exists(cachePath))
@@ -67,7 +67,7 @@ namespace MusicPlayerOnlineApp.Common
                     return;
                 }
 
-                MyMusicService.CacheMusic(music, cachePath);
+                await MyMusicService.CacheMusic(music, cachePath);
                 music.CachePath = cachePath;
             }
             PlayerService.Instance().Play(music);
