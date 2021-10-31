@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
+using MusicPlayerOnlineApp.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -11,7 +11,7 @@ namespace MusicPlayerOnlineApp.ViewModels
     public class SettingPageViewModel : ViewModelBase
     {
         public ICommand OpenUrlCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
-
+        public ICommand ClearCacheCommand => new Command(ClearCache);
         public SettingPageViewModel()
         {
             GetAppConfig();
@@ -293,6 +293,11 @@ namespace MusicPlayerOnlineApp.ViewModels
         private async void WritePlatformConfig()
         {
             await GlobalMethods.WritePlatformConfig();
+        }
+
+        private async void ClearCache()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClearCachePage)}", true);
         }
     }
 }

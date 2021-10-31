@@ -20,6 +20,7 @@ namespace MusicPlayerOnlineApp
             Routing.RegisterRoute(nameof(EditMyFavoritePage), typeof(EditMyFavoritePage));
             Routing.RegisterRoute(nameof(MyFavoriteDetailPage), typeof(MyFavoriteDetailPage));
             Routing.RegisterRoute(nameof(PlayingPage), typeof(PlayingPage));
+            Routing.RegisterRoute(nameof(ClearCachePage), typeof(ClearCachePage));
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MusicPlayerOnlineApp.Views.ClearCachePage">
+    <ContentPage.Content>
+        <StackLayout>
+             <ListView x:Name="ListViewLyrics" ItemsSource="{Binding Caches}" SelectionMode="None"  >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions> 
+                            </ViewCell.ContextActions>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal" Padding="10,10,10,10">
+                                    <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" MinimumWidthRequest="60" VerticalTextAlignment="Center"  LineBreakMode="NoWrap"/>
+                                    <CheckBox HorizontalOptions="End" IsChecked="{Binding IsChecked}"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

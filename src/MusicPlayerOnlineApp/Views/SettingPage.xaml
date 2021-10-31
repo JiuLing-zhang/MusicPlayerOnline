@@ -69,6 +69,15 @@
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
 
+                <!-- 缓存 -->
+                <StackLayout>
+                    <StackLayout>
+                        <Button BackgroundColor="#212121" TextColor="#FFFFFF" Text="清理缓存" Command="{Binding ClearCacheCommand}"></Button>
+                        <Label Text="谨慎清理，有些歌曲清理后就再也找不回来咯" TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+                <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
+
                 <!-- 关于 -->
                 <StackLayout>
                     <Label Text="在线音乐助手" TextColor="#FFFFFF" FontSize="18" HorizontalOptions="CenterAndExpand"/>
