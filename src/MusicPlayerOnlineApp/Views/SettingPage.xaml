@@ -81,7 +81,7 @@
                 <!-- 日志 -->
                 <StackLayout>
                     <StackLayout>
-                        <Button BackgroundColor="#212121" TextColor="#FFFFFF" Text="查看日志" Command="{Binding OpenLogCommand}"></Button>
+                        <Button BackgroundColor="#212121" TextColor="#FFFFFF" Text="日志" Command="{Binding OpenLogCommand}"></Button>
                     </StackLayout>
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>

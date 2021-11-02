@@ -5,7 +5,7 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="plus_math" Command="{Binding UpdateLogsCommand}" ></ToolbarItem>
+        <ToolbarItem IconImageSource="upload_to_cloud" Command="{Binding UpdateLogsCommand}" ></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

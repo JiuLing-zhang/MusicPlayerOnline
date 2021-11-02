@@ -12,7 +12,7 @@ namespace MusicPlayerOnline.Service
     {
         public async Task<List<LogDetail>> GetLogs()
         {
-            return await DatabaseProvide.DatabaseAsync.Table<LogDetail>().OrderByDescending(x => x.Timestamp).Take(30).ToListAsync();
+            return await DatabaseProvide.DatabaseAsync.Table<LogDetail>().OrderByDescending(x => x.Timestamp).Take(200).ToListAsync();
         }
     }
 }

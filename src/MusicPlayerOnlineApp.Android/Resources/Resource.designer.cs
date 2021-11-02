@@ -11860,7 +11860,10 @@ namespace MusicPlayerOnlineApp.Droid
 			public const int trash = 2131165351;
 			
 			// aapt resource value: 0x7F0700A8
-			public const int xamarin_logo = 2131165352;
+			public const int upload_to_cloud = 2131165352;
+			
+			// aapt resource value: 0x7F0700A9
+			public const int xamarin_logo = 2131165353;
 			
 			static Drawable()
 			{
