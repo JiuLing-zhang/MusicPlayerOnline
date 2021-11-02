@@ -12,6 +12,7 @@ namespace MusicPlayerOnlineApp.ViewModels
     {
         public ICommand OpenUrlCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
         public ICommand ClearCacheCommand => new Command(ClearCache);
+        public ICommand OpenLogCommand => new Command(OpenLog);
         public SettingPageViewModel()
         {
             GetAppConfig();
@@ -298,6 +299,11 @@ namespace MusicPlayerOnlineApp.ViewModels
         private async void ClearCache()
         {
             await Shell.Current.GoToAsync($"{nameof(ClearCachePage)}", true);
+        }
+
+        private async void OpenLog()
+        {
+            await Shell.Current.GoToAsync($"{nameof(LogPage)}", true);
         }
     }
 }

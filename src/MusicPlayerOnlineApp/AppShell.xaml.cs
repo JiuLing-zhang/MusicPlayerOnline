@@ -24,6 +24,7 @@ namespace MusicPlayerOnlineApp
             Routing.RegisterRoute(nameof(MyFavoriteDetailPage), typeof(MyFavoriteDetailPage));
             Routing.RegisterRoute(nameof(PlayingPage), typeof(PlayingPage));
             Routing.RegisterRoute(nameof(ClearCachePage), typeof(ClearCachePage));
+            Routing.RegisterRoute(nameof(LogPage), typeof(LogPage));
             Logger.Write(LogTypeEnum.消息, $"路由注册完成");
         }
     }

@@ -13,6 +13,9 @@ namespace MusicPlayerOnlineApp
         public App()
         {
             InitializeComponent();
+
+            DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
+
             Logger.Write(LogTypeEnum.消息, $"程序启动");
             Logger.Write(LogTypeEnum.消息, $"准备初始化配置");
             if (!Directory.Exists(GlobalArgs.AppDataPath))
@@ -23,7 +26,6 @@ namespace MusicPlayerOnlineApp
             {
                 Directory.CreateDirectory(GlobalArgs.AppMusicCachePath);
             }
-            DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
 
             GlobalMethods.ReadAppConfig();
 
