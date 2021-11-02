@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Network.MusicProvider;
@@ -20,8 +21,7 @@ namespace MusicPlayerOnline.Network.SearchMusic
             var result = await _myMusicProvider.Search(keyword);
             if (result.IsSucceed == false)
             {
-                //TODO 加入日志
-                //Logger.Write($"搜索网易歌曲失败：{result.ErrMsg}");
+                await Logger.WriteAsync(LogTypeEnum.警告, $"搜索网易歌曲失败：{result.ErrMsg}");
                 return;
             }
 

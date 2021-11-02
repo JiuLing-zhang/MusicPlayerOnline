@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerOnline.Log\MusicPlayerOnline.Log.csproj" />
     <ProjectReference Include="..\MusicPlayerOnline.Model\MusicPlayerOnline.Model.csproj" />
   </ItemGroup>
 

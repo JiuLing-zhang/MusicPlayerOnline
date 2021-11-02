@@ -2,6 +2,7 @@
 using MusicPlayerOnlineApp.Views;
 using System;
 using System.Collections.Generic;
+using MusicPlayerOnline.Log;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp
@@ -11,6 +12,8 @@ namespace MusicPlayerOnlineApp
         public AppShell()
         {
             InitializeComponent();
+
+            Logger.Write(LogTypeEnum.消息, $"准备注册路由");
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
 
@@ -21,6 +24,7 @@ namespace MusicPlayerOnlineApp
             Routing.RegisterRoute(nameof(MyFavoriteDetailPage), typeof(MyFavoriteDetailPage));
             Routing.RegisterRoute(nameof(PlayingPage), typeof(PlayingPage));
             Routing.RegisterRoute(nameof(ClearCachePage), typeof(ClearCachePage));
+            Logger.Write(LogTypeEnum.消息, $"路由注册完成");
         }
     }
 }

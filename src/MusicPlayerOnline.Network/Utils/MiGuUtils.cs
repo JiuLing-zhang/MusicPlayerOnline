@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.MiGu;
 
 namespace MusicPlayerOnline.Network.Utils
@@ -69,9 +70,9 @@ namespace MusicPlayerOnline.Network.Utils
                         MusicPageUrl = musicPageUrl
                     });
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    //TODO HTML解析偶尔会出错，这里需要记录日志
+                    Logger.Write(LogTypeEnum.错误, $"构建咪咕搜索结果失败：{ex.Message}.{ex.StackTrace}");
                 }
             }
             return true;
@@ -79,7 +80,7 @@ namespace MusicPlayerOnline.Network.Utils
 
         public static (bool success, string id, string type) GetMusicRealArgs(string url)
         {
-            string pattern = @"id=(?<id>\d*)&type=(?<type>\d*)"; 
+            string pattern = @"id=(?<id>\d*)&type=(?<type>\d*)";
             var resultGroup = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(url, pattern);
 
             if (resultGroup.success == false)

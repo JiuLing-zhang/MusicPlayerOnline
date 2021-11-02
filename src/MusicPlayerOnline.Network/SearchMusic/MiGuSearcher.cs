@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Network.MusicProvider;
@@ -22,8 +23,7 @@ namespace MusicPlayerOnline.Network.SearchMusic
             var result = await _myMusicProvider.Search(keyword);
             if (result.IsSucceed == false)
             {
-                //TODO 加入日志
-                //Logger.Write($"搜索咪咕歌曲失败：{result.ErrMsg}");
+                await Logger.WriteAsync(LogTypeEnum.警告, $"搜索咪咕歌曲失败：{result.ErrMsg}");
                 return;
             }
             searchCallback(result.musics);

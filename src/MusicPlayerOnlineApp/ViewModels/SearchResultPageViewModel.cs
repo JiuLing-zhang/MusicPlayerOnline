@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
@@ -126,7 +127,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
-
+            await Logger.WriteAsync(LogTypeEnum.消息, $"准备搜索：{SearchKeyword}");
             _lastSearchKeyword = SearchKeyword;
 
             try
@@ -137,6 +138,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 var musics = await _searchService.Search(GlobalArgs.AppConfig.Search.EnablePlatform, SearchKeyword);
                 if (musics.Count == 0)
                 {
+                    await Logger.WriteAsync(LogTypeEnum.消息, $"啥也没有搜到");
                     DependencyService.Get<IToast>().Show("哦吼，啥也没有搜到");
                     return;
                 }
@@ -145,6 +147,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 {
                     if (GlobalArgs.AppConfig.Search.IsHideShortMusic && musicInfo.Duration != 0 && musicInfo.Duration <= 60 * 1000)
                     {
+                        await Logger.WriteAsync(LogTypeEnum.消息, $"短歌曲，跳过：{musicInfo.Platform.GetDescription()},{musicInfo.Name}");
                         continue;
                     }
 
@@ -162,6 +165,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
             catch (Exception ex)
             {
+                await Logger.WriteAsync(LogTypeEnum.错误, $"搜索失败：{ex.Message}.{ex.StackTrace}");
                 DependencyService.Get<IToast>().Show("抱歉，网络可能出小差了~");
             }
             finally

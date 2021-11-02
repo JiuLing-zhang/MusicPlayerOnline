@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.Netease;
@@ -74,9 +75,9 @@ namespace MusicPlayerOnline.Network.MusicProvider
                     };
                     musics.Add(music);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    //TODO 出错时先跳过添加当前歌曲，后续可能需要加入日志
+                    await Logger.WriteAsync(LogTypeEnum.错误, $"构建网易搜索结果失败：{ex.Message}.{ex.StackTrace}");
                 }
 
             }

@@ -1,9 +1,9 @@
 ﻿using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnlineApp.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
@@ -159,7 +159,9 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
+
             CurrentMusic = PlayerService.Instance().PlayingMusic;
+            Logger.Write(LogTypeEnum.消息, $"更新正在播放的歌曲，{CurrentMusic.Platform.GetDescription()},{CurrentMusic.Name}");
             GetLyricDetail();
         }
         /// <summary>
@@ -167,12 +169,14 @@ namespace MusicPlayerOnlineApp.ViewModels
         /// </summary>
         private void GetLyricDetail()
         {
+            Logger.Write(LogTypeEnum.消息, $"准备解析歌词");
             if (Lyrics.Count > 0)
             {
                 Lyrics.Clear();
             }
             if (CurrentMusic.Lyric.IsEmpty())
             {
+                Logger.Write(LogTypeEnum.消息, $"歌词不存在，跳过");
                 return;
             }
 
@@ -188,6 +192,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 var (success, result) = JiuLing.CommonLibs.Text.RegexUtils.GetMultiGroupInFirstMatch(lyricRow, pattern);
                 if (success == false)
                 {
+                    Logger.Write(LogTypeEnum.消息, $"播放页面解析歌词失败，{lyricRow}");
                     continue;
                 }
 
@@ -195,6 +200,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 var info = result["lyric"];
                 Lyrics.Add(new LyricDetailViewModel() { Position = totalMillisecond, Info = info });
             }
+            Logger.Write(LogTypeEnum.消息, $"歌词解析完成");
         }
 
         /// <summary>
@@ -256,10 +262,12 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             if (IsPlaying == true)
             {
+                Logger.Write(LogTypeEnum.消息, $"准备暂停");
                 PlayerService.Instance().Pause();
             }
             else
             {
+                Logger.Write(LogTypeEnum.消息, $"继续播放");
                 PlayerService.Instance().Start();
             }
 
@@ -294,7 +302,9 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("目前这个歌曲似乎好像有问题哟~");
                 return;
             }
+
             await PlayerService.Instance().Previous();
+            await Logger.WriteAsync(LogTypeEnum.消息, $"上一首");
         }
 
         /// <summary>
@@ -308,6 +318,7 @@ namespace MusicPlayerOnlineApp.ViewModels
                 return;
             }
             await PlayerService.Instance().Next();
+            await Logger.WriteAsync(LogTypeEnum.消息, $"下一首");
         }
     }
 }

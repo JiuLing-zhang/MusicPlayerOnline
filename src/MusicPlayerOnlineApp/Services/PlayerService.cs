@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
@@ -52,6 +54,7 @@ namespace MusicPlayerOnlineApp.Services
         private async void Audio_MediaFailed()
         {
             DependencyService.Get<IToast>().Show("播放失败，准备跳到下一首");
+            await Logger.WriteAsync(LogTypeEnum.警告, $"播放服务-播放失败：内部错误");
             await Next();
         }
 
@@ -60,15 +63,18 @@ namespace MusicPlayerOnlineApp.Services
             PlayingMusic = music;
             _audio.Play(music.CachePath);
             MediaBegin?.Invoke();
+            Logger.Write(LogTypeEnum.消息, $"播放服务-播放");
         }
 
         public void Start()
         {
             _audio.Start();
+            Logger.Write(LogTypeEnum.消息, $"播放服务-开始");
         }
         public void Pause()
         {
             _audio.Pause();
+            Logger.Write(LogTypeEnum.消息, $"播放服务-暂停");
         }
 
         public (int Duration, int Position) GetPosition()
@@ -81,6 +87,7 @@ namespace MusicPlayerOnlineApp.Services
         /// </summary>
         public async Task Previous()
         {
+            await Logger.WriteAsync(LogTypeEnum.消息, $"播放服务-上一首，模式：{GlobalArgs.AppConfig.Player.PlayMode.GetDescription()}");
             if (GlobalArgs.AppConfig.Player.PlayMode == PlayModeEnum.RepeatOne)
             {
                 Play(PlayingMusic);
@@ -90,6 +97,7 @@ namespace MusicPlayerOnlineApp.Services
             var playlist = await _playlistService.GetList();
             if (playlist.Count == 0)
             {
+                await Logger.WriteAsync(LogTypeEnum.警告, $"播放服务-播放列表为空");
                 return;
             }
 
@@ -137,6 +145,7 @@ namespace MusicPlayerOnlineApp.Services
         /// </summary>
         public async Task Next()
         {
+            await Logger.WriteAsync(LogTypeEnum.消息, $"播放服务-下一首，模式：{GlobalArgs.AppConfig.Player.PlayMode.GetDescription()}");
             if (GlobalArgs.AppConfig.Player.PlayMode == PlayModeEnum.RepeatOne)
             {
                 Play(PlayingMusic);
@@ -146,6 +155,7 @@ namespace MusicPlayerOnlineApp.Services
             var playlist = await _playlistService.GetList();
             if (playlist.Count == 0)
             {
+                await Logger.WriteAsync(LogTypeEnum.警告, $"播放服务-播放列表为空");
                 return;
             }
             if (GlobalArgs.AppConfig.Player.PlayMode == PlayModeEnum.RepeatList)

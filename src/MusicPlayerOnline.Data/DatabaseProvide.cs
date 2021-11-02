@@ -37,6 +37,7 @@ namespace MusicPlayerOnline.Data
             Database.CreateTable<Playlist>();
             Database.CreateTable<MyFavorite>();
             Database.CreateTable<MyFavoriteDetail>();
+            Database.CreateTable<LogDetail>();
 
             Database.CreateTable<GeneralConfig>();
             Database.CreateTable<SearchConfig>();
@@ -86,6 +87,7 @@ namespace MusicPlayerOnline.Data
             DatabaseAsync.CreateTableAsync<Playlist>().Wait();
             DatabaseAsync.CreateTableAsync<MyFavorite>().Wait();
             DatabaseAsync.CreateTableAsync<MyFavoriteDetail>().Wait();
+            DatabaseAsync.CreateTableAsync<LogDetail>().Wait();
 
             DatabaseAsync.CreateTableAsync<GeneralConfig>().Wait();
             DatabaseAsync.CreateTableAsync<SearchConfig>().Wait();
@@ -109,6 +111,21 @@ namespace MusicPlayerOnline.Data
             {
                 DatabaseAsync.InsertAsync(new PlayerConfig()).Wait();
             }
+        }
+
+        private class LogDetail
+        {
+            [PrimaryKey, AutoIncrement]
+            public int Id { get; set; }
+            public Int64 Timestamp { get; set; }
+            public LogTypeEnum LogType { get; set; }
+            public string Message { get; set; }
+        }
+        private enum LogTypeEnum
+        {
+            消息 = 0,
+            警告 = 1,
+            错误 = 2
         }
     }
 }

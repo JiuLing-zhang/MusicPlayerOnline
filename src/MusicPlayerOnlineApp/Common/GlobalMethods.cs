@@ -6,6 +6,8 @@ using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Services;
 using MusicPlayerOnlineApp.Views;
 using System.Threading.Tasks;
+using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.Log;
 using Plugin.Connectivity;
 using Xamarin.Forms;
 
@@ -56,19 +58,23 @@ namespace MusicPlayerOnlineApp.Common
 
         public static async Task PlayMusic(MusicDetail music)
         {
+            await Logger.WriteAsync(LogTypeEnum.消息, $"准备播放歌曲：{music.Platform.GetDescription()},{music.Name}");
             string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
             if (!File.Exists(cachePath))
             {
+                await Logger.WriteAsync(LogTypeEnum.消息, $"歌曲未缓存，准备缓存");
                 var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
                 var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
                 if (!connectionTypes.Contains(wifi) && GlobalArgs.AppConfig.Play.IsWifiPlayOnly)
                 {
+                    await Logger.WriteAsync(LogTypeEnum.消息, $"仅在WIFI下允许播放，跳过");
                     DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
                     return;
                 }
 
                 await MyMusicService.CacheMusic(music, cachePath);
                 music.CachePath = cachePath;
+                await Logger.WriteAsync(LogTypeEnum.消息, $"缓存完成");
             }
             PlayerService.Instance().Play(music);
         }

@@ -1,6 +1,7 @@
 ﻿using MusicPlayerOnlineApp.Services;
 using System.IO;
 using MusicPlayerOnline.Data;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
@@ -12,7 +13,8 @@ namespace MusicPlayerOnlineApp
         public App()
         {
             InitializeComponent();
-
+            Logger.Write(LogTypeEnum.消息, $"程序启动");
+            Logger.Write(LogTypeEnum.消息, $"准备初始化配置");
             if (!Directory.Exists(GlobalArgs.AppDataPath))
             {
                 Directory.CreateDirectory(GlobalArgs.AppDataPath);
@@ -24,6 +26,8 @@ namespace MusicPlayerOnlineApp
             DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
 
             GlobalMethods.ReadAppConfig();
+
+            Logger.Write(LogTypeEnum.消息, $"初始化配置完成");
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();

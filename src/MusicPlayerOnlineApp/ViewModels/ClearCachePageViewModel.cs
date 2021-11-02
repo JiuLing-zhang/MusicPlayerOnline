@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnlineApp.Common;
 
@@ -55,9 +56,9 @@ namespace MusicPlayerOnlineApp.ViewModels
 
                 callbackFilePaths.Invoke(Directory.GetFiles(folderPath).ToList());
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                //todo 没有权限时记录错误
+                Logger.Write(LogTypeEnum.错误, $"遍历文件夹{folderPath}失败，没有权限：{ex.Message}.{ex.StackTrace}");
             }
         }
 
