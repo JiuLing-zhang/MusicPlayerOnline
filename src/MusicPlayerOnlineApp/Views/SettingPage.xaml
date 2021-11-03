@@ -80,9 +80,7 @@
 
                 <!-- 日志 -->
                 <StackLayout>
-                    <StackLayout>
-                        <Button BackgroundColor="#212121" TextColor="#FFFFFF" Text="日志" Command="{Binding OpenLogCommand}"></Button>
-                    </StackLayout>
+                    <Button BackgroundColor="#212121" TextColor="#FFFFFF" Text="日志" Command="{Binding OpenLogCommand}"></Button>
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
 
@@ -97,17 +95,7 @@
                     <Label TextColor="#727272" FontSize="14" HorizontalOptions="CenterAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="Maybe you want to see my " />
                                 <Span Text="GitHub"
-                                      TextColor="Blue"
-                                      TextDecorations="Underline">
-                                    <Span.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding OpenUrlCommand}"
-                                                              CommandParameter="https://github.com/JiuLing-zhang" />
-                                    </Span.GestureRecognizers>
-                                </Span>
-                                <Span Text=" or app " />
-                                <Span Text="source code"
                                       TextColor="Blue"
                                       TextDecorations="Underline">
                                     <Span.GestureRecognizers>

@@ -4,24 +4,26 @@
              x:Class="MusicPlayerOnlineApp.Views.LogPage"
              Title="{Binding Title}">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="upload_to_cloud" Command="{Binding UpdateLogsCommand}" ></ToolbarItem>
-    </ContentPage.ToolbarItems>
-
     <ContentPage.Content>
         <StackLayout BackgroundColor="#010101" >
-            <CollectionView ItemsSource="{Binding Logs}"  SelectionMode="None"  >
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="10">
-                            <StackLayout>
-                                <Label Text="{Binding Time}" TextColor="#929292" FontSize="13"/>
-                                <Label Text="{Binding Message}" TextColor="#E0E0E0" FontSize="15"/>
-                            </StackLayout>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <StackLayout VerticalOptions="FillAndExpand" >
+                <CollectionView ItemsSource="{Binding Logs}"  SelectionMode="None"  >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10">
+                                <StackLayout>
+                                    <Label Text="{Binding Time}" TextColor="#929292" FontSize="13"/>
+                                    <Label Text="{Binding Message}" TextColor="#E0E0E0" FontSize="15"/>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <Grid VerticalOptions="EndAndExpand" ColumnDefinitions="*,*" >
+                <Button Grid.Column="0" BackgroundColor="#212121" TextColor="#FFFFFF" Text="清空" Command="{Binding ClearLogsCommand}"></Button>
+                <Button Grid.Column="1" BackgroundColor="#212121" TextColor="#FFFFFF" Text="上传" Command="{Binding UpdateLogsCommand}"></Button>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

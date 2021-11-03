@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -14,6 +9,7 @@ namespace MusicPlayerOnlineApp.ViewModels
     {
         private readonly ILogService _logService;
         public ICommand UpdateLogsCommand => new Command(UpdateLogs);
+        public ICommand ClearLogsCommand => new Command(ClearLogs);
         public LogPageViewModel()
         {
             _logService = new LogService();
@@ -37,8 +33,17 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
+        public void OnAppearing()
+        {
+            GetLogs();
+        }
+
         private async void GetLogs()
         {
+            if (Logs.Count > 0)
+            {
+                Logs.Clear();
+            }
             var logs = await _logService.GetLogs();
             foreach (var log in logs)
             {
@@ -57,6 +62,18 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 return;
             }
+        }
+
+        private async void ClearLogs()
+        {
+            var isOk = await App.Current.MainPage.DisplayAlert("提示", "确定要清空日志吗？", "确定", "取消");
+            if (isOk == false)
+            {
+                return;
+            }
+
+            await _logService.ClearLogs();
+            Logs.Clear();
         }
     }
 }
