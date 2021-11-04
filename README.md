@@ -14,6 +14,20 @@ WPF和Xamarin.Forms开发的一个极简的在线音乐播放器。
 原来免费听不了的歌曲，现在依然听不了，唯一的好处就是如果有平台免费听不了，可以尝试搜下其他平台。  
 优先推荐使用咪咕的数据源，比较良心，能搜到的基本都能听。  
 
+# 代码说明
+编译`MusicPlayerOnlineApp.Android`时需要手动在`MusicPlayerOnlineApp`项目中增加`config.json`，格式如下：
+
+```json
+{
+  "Database": "data.db3",
+  "ApiAddress": "http://xxx/api",
+  "FileCachePath": "Music"
+}
+```
+`Database`:本地数据库文件路径。  
+`ApiAddress`:服务器接口地址（没有服务器不会影响本地正常播放功能）。  
+`FileCachePath`:音乐文件在本地的缓存路径。  
+
 # PC版  
 ![MusicPlayerOnline.png](https://i.loli.net/2021/08/28/b5d4BIwO7LHhFCi.png)  
 

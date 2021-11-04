@@ -1,15 +1,44 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using MusicPlayerOnline.Model.Model;
+using MusicPlayerOnlineApp.Models;
 
 namespace MusicPlayerOnlineApp.Common
 {
     public class GlobalArgs
     {
         public static string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-        public static string AppDbFileName = Path.Combine(AppDataPath, "data.db3");
-        public static string AppMusicCachePath = Path.Combine(AppDataPath, "Music");
+        private static AppSettings _myAppSettings;
+        public static AppSettings MyAppSettings
+        {
+            get
+            {
+                if (_myAppSettings == null)
+                {
+                    LoadAppSettings();
+                }
+                return _myAppSettings;
+            }
+        }
+        public static string AppDbFileName = Path.Combine(AppDataPath, MyAppSettings.Database);
+        public static string AppMusicCachePath = Path.Combine(AppDataPath, MyAppSettings.FileCachePath);
         public static Config AppConfig;
+
+        private static void LoadAppSettings()
+        {
+            var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnlineApp.config.json");
+            if (stream == null)
+            {
+                throw new Exception("本地配置文件加载失败");
+            }
+
+            using (var sr = new StreamReader(stream))
+            {
+                string json = sr.ReadToEnd();
+                _myAppSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<AppSettings>(json);
+            }
+        }
     }
 
     /// <summary>
