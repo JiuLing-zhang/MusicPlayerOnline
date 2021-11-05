@@ -10,6 +10,5 @@ namespace MusicPlayerOnline.Service
 
         Task ClearLogs();
 
-        Task UploadLogs(List<LogDetail> logs);
     }
 }

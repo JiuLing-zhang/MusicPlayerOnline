@@ -25,6 +25,14 @@ namespace MusicPlayerOnlineApp.Common
         public static string AppMusicCachePath = Path.Combine(AppDataPath, MyAppSettings.FileCachePath);
         public static Config AppConfig;
 
+        /// <summary>
+        /// 日志接口地址
+        /// </summary>
+        public static string UrlLog = $"{GlobalArgs.MyAppSettings.ApiAddress}/log";
+        /// <summary>
+        /// 最新的程序信息
+        /// </summary>
+        public static string UrlAppInfo = $"{GlobalArgs.MyAppSettings.ApiAddress}/AppInfo";
         private static void LoadAppSettings()
         {
             var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnlineApp.config.json");

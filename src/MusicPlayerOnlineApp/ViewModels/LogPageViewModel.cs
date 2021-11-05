@@ -79,7 +79,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             var logs = new UpdateLog()
             {
-                SessionId = $"{Guid.NewGuid():N} {DependencyService.Get<IAppVersionInfo>().GetVersionName()}",
+                SessionId = $"{DependencyService.Get<IAppVersionInfo>().GetVersionName()} {JiuLing.CommonLibs.GuidUtils.GetFormatN()}",
                 Logs = new List<UpdateLogDetail>()
             };
             foreach (var log in _dbLogs)
@@ -96,7 +96,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(logs);
                 var httpClient = new JiuLing.CommonLibs.Net.HttpClientHelper();
-                string httpResult = await httpClient.PostStringReadString($"{GlobalArgs.MyAppSettings.ApiAddress}/log", json);
+                string httpResult = await httpClient.PostJsonReadString(GlobalArgs.UrlLog, json);
                 if (httpResult.IsEmpty())
                 {
                     DependencyService.Get<IToast>().Show("上传失败，服务器状态异常");
