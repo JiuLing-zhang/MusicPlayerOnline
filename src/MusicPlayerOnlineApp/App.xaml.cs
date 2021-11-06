@@ -75,21 +75,21 @@ namespace MusicPlayerOnlineApp
                     var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<JiuLing.CommonLibs.Model.JsonResult<AppInfo>>(httpResult);
                     if (obj == null)
                     {
-                        DependencyService.Get<IToast>().Show("更新失败，服务器返回数据格式异常");
-                        await Logger.WriteAsync(LogTypeEnum.错误, "更新失败，服务器返回数据格式异常");
+                        DependencyService.Get<IToast>().Show("自动更新检查失败，服务器返回数据格式异常");
+                        await Logger.WriteAsync(LogTypeEnum.错误, "自动更新检查失败，服务器返回数据格式异常");
                         return;
                     }
 
                     if (obj.Code != 0)
                     {
-                        DependencyService.Get<IToast>().Show($"更新失败:{obj.Message}");
-                        await Logger.WriteAsync(LogTypeEnum.错误, $"更新失败:{obj.Message}");
+                        DependencyService.Get<IToast>().Show($"自动更新检查失败:{obj.Message}");
+                        await Logger.WriteAsync(LogTypeEnum.错误, $"自动更新检查失败:{obj.Message}");
                         return;
                     }
 
                     if (DependencyService.Get<IAppVersionInfo>().GetVersionCode() >= obj.Data.VersionCode)
                     {
-                        await Logger.WriteAsync(LogTypeEnum.消息, $"本次不需要更新");
+                        await Logger.WriteAsync(LogTypeEnum.消息, $"本地为最新版本，不需要更新");
                         return;
                     }
 

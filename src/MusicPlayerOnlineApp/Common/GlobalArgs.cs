@@ -32,7 +32,7 @@ namespace MusicPlayerOnlineApp.Common
         /// <summary>
         /// 最新的程序信息
         /// </summary>
-        public static string UrlAppInfo = $"{GlobalArgs.MyAppSettings.ApiAddress}/AppInfo";
+        public static string UrlAppInfo = $"{GlobalArgs.MyAppSettings.ApiAddress}/app";
         private static void LoadAppSettings()
         {
             var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnlineApp.config.json");
