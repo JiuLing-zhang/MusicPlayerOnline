@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Content.PM;
+using Android.OS;
+using AndroidX.Core.Content;
 using Java.Net;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Droid;
@@ -40,27 +43,33 @@ namespace MusicPlayerOnlineApp.Droid
 
             if (File.Exists(filePath))
             {
+                InstallApk(filePath);
+                return;
                 File.Delete(filePath);
             }
 
-            URL url = new URL(downloadUrl);
-            HttpURLConnection conn = (HttpURLConnection)url.OpenConnection();
-            conn.Connect();
-            Stream downloadStream = conn.InputStream;
-            using (var fs = new FileStream(filePath, FileMode.Create))
+            Task.Run(() =>
             {
-                byte[] buf = new byte[512];
-                do
+                URL url = new URL(downloadUrl);
+                HttpURLConnection conn = (HttpURLConnection)url.OpenConnection();
+                conn.Connect();
+                Stream downloadStream = conn.InputStream;
+                using (var fs = new FileStream(filePath, FileMode.Create))
                 {
-                    int numread = downloadStream.Read(buf, 0, 512);
-                    if (numread <= 0)
+                    byte[] buf = new byte[512];
+                    do
                     {
-                        break;
-                    }
-                    fs.Write(buf, 0, numread);
-                } while (true);
-            }
-            InstallApk(filePath);
+                        int numread = downloadStream.Read(buf, 0, 512);
+                        if (numread <= 0)
+                        {
+                            break;
+                        }
+                        fs.Write(buf, 0, numread);
+                    } while (true);
+                }
+                InstallApk(filePath);
+            });
+
         }
         private void InstallApk(string filePath)
         {
@@ -69,10 +78,10 @@ namespace MusicPlayerOnlineApp.Droid
                 return;
             // 通过Intent安装APK文件
             Intent intent = new Intent(Intent.ActionView);
-            intent.SetDataAndType(Android.Net.Uri.Parse("file://" + filePath), "application/vnd.android.package-archive");
-            //Uri content_url = Uri.Parse(filePath);
-            //intent.SetData(content_url);
-            intent.SetFlags(ActivityFlags.NewTask);
+
+            intent.SetFlags(ActivityFlags.GrantReadUriPermission);
+            Android.Net.Uri contentUri = FileProvider.GetUriForFile(context, "com.jiuling.musicplayeronlineapp.fileprovider", new Java.IO.File(filePath));
+            intent.SetDataAndType(contentUri, "application/vnd.android.package-archive");
             context.StartActivity(intent);
         }
     }

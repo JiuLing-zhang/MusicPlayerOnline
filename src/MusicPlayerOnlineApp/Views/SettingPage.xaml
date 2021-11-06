@@ -24,7 +24,7 @@
                 <!-- 常规设置 -->
                 <Label Text="常规" TextColor="#929292" FontSize="14"  FontAttributes="Bold"/>
                 <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Text="自动检查更新（暂时不可用）" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
+                    <Label Text="程序启动时自动检查更新" TextColor="#FFFFFF" FontSize="16" HorizontalOptions="Start"/>
                     <appExtends:CustomSwitch IsToggled="{Binding IsAutoCheckUpdate}" Style="{StaticResource SettingSwitch}"></appExtends:CustomSwitch>
                 </StackLayout>
                 <BoxView Margin="0,10,0,10" Color="#727272"  HeightRequest="1"/>
