@@ -17,6 +17,16 @@ namespace MusicPlayerOnlineApp.Views
         {
             InitializeComponent();
             BindingContext = _myModel;
+
+            this.Appearing += (_, __) =>
+            {
+                _myModel.OnAppearing();
+            };
+        }
+
+        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            _myModel.CalcSelectedSize();
         }
     }
 }

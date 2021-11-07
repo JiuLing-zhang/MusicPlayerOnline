@@ -1,12 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MusicPlayerOnline.Model.Model
+namespace MusicPlayerOnlineApp.ViewModels
 {
-    public class MusicFile
+    public class MusicFileViewModel : ViewModelBase
     {
-        public string Name { get; set; }
-        public Int64 Size { get; set; }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _fullName;
+        public string FullName
+        {
+            get => _fullName;
+            set
+            {
+                _fullName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Int64 _size;
+        public Int64 Size
+        {
+            get => _size;
+            set
+            {
+                _size = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isChecked;
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
