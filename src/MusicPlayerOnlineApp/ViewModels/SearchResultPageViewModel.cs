@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
@@ -13,7 +12,6 @@ using MusicPlayerOnline.Service;
 using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
 using MusicPlayerOnlineApp.Views;
-using Plugin.Connectivity;
 using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
@@ -210,6 +208,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 bool succeed;
                 string message;
+                await Logger.WriteAsync(LogTypeEnum.消息, $"选择歌曲：{MusicSelectedResult.SourceData.Id}");
                 (succeed, message, music) = await SaveMusic(MusicSelectedResult.SourceData);
                 if (succeed == false)
                 {
@@ -236,9 +235,10 @@ namespace MusicPlayerOnlineApp.ViewModels
             var music = await _searchService.GetMusicDetail(searchResult);
             if (music == null)
             {
+                await Logger.WriteAsync(LogTypeEnum.消息, "emm没有解析出歌曲信息");
                 return (false, "emm没有解析出歌曲信息", null);
             }
-
+            await Logger.WriteAsync(LogTypeEnum.消息, "歌曲解析完成");
             await _musicService.Add(music);
             await _playlistService.Add(music);
 

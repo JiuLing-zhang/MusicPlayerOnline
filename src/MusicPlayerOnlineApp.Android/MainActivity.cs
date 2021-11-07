@@ -30,7 +30,7 @@ namespace MusicPlayerOnlineApp.Droid
             LoadApplication(new App());
         }
 
-      
+
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -39,22 +39,27 @@ namespace MusicPlayerOnlineApp.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var newExc = new Exception("CurrentDomainOnUnhandledException", unhandledExceptionEventArgs.ExceptionObject as Exception);
-            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnhandledException，{newExc.Message}.{newExc.StackTrace}");
+            var ex = e.ExceptionObject as Exception;
+            if (ex == null)
+            {
+                Logger.Write(LogTypeEnum.错误, $"未处理的异常UnhandledException，未捕获到具体错误");
+                return;
+            }
+            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnhandledException，{ex.Message}.{ex.StackTrace}");
         }
 
-        private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
+        private static void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", unobservedTaskExceptionEventArgs.Exception);
-            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnobservedTaskException，{newExc.Message}.{newExc.StackTrace}");
+            var ex = e.Exception;
+            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnobservedTaskException，{ex.Message}.{ex.StackTrace}");
         }
 
         private void AndroidEnvironment_UnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
         {
-            var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", e.Exception);
-            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnhandledExceptionRaiser，{newExc.Message}.{newExc.StackTrace}");
+            var ex = e.Exception;
+            Logger.Write(LogTypeEnum.错误, $"未处理的异常UnhandledExceptionRaiser，{ex.Message}.{ex.StackTrace}");
         }
     }
 }
