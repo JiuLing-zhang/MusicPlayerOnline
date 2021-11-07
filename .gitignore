@@ -77,3 +77,4 @@ ModelManifest.xml
 *.bak
 .vs
 /src/MusicPlayerOnlineApp/config.json
+/publish

@@ -3,30 +3,52 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MusicPlayerOnline.Log;
-using MusicPlayerOnline.Model.Model;
+using MusicPlayerOnlineApp.AppInterface;
 using MusicPlayerOnlineApp.Common;
+using Xamarin.Forms;
 
 namespace MusicPlayerOnlineApp.ViewModels
 {
     public class ClearCachePageViewModel : ViewModelBase
     {
+        public ICommand SelectAllCommand => new Command(SelectAll);
+        public ICommand ClearCommand => new Command(Clear);
         public ClearCachePageViewModel()
         {
-            Caches = new ObservableCollection<MusicFile>();
-            Task.Run(() =>
+            Caches = new ObservableCollection<MusicFileViewModel>();
+        }
+        public string Title => "缓存清理";
+
+        private decimal _allSize;
+        public decimal AllSize
+        {
+            get => Convert.ToDecimal((_allSize / 1024).ToString("N2"));
+            set
             {
-                ScanCacheFiles();
-            });
+                _allSize = value;
+                OnPropertyChanged();
+            }
         }
 
-        private ObservableCollection<MusicFile> _caches;
+        private decimal _selectedSize;
+        public decimal SelectedSize
+        {
+            get => Convert.ToDecimal((_selectedSize / 1024).ToString("N2"));
+            set
+            {
+                _selectedSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<MusicFileViewModel> _caches;
         /// <summary>
         /// 缓存的文件
         /// </summary>
-        public ObservableCollection<MusicFile> Caches
+        public ObservableCollection<MusicFileViewModel> Caches
         {
             get => _caches;
             set
@@ -36,11 +58,30 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
         }
 
-        private void ScanCacheFiles()
+        public void OnAppearing()
         {
-            EachDirectory(GlobalArgs.AppMusicCachePath, paths =>
+            GetCacheFiles();
+        }
+
+        public void CalcSelectedSize()
+        {
+            SelectedSize = 0;
+            foreach (var cache in Caches)
             {
-                CalcFilesInfo(paths);
+                if (cache.IsChecked == true)
+                {
+                    SelectedSize = SelectedSize + cache.Size;
+                }
+            }
+        }
+
+        private void GetCacheFiles()
+        {
+            Caches.Clear();
+            AllSize = 0;
+            Task.Run(() =>
+            {
+                EachDirectory(GlobalArgs.AppMusicCachePath, CalcFilesInfo);
             });
         }
 
@@ -49,10 +90,10 @@ namespace MusicPlayerOnlineApp.ViewModels
             try
             {
                 Directory.GetDirectories(folderPath).ToList().ForEach(path =>
-                     {
-                         //继续遍历文件夹内容
-                         EachDirectory(path, callbackFilePaths);
-                     });
+                {
+                    //继续遍历文件夹内容
+                    EachDirectory(path, callbackFilePaths);
+                });
 
                 callbackFilePaths.Invoke(Directory.GetFiles(folderPath).ToList());
             }
@@ -64,19 +105,64 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         private void CalcFilesInfo(List<string> paths)
         {
-
             //根据路径加载文件信息
             var files = paths.Select(path => new FileInfo(path)).ToList();
             files.ForEach(file =>
             {
                 //符合条件的文件写入队列
-                var musicFile = new MusicFile()
+                var musicFile = new MusicFileViewModel()
                 {
                     Name = file.Name,
+                    FullName = file.FullName,
                     Size = file.Length,
+                    IsChecked = false
                 };
                 Caches.Add(musicFile);
+                AllSize = AllSize + musicFile.Size;
             });
+        }
+
+        private void SelectAll()
+        {
+            if (Caches.Count == Caches.Count(x => x.IsChecked == true))
+            {
+                foreach (var cache in Caches)
+                {
+                    cache.IsChecked = false;
+                }
+            }
+            else
+            {
+                foreach (var cache in Caches)
+                {
+                    cache.IsChecked = true;
+                }
+            }
+        }
+        private async void Clear()
+        {
+            var isOk = await App.Current.MainPage.DisplayAlert("提示", "确定要删除吗？删除后不可恢复。", "确定", "取消");
+            if (isOk == false)
+            {
+                return;
+            }
+
+            foreach (var cache in Caches)
+            {
+                if (cache.IsChecked == true)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(cache.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        await Logger.WriteAsync(LogTypeEnum.错误, $"删除本地缓存失败：{ex.Message}.{ex.StackTrace}");
+                    }
+                }
+            }
+            GetCacheFiles();
+            DependencyService.Get<IToast>().Show("删除完成");
         }
     }
 }

@@ -32,11 +32,11 @@ namespace MusicPlayerOnline.Network.SearchMusic
                         string id = "";
                         if (music.Id.IsEmpty())
                         {
-                            id = $"{music.Platform}-{music.Name}";
+                            id = $"{music.Platform.GetDescription()}-{music.Name}";
                         }
                         else
                         {
-                            id = $"{music.Platform}-{music.PlatformId}";
+                            id = $"{music.Platform.GetDescription()}-{music.PlatformId}";
                         }
                         result.Add(new MusicSearchResult()
                         {

@@ -1,25 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicPlayerOnlineApp.Views.ClearCachePage">
+             x:Class="MusicPlayerOnlineApp.Views.ClearCachePage"
+             Title="{Binding Title}">
+
     <ContentPage.Content>
-        <StackLayout>
-             <ListView x:Name="ListViewLyrics" ItemsSource="{Binding Caches}" SelectionMode="None"  >
+        <StackLayout Padding="10" BackgroundColor="#000000">
+            <Label Text="谨慎清理，有些歌曲清理后就再也找不回来咯" TextColor="#727272" FontSize="14"/>
+            <ListView ItemsSource="{Binding Caches}" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.ContextActions> 
+                            <ViewCell.ContextActions>
                             </ViewCell.ContextActions>
                             <ViewCell.View>
-                                <StackLayout Orientation="Horizontal" Padding="10,10,10,10">
+                                <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Name}" TextColor="#E0E0E0" FontSize="18" MinimumWidthRequest="60" VerticalTextAlignment="Center"  LineBreakMode="NoWrap"/>
-                                    <CheckBox HorizontalOptions="End" IsChecked="{Binding IsChecked}"/>
+                                    <CheckBox HorizontalOptions="EndAndExpand" IsChecked="{Binding IsChecked}" CheckedChanged="CheckBox_CheckedChanged"
+                                    />
                                 </StackLayout>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="总大小：" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding AllSize}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="已选择：" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding SelectedSize}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </StackLayout>
+                <Button BackgroundColor="Transparent" HorizontalOptions="EndAndExpand" TextColor="#FFFFFF" Text="全选" ImageSource="select" Command="{Binding SelectAllCommand}"></Button>
+                <Button BackgroundColor="Transparent" HorizontalOptions="End" TextColor="#FFFFFF" Text="删除" ImageSource="trash" Command="{Binding ClearCommand}"></Button>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
