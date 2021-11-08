@@ -112,8 +112,10 @@ namespace MusicPlayerOnlineApp.ViewModels
 
             await _playlistService.Add(music);
 
-            GlobalMethods.PlayMusic(music);
-
+            if (await GlobalMethods.PlayMusic(music) == false)
+            {
+                return;
+            }
             await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
         }
@@ -133,13 +135,18 @@ namespace MusicPlayerOnlineApp.ViewModels
                 var music = await _musicService.GetMusicDetail(myFavoriteMusic.Id);
                 if (music == null)
                 {
+                    GlobalMethods.HideLoading();
                     DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                     return;
                 }
                 await _playlistService.Add(music);
                 if (index == 0)
                 {
-                    GlobalMethods.PlayMusic(music);
+                    if (await GlobalMethods.PlayMusic(music) == false)
+                    {
+                        GlobalMethods.HideLoading();
+                        return;
+                    }
                 }
                 index++;
             }

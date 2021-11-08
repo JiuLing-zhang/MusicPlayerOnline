@@ -28,11 +28,11 @@
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="总大小：" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
-                        <Label Text="{Binding AllSize}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding AllSizeString,StringFormat='{0}MB'}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="已选择：" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
-                        <Label Text="{Binding SelectedSize}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding SelectedSizeString,StringFormat='{0}MB'}" TextColor="#FFFFFF" VerticalTextAlignment="Center"></Label>
                     </StackLayout>
                 </StackLayout>
                 <Button BackgroundColor="Transparent" HorizontalOptions="EndAndExpand" TextColor="#FFFFFF" Text="全选" ImageSource="select" Command="{Binding SelectAllCommand}"></Button>

@@ -197,7 +197,7 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
             await Shell.Current.GoToAsync($"{nameof(AddToMyFavoritePage)}?{nameof(AddToMyFavoritePageViewModel.AddedMusicId)}={music.Id}", true);
-            GlobalMethods.PlayMusic(music);
+            await GlobalMethods.PlayMusic(music);
         }
 
         private async void SearchFinished()
@@ -224,7 +224,11 @@ namespace MusicPlayerOnlineApp.ViewModels
             {
                 GlobalMethods.HideLoading();
             }
-            GlobalMethods.PlayMusic(music);
+
+            if (await GlobalMethods.PlayMusic(music) == false)
+            {
+                return;
+            }
             MessagingCenter.Send(this, SubscribeKey.UpdatePlaylist);
             await Shell.Current.GoToAsync($"..", false);
             await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);

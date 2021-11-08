@@ -60,6 +60,7 @@ namespace MusicPlayerOnlineApp.Droid
 
         public async void Play(string path)
         {
+            //TODO 这里还有个隐藏bug，清除歌曲缓存后，直接下一首就GG了
             if (CheckIsPlaying())
             {
                 Stop();

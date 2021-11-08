@@ -126,7 +126,11 @@ namespace MusicPlayerOnlineApp.ViewModels
                 DependencyService.Get<IToast>().Show("获取歌曲信息失败");
                 return;
             }
-            await GlobalMethods.PlayMusic(music);
+
+            if (await GlobalMethods.PlayMusic(music)==false)
+            {
+                return;
+            }
             await Shell.Current.GoToAsync($"//{nameof(PlayingPage)}", true);
         }
 

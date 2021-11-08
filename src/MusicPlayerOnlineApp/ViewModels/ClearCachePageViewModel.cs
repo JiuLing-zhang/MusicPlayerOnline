@@ -22,24 +22,50 @@ namespace MusicPlayerOnlineApp.ViewModels
         }
         public string Title => "缓存清理";
 
-        private decimal _allSize;
-        public decimal AllSize
+        private Int64 _allSize;
+        public Int64 AllSize
         {
-            get => Convert.ToDecimal((_allSize / 1024).ToString("N2"));
+            get => _allSize;
             set
             {
                 _allSize = value;
                 OnPropertyChanged();
+
+                AllSizeString = SizeToString(value);
             }
         }
 
-        private decimal _selectedSize;
-        public decimal SelectedSize
+        private string _allSizeString;
+        public string AllSizeString
         {
-            get => Convert.ToDecimal((_selectedSize / 1024).ToString("N2"));
+            get => _allSizeString;
+            set
+            {
+                _allSizeString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Int64 _selectedSize;
+        public Int64 SelectedSize
+        {
+            get => _selectedSize;
             set
             {
                 _selectedSize = value;
+                OnPropertyChanged();
+
+                SelectedSizeString = SizeToString(value);
+            }
+        }
+
+        private string _selectedSizeString;
+        public string SelectedSizeString
+        {
+            get => _selectedSizeString;
+            set
+            {
+                _selectedSizeString = value;
                 OnPropertyChanged();
             }
         }
@@ -60,6 +86,7 @@ namespace MusicPlayerOnlineApp.ViewModels
 
         public void OnAppearing()
         {
+            SelectedSize = 0;
             GetCacheFiles();
         }
 
@@ -163,6 +190,11 @@ namespace MusicPlayerOnlineApp.ViewModels
             }
             GetCacheFiles();
             DependencyService.Get<IToast>().Show("删除完成");
+        }
+
+        private string SizeToString(Int64 size)
+        {
+            return $"{size / 1024 / 1024:N2}";
         }
     }
 }

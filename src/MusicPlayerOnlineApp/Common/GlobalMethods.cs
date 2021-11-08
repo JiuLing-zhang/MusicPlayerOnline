@@ -56,7 +56,7 @@ namespace MusicPlayerOnlineApp.Common
             await MyConfigService.WritePlayerConfigAsync(GlobalArgs.AppConfig.Player);
         }
 
-        public static async Task PlayMusic(MusicDetail music)
+        public static async Task<bool> PlayMusic(MusicDetail music)
         {
             await Logger.WriteAsync(LogTypeEnum.消息, $"准备播放歌曲：{music.Platform.GetDescription()},{music.Name}");
             string cachePath = Path.Combine(GlobalArgs.AppMusicCachePath, music.Id);
@@ -69,7 +69,7 @@ namespace MusicPlayerOnlineApp.Common
                 {
                     await Logger.WriteAsync(LogTypeEnum.消息, $"仅在WIFI下允许播放，跳过");
                     DependencyService.Get<IToast>().Show("仅在WIFI下允许播放");
-                    return;
+                    return false;
                 }
 
                 await MyMusicService.CacheMusic(music, cachePath);
@@ -77,6 +77,7 @@ namespace MusicPlayerOnlineApp.Common
                 await Logger.WriteAsync(LogTypeEnum.消息, $"缓存完成");
             }
             PlayerService.Instance().Play(music);
+            return true;
         }
 
         public static void ShowLoading()
