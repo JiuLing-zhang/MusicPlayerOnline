@@ -111,10 +111,6 @@
       <Project>{e9257580-da59-4aff-abaa-297c35e4bf4e}</Project>
       <Name>MusicPlayerOnline.Log</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MusicPlayerOnlineApp\MusicPlayerOnlineApp.csproj">
-      <Project>{EA73AB68-C81E-4E33-A458-ACB32690C73E}</Project>
-      <Name>MusicPlayerOnlineApp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\listen_to_music.png" />
