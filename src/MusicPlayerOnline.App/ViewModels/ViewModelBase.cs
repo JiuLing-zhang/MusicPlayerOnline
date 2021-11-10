@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

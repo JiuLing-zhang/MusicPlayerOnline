@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MusicPlayerOnlineApp.Services
+namespace MusicPlayerOnline.App.Services
 {
     public interface IDataStore<T>
     {

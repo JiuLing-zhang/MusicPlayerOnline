@@ -1,11 +1,11 @@
-﻿using MusicPlayerOnlineApp.ViewModels;
-using MusicPlayerOnlineApp.Views;
+﻿using MusicPlayerOnline.App.ViewModels;
 using System;
 using System.Collections.Generic;
+using MusicPlayerOnline.App.Views;
 using MusicPlayerOnline.Log;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp
+namespace MusicPlayerOnline.App
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {

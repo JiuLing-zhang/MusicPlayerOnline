@@ -1,10 +1,10 @@
-﻿using MusicPlayerOnlineApp.Models;
+﻿using MusicPlayerOnline.App.Models;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class ItemDetailViewModel : BaseViewModel

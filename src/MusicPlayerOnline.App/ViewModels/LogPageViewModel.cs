@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
 using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class LogPageViewModel : ViewModelBase
     {

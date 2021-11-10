@@ -1,8 +1,8 @@
-﻿using MusicPlayerOnlineApp.ViewModels;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using MusicPlayerOnline.App.ViewModels;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     public partial class ItemDetailPage : ContentPage
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class LogDetailViewModel
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MusicPlayerOnlineApp.Models
+namespace MusicPlayerOnline.App.Models
 {
     public class AppSettings
     {

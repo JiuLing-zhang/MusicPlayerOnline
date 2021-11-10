@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:services="clr-namespace:MusicPlayerOnlineApp.Services;assembly=MusicPlayerOnlineApp"
-             x:Class="MusicPlayerOnlineApp.Views.PlayingPage"
+             xmlns:services="clr-namespace:MusicPlayerOnline.App.Services;assembly=MusicPlayerOnlineApp"
+             x:Class="MusicPlayerOnline.App.Views.PlayingPage"
              Title="{Binding Title}">
 
     <ContentPage.Resources>

@@ -1,12 +1,12 @@
 ﻿using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.Views;
 using System.Collections.ObjectModel;
-using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class PlaylistPageViewModel : ViewModelBase
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     public partial class AboutPage : ContentPage
     {

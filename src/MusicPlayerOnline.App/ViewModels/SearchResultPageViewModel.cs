@@ -4,17 +4,17 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Views;
 using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     [QueryProperty(nameof(SearchKeyword), nameof(SearchKeyword))]
     public class SearchResultPageViewModel : ViewModelBase

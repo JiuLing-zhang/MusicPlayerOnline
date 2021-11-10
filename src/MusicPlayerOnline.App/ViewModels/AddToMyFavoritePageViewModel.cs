@@ -1,12 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Views;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     [QueryProperty(nameof(AddedMusicId), nameof(AddedMusicId))]
     public class AddToMyFavoritePageViewModel : ViewModelBase

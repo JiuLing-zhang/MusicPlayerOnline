@@ -1,10 +1,10 @@
-﻿using MusicPlayerOnlineApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MusicPlayerOnline.App.Models;
 
-namespace MusicPlayerOnlineApp.Services
+namespace MusicPlayerOnline.App.Services
 {
     public class MockDataStore : IDataStore<Item>
     {

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnlineApp;assembly=MusicPlayerOnlineApp"
-             xmlns:appExtends="clr-namespace:MusicPlayerOnlineApp.AppExtends;assembly=MusicPlayerOnlineApp"
-             x:Class="MusicPlayerOnlineApp.Views.SettingPage"
+             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnlineApp"
+             xmlns:appExtends="clr-namespace:MusicPlayerOnline.App.AppExtends;assembly=MusicPlayerOnlineApp"
+             x:Class="MusicPlayerOnline.App.Views.SettingPage"
              Title="{Binding Title}">
 
     <ContentPage.Resources>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class MusicFileViewModel : ViewModelBase
     {

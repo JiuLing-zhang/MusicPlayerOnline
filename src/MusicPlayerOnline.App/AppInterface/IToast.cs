@@ -1,4 +1,4 @@
-﻿namespace MusicPlayerOnlineApp.AppInterface
+﻿namespace MusicPlayerOnline.App.AppInterface
 {
     public interface IToast
     {

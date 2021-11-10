@@ -2,16 +2,16 @@
 using System.Linq;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Services;
-using MusicPlayerOnlineApp.Views;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Services;
+using MusicPlayerOnline.App.Views;
 using MusicPlayerOnline.Log;
 using Plugin.Connectivity;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.Common
+namespace MusicPlayerOnline.App.Common
 {
     public class GlobalMethods
     {

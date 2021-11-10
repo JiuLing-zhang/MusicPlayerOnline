@@ -1,12 +1,12 @@
-﻿using MusicPlayerOnlineApp.Models;
-using MusicPlayerOnlineApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using MusicPlayerOnline.App.Models;
+using MusicPlayerOnline.App.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     public partial class NewItemPage : ContentPage
     {

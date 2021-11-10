@@ -1,4 +1,4 @@
-﻿namespace MusicPlayerOnlineApp.ViewModels
+﻿namespace MusicPlayerOnline.App.ViewModels
 {
     /// <summary>
     /// 歌词详情

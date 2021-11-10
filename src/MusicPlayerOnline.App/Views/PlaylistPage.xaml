@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MusicPlayerOnlineApp.ViewModels;assembly=MusicPlayerOnlineApp"
-             x:Class="MusicPlayerOnlineApp.Views.PlaylistPage"
+             xmlns:local="clr-namespace:MusicPlayerOnline.App.ViewModels;assembly=MusicPlayerOnlineApp"
+             x:Class="MusicPlayerOnline.App.Views.PlaylistPage"
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>

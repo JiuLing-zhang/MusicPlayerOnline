@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
 using MusicPlayerOnline.Log;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class ClearCachePageViewModel : ViewModelBase
     {

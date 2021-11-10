@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MusicPlayerOnlineApp.AppInterface
+namespace MusicPlayerOnline.App.AppInterface
 {
     public delegate void MediaBeginEventHandler();
     public delegate void MediaEndedEventHandler();

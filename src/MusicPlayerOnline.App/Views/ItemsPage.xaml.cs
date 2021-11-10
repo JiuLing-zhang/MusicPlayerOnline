@@ -1,16 +1,16 @@
-﻿using MusicPlayerOnlineApp.Models;
-using MusicPlayerOnlineApp.ViewModels;
-using MusicPlayerOnlineApp.Views;
+﻿using MusicPlayerOnline.App.Models;
+using MusicPlayerOnline.App.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MusicPlayerOnline.App.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     public partial class ItemsPage : ContentPage
     {

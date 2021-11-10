@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoadingPage : ContentPage

@@ -1,12 +1,12 @@
 ﻿using System.Windows.Input;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Views;
 using MusicPlayerOnline.Model.Enum;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class SettingPageViewModel : ViewModelBase
     {

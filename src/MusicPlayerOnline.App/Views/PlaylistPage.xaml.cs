@@ -1,9 +1,9 @@
 ﻿using System;
-using MusicPlayerOnlineApp.ViewModels;
+using MusicPlayerOnline.App.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlaylistPage : ContentPage

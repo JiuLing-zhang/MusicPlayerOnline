@@ -1,12 +1,12 @@
 ﻿using MusicPlayerOnline.Service;
 using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.Views;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     [QueryProperty(nameof(MyFavoriteId), nameof(MyFavoriteId))]
     public class MyFavoriteDetailPageViewModel : ViewModelBase

@@ -1,10 +1,10 @@
-﻿using MusicPlayerOnlineApp.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MusicPlayerOnline.App.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {

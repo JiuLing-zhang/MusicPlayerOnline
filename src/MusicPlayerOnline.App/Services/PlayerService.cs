@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
 using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.Services
+namespace MusicPlayerOnline.App.Services
 {
     public class PlayerService
     {

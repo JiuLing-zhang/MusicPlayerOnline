@@ -1,12 +1,12 @@
-﻿using MusicPlayerOnlineApp.Models;
-using MusicPlayerOnlineApp.Views;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using MusicPlayerOnline.App.Models;
+using MusicPlayerOnline.App.Views;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.Services
+namespace MusicPlayerOnline.App.Services
 {
     public class BlurredImage : Image
     {

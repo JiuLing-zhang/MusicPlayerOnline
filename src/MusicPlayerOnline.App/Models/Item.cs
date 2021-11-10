@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MusicPlayerOnlineApp.Models
+namespace MusicPlayerOnline.App.Models
 {
     public class Item
     {

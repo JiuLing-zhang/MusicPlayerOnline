@@ -1,11 +1,11 @@
 ﻿using System;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
-using MusicPlayerOnlineApp.AppInterface;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
 
     [QueryProperty(nameof(AddedMusicId), nameof(AddedMusicId))]

@@ -1,11 +1,11 @@
-﻿using MusicPlayerOnlineApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using MusicPlayerOnline.App.Models;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class NewItemViewModel : BaseViewModel
     {

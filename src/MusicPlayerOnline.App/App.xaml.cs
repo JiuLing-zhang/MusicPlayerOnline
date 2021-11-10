@@ -1,16 +1,16 @@
 ﻿using System;
-using MusicPlayerOnlineApp.Services;
 using System.IO;
 using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Models;
+using MusicPlayerOnline.App.Services;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Log;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
-using MusicPlayerOnlineApp.Models;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp
+namespace MusicPlayerOnline.App
 {
     public partial class App : Application
     {

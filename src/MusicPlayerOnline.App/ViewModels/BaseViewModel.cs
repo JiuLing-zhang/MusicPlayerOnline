@@ -1,12 +1,12 @@
-﻿using MusicPlayerOnlineApp.Models;
-using MusicPlayerOnlineApp.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MusicPlayerOnline.App.Models;
+using MusicPlayerOnline.App.Services;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

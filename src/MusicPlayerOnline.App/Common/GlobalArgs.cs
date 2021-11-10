@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using MusicPlayerOnline.App.Models;
 using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnlineApp.Models;
 
-namespace MusicPlayerOnlineApp.Common
+namespace MusicPlayerOnline.App.Common
 {
     public class GlobalArgs
     {

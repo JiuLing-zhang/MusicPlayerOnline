@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.ViewModels;
 using MusicPlayerOnline.Data;
 using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnlineApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MusicPlayerOnlineApp.Views
+namespace MusicPlayerOnline.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MyFavoriteDetailPage : ContentPage

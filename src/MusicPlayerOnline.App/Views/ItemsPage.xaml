@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MusicPlayerOnlineApp.Views.ItemsPage"
+             x:Class="MusicPlayerOnline.App.Views.ItemsPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:MusicPlayerOnlineApp.ViewModels"  
-             xmlns:model="clr-namespace:MusicPlayerOnlineApp.Models"  
+             xmlns:local="clr-namespace:MusicPlayerOnline.App.ViewModels"  
+             xmlns:model="clr-namespace:MusicPlayerOnline.App.Models"  
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>

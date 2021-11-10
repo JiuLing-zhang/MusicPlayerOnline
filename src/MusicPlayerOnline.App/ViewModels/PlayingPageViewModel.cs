@@ -1,15 +1,15 @@
 ﻿using MusicPlayerOnline.Model.Model;
-using MusicPlayerOnlineApp.Services;
 using System;
 using System.Collections.ObjectModel;
 using JiuLing.CommonLibs.ExtensionMethods;
+using MusicPlayerOnline.App.AppInterface;
+using MusicPlayerOnline.App.Common;
+using MusicPlayerOnline.App.Services;
 using MusicPlayerOnline.Log;
 using MusicPlayerOnline.Model.Enum;
-using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Common;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.ViewModels
+namespace MusicPlayerOnline.App.ViewModels
 {
     public class PlayingPageViewModel : ViewModelBase
     {

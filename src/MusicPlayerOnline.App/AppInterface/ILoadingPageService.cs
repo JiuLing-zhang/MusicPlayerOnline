@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.AppInterface
+namespace MusicPlayerOnline.App.AppInterface
 {
     public interface ILoadingPageService
     {

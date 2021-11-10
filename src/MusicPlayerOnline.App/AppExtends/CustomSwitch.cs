@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace MusicPlayerOnlineApp.AppExtends
+namespace MusicPlayerOnline.App.AppExtends
 {
     public class CustomSwitch : Switch
     {

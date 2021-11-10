@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="http://rotorgames.com"
-             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnlineApp;assembly=MusicPlayerOnlineApp"
-             xmlns:services="clr-namespace:MusicPlayerOnlineApp.Services;assembly=MusicPlayerOnlineApp"
-             x:Class="MusicPlayerOnlineApp.Views.AddMyFavoritePage">
+             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnlineApp"
+             xmlns:services="clr-namespace:MusicPlayerOnline.App.Services;assembly=MusicPlayerOnlineApp"
+             x:Class="MusicPlayerOnline.App.Views.AddMyFavoritePage">
     <ContentView>
         <StackLayout BackgroundColor="#151515" Padding="10">
             <services:BlurredImage VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="icon"/>
