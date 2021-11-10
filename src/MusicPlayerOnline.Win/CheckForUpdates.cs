@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using MusicPlayerOnline.Common;
+using MusicPlayerOnline.Win.Common;
 using MusicPlayerOnline.Model.Model;
 
-namespace MusicPlayerOnline
+namespace MusicPlayerOnline.Win
 {
     public class CheckForUpdates
     {

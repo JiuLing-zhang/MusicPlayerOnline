@@ -2,7 +2,7 @@
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Service;
 
-namespace MusicPlayerOnline.Common
+namespace MusicPlayerOnline.Win.Common
 {
     public class GlobalMethods
     {

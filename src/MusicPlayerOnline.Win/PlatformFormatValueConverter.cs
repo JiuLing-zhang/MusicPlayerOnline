@@ -5,7 +5,7 @@ using System.Windows.Data;
 using JiuLing.CommonLibs.ExtensionMethods;
 using MusicPlayerOnline.Model.Enum;
 
-namespace MusicPlayerOnline
+namespace MusicPlayerOnline.Win
 {
     public class PlatformFormatValueConverter : IValueConverter
     {

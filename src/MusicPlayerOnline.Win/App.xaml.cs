@@ -3,10 +3,10 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using MusicPlayerOnline.Common;
 using MusicPlayerOnline.Data;
+using MusicPlayerOnline.Win.Common;
 
-namespace MusicPlayerOnline
+namespace MusicPlayerOnline.Win
 {
     /// <summary>
     /// Interaction logic for App.xaml

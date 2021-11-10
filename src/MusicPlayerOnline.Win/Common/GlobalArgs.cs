@@ -2,7 +2,7 @@
 using System.IO;
 using MusicPlayerOnline.Model.Model;
 
-namespace MusicPlayerOnline.Common
+namespace MusicPlayerOnline.Win.Common
 {
     public class GlobalArgs
     {

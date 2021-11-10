@@ -1,7 +1,7 @@
 ﻿using System;
 using MusicPlayerOnline.Model.Model;
 
-namespace MusicPlayerOnline.Player
+namespace MusicPlayerOnline.Win.Player
 {
     public delegate void MusicMediaFailedEventHandler();
     public delegate void MediaEndedEventHandler();

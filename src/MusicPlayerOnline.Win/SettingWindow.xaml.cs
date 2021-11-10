@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using MusicPlayerOnline.Common;
+using MusicPlayerOnline.Win.Common;
 using MusicPlayerOnline.Model.ViewModel;
 
-namespace MusicPlayerOnline
+namespace MusicPlayerOnline.Win
 {
     /// <summary>
     /// SettingWindow.xaml 的交互逻辑

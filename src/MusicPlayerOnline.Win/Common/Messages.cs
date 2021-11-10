@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace MusicPlayerOnline.Common
+namespace MusicPlayerOnline.Win.Common
 {
     public class Messages
     {

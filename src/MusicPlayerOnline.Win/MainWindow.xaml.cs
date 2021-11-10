@@ -8,18 +8,18 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using JiuLing.CommonLibs.ExtensionMethods;
-using MusicPlayerOnline.Common;
+using MusicPlayerOnline.Win.Common;
 using MusicPlayerOnline.Model.Enum;
 using MusicPlayerOnline.Model.Model;
 using MusicPlayerOnline.Model.ViewModel;
 using MusicPlayerOnline.Network;
-using MusicPlayerOnline.Player;
+using MusicPlayerOnline.Win.Player;
 using MusicPlayerOnline.Service;
 using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListViewItem = System.Windows.Controls.ListViewItem;
-namespace MusicPlayerOnline
+namespace MusicPlayerOnline.Win
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

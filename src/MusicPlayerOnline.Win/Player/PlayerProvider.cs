@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using MusicPlayerOnline.Model.Model;
 
-namespace MusicPlayerOnline.Player
+namespace MusicPlayerOnline.Win.Player
 {
     public class PlayerProvider : IPlayerProvider
     {
