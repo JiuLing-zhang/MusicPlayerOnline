@@ -3,7 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Content.PM;
 
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     [Activity(MainLauncher = true, NoHistory = true, Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class SplashActivity : Activity

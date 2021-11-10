@@ -3,7 +3,7 @@ using Android.App;
 using Android.Graphics.Drawables;
 using Android.Views;
 using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnline.App.Droid;
 using MusicPlayerOnlineApp.Views;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
@@ -11,7 +11,7 @@ using Xamarin.Forms.Platform.Android;
 using XFPlatform = Xamarin.Forms.Platform.Android.Platform;
 
 [assembly: Xamarin.Forms.Dependency(typeof(LoadingPageServiceDroid))]
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     public class LoadingPageServiceDroid : ILoadingPageService
     {

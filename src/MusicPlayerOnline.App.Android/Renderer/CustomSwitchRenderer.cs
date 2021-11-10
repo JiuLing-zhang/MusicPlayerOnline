@@ -2,12 +2,12 @@
 using Android.Service.Controls;
 using Android.Widget;
 using MusicPlayerOnlineApp.AppExtends;
-using MusicPlayerOnlineApp.Droid.Renderer;
+using MusicPlayerOnline.App.Droid.Renderer;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(CustomSwitch), typeof(CustomSwitchRenderer))]
-namespace MusicPlayerOnlineApp.Droid.Renderer
+namespace MusicPlayerOnline.App.Droid.Renderer
 {
     public class CustomSwitchRenderer : SwitchRenderer
     {

@@ -1,9 +1,9 @@
 ﻿using Android.Widget;
 using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnline.App.Droid;
 
 [assembly: Xamarin.Forms.Dependency(typeof(ToastService))]
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     public class ToastService : IToast
     {

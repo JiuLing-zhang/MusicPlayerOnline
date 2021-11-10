@@ -2,11 +2,11 @@
 using Android.Media;
 using Java.Lang;
 using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnline.App.Droid;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AudioService))]
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     public class AudioService : IAudio
     {

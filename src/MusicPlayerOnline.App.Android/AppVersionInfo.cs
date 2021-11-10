@@ -7,11 +7,11 @@ using Android.OS;
 using AndroidX.Core.Content;
 using Java.Net;
 using MusicPlayerOnlineApp.AppInterface;
-using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnline.App.Droid;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AppVersionInfo))]
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     public class AppVersionInfo : IAppVersionInfo
     {

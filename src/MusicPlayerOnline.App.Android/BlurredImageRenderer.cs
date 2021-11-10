@@ -16,13 +16,12 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Android.Graphics;
 using Java.IO;
-using MusicPlayerOnlineApp;
-using MusicPlayerOnlineApp.Droid;
+using MusicPlayerOnline.App.Droid;
 using MusicPlayerOnlineApp.Services;
 using Console = System.Console;
 
 [assembly: ExportRenderer(typeof(BlurredImage), typeof(BlurredImageRenderer))]
-namespace MusicPlayerOnlineApp.Droid
+namespace MusicPlayerOnline.App.Droid
 {
     class BlurredImageRenderer : ViewRenderer<BlurredImage, ImageView>
     {
