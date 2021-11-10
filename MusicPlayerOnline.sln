@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Log", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.Win", "src\MusicPlayerOnline.Win\MusicPlayerOnline.Win.csproj", "{B8E44552-D9C7-4572-A554-27EB5291A6D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnlineApp", "src\MusicPlayerOnline.App\MusicPlayerOnlineApp.csproj", "{991A4DD9-9E05-462E-8F9A-62DD7584E636}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerOnline.App", "src\MusicPlayerOnline.App\MusicPlayerOnline.App.csproj", "{1A30C2B8-0339-4ADB-8798-4459DCE8964B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnlineApp.Android", "src\MusicPlayerOnline.App.Android\MusicPlayerOnlineApp.Android.csproj", "{58040302-5E96-4F6A-BD8B-7B292670AD30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerOnline.App.Android", "src\MusicPlayerOnline.App.Android\MusicPlayerOnline.App.Android.csproj", "{58040302-5E96-4F6A-BD8B-7B292670AD30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,10 @@ Global
 		{B8E44552-D9C7-4572-A554-27EB5291A6D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8E44552-D9C7-4572-A554-27EB5291A6D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8E44552-D9C7-4572-A554-27EB5291A6D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{991A4DD9-9E05-462E-8F9A-62DD7584E636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{991A4DD9-9E05-462E-8F9A-62DD7584E636}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{991A4DD9-9E05-462E-8F9A-62DD7584E636}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{991A4DD9-9E05-462E-8F9A-62DD7584E636}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A30C2B8-0339-4ADB-8798-4459DCE8964B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A30C2B8-0339-4ADB-8798-4459DCE8964B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A30C2B8-0339-4ADB-8798-4459DCE8964B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A30C2B8-0339-4ADB-8798-4459DCE8964B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58040302-5E96-4F6A-BD8B-7B292670AD30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58040302-5E96-4F6A-BD8B-7B292670AD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58040302-5E96-4F6A-BD8B-7B292670AD30}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
