@@ -35,7 +35,7 @@ namespace MusicPlayerOnline.App.Common
         public static string UrlAppInfo = $"{GlobalArgs.MyAppSettings.ApiAddress}/app";
         private static void LoadAppSettings()
         {
-            var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnlineApp.config.json");
+            var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnline.App.config.json");
             if (stream == null)
             {
                 throw new Exception("本地配置文件加载失败");

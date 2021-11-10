@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnlineApp"
-             xmlns:appExtends="clr-namespace:MusicPlayerOnline.App.AppExtends;assembly=MusicPlayerOnlineApp"
+             xmlns:MusicPlayerOnline.App="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnline.App"
+             xmlns:appExtends="clr-namespace:MusicPlayerOnline.App.AppExtends;assembly=MusicPlayerOnline.App"
              x:Class="MusicPlayerOnline.App.Views.SettingPage"
              Title="{Binding Title}">
 

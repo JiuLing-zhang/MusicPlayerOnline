@@ -2,9 +2,9 @@
 using Android.App;
 using Android.Graphics.Drawables;
 using Android.Views;
-using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnline.App.AppInterface;
 using MusicPlayerOnline.App.Droid;
-using MusicPlayerOnlineApp.Views;
+using MusicPlayerOnline.App.Views;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;

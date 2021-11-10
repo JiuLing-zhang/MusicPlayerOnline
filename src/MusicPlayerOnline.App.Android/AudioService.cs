@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Media;
 using Java.Lang;
-using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnline.App.AppInterface;
 using MusicPlayerOnline.App.Droid;
 using Xamarin.Forms;
 

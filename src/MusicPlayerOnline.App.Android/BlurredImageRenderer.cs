@@ -17,7 +17,7 @@ using Xamarin.Forms.Platform.Android;
 using Android.Graphics;
 using Java.IO;
 using MusicPlayerOnline.App.Droid;
-using MusicPlayerOnlineApp.Services;
+using MusicPlayerOnline.App.Services;
 using Console = System.Console;
 
 [assembly: ExportRenderer(typeof(BlurredImage), typeof(BlurredImageRenderer))]

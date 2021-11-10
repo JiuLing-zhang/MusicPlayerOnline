@@ -1,7 +1,7 @@
 ﻿using Android.Graphics;
 using Android.Service.Controls;
 using Android.Widget;
-using MusicPlayerOnlineApp.AppExtends;
+using MusicPlayerOnline.App.AppExtends;
 using MusicPlayerOnline.App.Droid.Renderer;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;

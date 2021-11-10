@@ -1,5 +1,5 @@
 ﻿using Android.Widget;
-using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnline.App.AppInterface;
 using MusicPlayerOnline.App.Droid;
 
 [assembly: Xamarin.Forms.Dependency(typeof(ToastService))]

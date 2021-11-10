@@ -6,7 +6,7 @@ using Android.Content.PM;
 using Android.OS;
 using AndroidX.Core.Content;
 using Java.Net;
-using MusicPlayerOnlineApp.AppInterface;
+using MusicPlayerOnline.App.AppInterface;
 using MusicPlayerOnline.App.Droid;
 using Xamarin.Forms;
 
@@ -35,7 +35,7 @@ namespace MusicPlayerOnline.App.Droid
         {
             string downloadPath = Android.OS.Environment.DirectoryDownloads;
             string absolutePath = Android.App.Application.Context.GetExternalFilesDir(downloadPath).AbsolutePath;
-            var filePath = Path.Combine(absolutePath, "MusicPlayerOnlineApp.apk");
+            var filePath = Path.Combine(absolutePath, "MusicPlayerOnline.App.apk");
             if (!Directory.Exists(absolutePath))
             {
                 Directory.CreateDirectory(absolutePath);
@@ -80,7 +80,7 @@ namespace MusicPlayerOnline.App.Droid
             Intent intent = new Intent(Intent.ActionView);
 
             intent.SetFlags(ActivityFlags.GrantReadUriPermission);
-            Android.Net.Uri contentUri = FileProvider.GetUriForFile(context, "com.jiuling.musicplayeronlineapp.fileprovider", new Java.IO.File(filePath));
+            Android.Net.Uri contentUri = FileProvider.GetUriForFile(context, "com.jiuling.MusicPlayerOnline.App.fileprovider", new Java.IO.File(filePath));
             intent.SetDataAndType(contentUri, "application/vnd.android.package-archive");
             context.StartActivity(intent);
         }

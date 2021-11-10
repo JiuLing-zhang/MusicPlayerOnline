@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="http://rotorgames.com"
              xmlns:shades="http://sharpnado.com"
-             xmlns:musicPlayerOnlineApp="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnlineApp"
-             xmlns:services="clr-namespace:MusicPlayerOnline.App.Services;assembly=MusicPlayerOnlineApp"
+             xmlns:MusicPlayerOnline.App="clr-namespace:MusicPlayerOnline.App;assembly=MusicPlayerOnline.App"
+             xmlns:services="clr-namespace:MusicPlayerOnline.App.Services;assembly=MusicPlayerOnline.App"
              x:Class="MusicPlayerOnline.App.Views.AddToMyFavoritePage" >
 
     <ContentPage.Resources>
