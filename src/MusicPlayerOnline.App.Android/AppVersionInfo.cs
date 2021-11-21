@@ -80,7 +80,7 @@ namespace MusicPlayerOnline.App.Droid
             Intent intent = new Intent(Intent.ActionView);
 
             intent.SetFlags(ActivityFlags.GrantReadUriPermission);
-            Android.Net.Uri contentUri = FileProvider.GetUriForFile(context, "com.jiuling.MusicPlayerOnline.App.fileprovider", new Java.IO.File(filePath));
+            Android.Net.Uri contentUri = FileProvider.GetUriForFile(context, "com.jiuling.MusicPlayerOnline.fileprovider", new Java.IO.File(filePath));
             intent.SetDataAndType(contentUri, "application/vnd.android.package-archive");
             context.StartActivity(intent);
         }

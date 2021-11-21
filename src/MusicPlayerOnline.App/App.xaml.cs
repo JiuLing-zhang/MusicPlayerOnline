@@ -87,7 +87,12 @@ namespace MusicPlayerOnline.App
                         return;
                     }
 
-                    if (DependencyService.Get<IAppVersionInfo>().GetVersionCode() >= obj.Data.VersionCode)
+                    var newVersion = new Version(obj.Data.VersionName);
+                    var minVersion = new Version(obj.Data.MinVersionName);
+                    var currentVersion = new Version(DependencyService.Get<IAppVersionInfo>().GetVersionName());
+                    var result = JiuLing.CommonLibs.VersionUtils.CheckNeedUpdate(currentVersion, newVersion, minVersion);
+
+                    if (result.IsNeedUpdate == false)
                     {
                         await Logger.WriteAsync(LogTypeEnum.消息, $"本地为最新版本，不需要更新");
                         return;
@@ -97,6 +102,12 @@ namespace MusicPlayerOnline.App
                     var isOk = await App.Current.MainPage.DisplayAlert("提示", title, "是", "否");
                     if (isOk == false)
                     {
+                        if (result.IsAllowUse == false)
+                        {
+                            await App.Current.MainPage.DisplayAlert("警告", "程序版本太低，无法使用", "确定");
+                            await Logger.WriteAsync(LogTypeEnum.错误, $"程序版本太低，无法使用");
+                            System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+                        }
                         return;
                     }
                     DependencyService.Get<IAppVersionInfo>().Update(obj.Data.DownloadUrl);
