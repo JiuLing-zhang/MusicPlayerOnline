@@ -1,5 +1,5 @@
 {
   "Database": "data.db3",
-  "ApiAddress": "http://music.jiuling.me:9090/api",
+  "ApiAddress": "http://app.jiuling.me:9090/api",
   "FileCachePath": "Music"
 }

@@ -35,7 +35,7 @@ namespace MusicPlayerOnline.App.Droid
         {
             string downloadPath = Android.OS.Environment.DirectoryDownloads;
             string absolutePath = Android.App.Application.Context.GetExternalFilesDir(downloadPath).AbsolutePath;
-            var filePath = Path.Combine(absolutePath, "MusicPlayerOnline.App.apk");
+            var filePath = Path.Combine(absolutePath, "MusicPlayerOnline.apk");
             if (!Directory.Exists(absolutePath))
             {
                 Directory.CreateDirectory(absolutePath);

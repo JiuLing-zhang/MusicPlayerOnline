@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using MusicPlayerOnline.App.Models;
 using MusicPlayerOnline.Model.Model;
+using Xamarin.Forms;
 
 namespace MusicPlayerOnline.App.Common
 {
@@ -32,7 +33,21 @@ namespace MusicPlayerOnline.App.Common
         /// <summary>
         /// 最新的程序信息
         /// </summary>
-        public static string UrlAppInfo = $"{GlobalArgs.MyAppSettings.ApiAddress}/app";
+        public static string UrlAppInfo => GetUrlAppInfo();
+        private static string GetUrlAppInfo()
+        {
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                return $"{GlobalArgs.MyAppSettings.ApiAddress}/app/MusicPlayerOnline/android";
+            }
+
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                return $"{GlobalArgs.MyAppSettings.ApiAddress}/app/MusicPlayerOnline/ios";
+            }
+
+            throw new Exception("不支持的平台");
+        }
         private static void LoadAppSettings()
         {
             var stream = Assembly.GetAssembly(typeof(AppSettings)).GetManifestResourceStream("MusicPlayerOnline.App.config.json");
