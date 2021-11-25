@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:musicPlayerOnline="clr-namespace:MusicPlayerOnline.Win"
         mc:Ignorable="d"
-        Title="在线音乐助手" Height="650" Width="1000" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
+        Title="在线音乐助手" Height="650" Width="1020" WindowStartupLocation="CenterScreen" Icon="/Images/icon.png"
         MinHeight="650"
-        MinWidth="1000"
+        MinWidth="1020"
         MouseLeftButtonDown="Window_MouseLeftButtonDown" Closed="Window_Closed">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False"  />
@@ -423,7 +423,7 @@
             <Border BorderBrush="{DynamicResource TopBorder}" BorderThickness="0,1,0,0" Panel.ZIndex="2"/>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="220"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Border BorderBrush="{DynamicResource PlaylistBorder}" BorderThickness="0,0,1,0" Panel.ZIndex="5" />
@@ -449,17 +449,17 @@
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn 
-                                        Header="播放列表" Width="168">
+                                        Header="播放列表" Width="170">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding MusicText}" 
                                                                ToolTip="{Binding MusicToolTip}"
-                                                               Margin="-8,0,0,0"
+                                                               Margin="0,0,-3,0"
                                                                Width="150"
                                                                Style="{StaticResource PlayingTextBlock}"
                                                     />
-                                                    <Button Width="14" Height="14" Background="Transparent" 
+                                                    <Button Width="14" Height="14" Background="Transparent"
                                                             Tag="{Binding Id}"
                                                             Style="{StaticResource  PlaylistTools}"
                                                             ToolTip="删除"
@@ -511,7 +511,7 @@
                                     Header="">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="-10,0,2,0" Style="{StaticResource SearchResultTools}">
+                                            <StackPanel Orientation="Horizontal" Style="{StaticResource SearchResultTools}">
                                                 <Button Click="BtnPlay_Click" Width="24" Height="24" Background="Transparent" 
                                                         Tag="{Binding}"
                                                         Style="{StaticResource ChangeButtonIsMouseOver}"
