@@ -25,7 +25,17 @@ namespace MusicPlayerOnline.Network.MusicProvider
             var response = await _httpClient.PostAsync(url, form).ConfigureAwait(false);
             string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultBase<MusicSearchHttpResult>>(json);
+            ResultBase<MusicSearchHttpResult> result;
+            try
+            {
+                result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultBase<MusicSearchHttpResult>>(json);
+            }
+            catch (Exception ex)
+            {
+                await Logger.WriteAsync(LogTypeEnum.错误, $"解析网易搜索结果失败：{ex.Message}.{ex.StackTrace}");
+                return (false, "解析数据失败", null);
+            }
+
             if (result == null)
             {
                 return (false, "请求服务器失败", null);

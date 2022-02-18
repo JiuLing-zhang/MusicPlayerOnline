@@ -25,7 +25,17 @@ namespace MusicPlayerOnline.Network.MusicProvider
             {
                 return (false, "服务器响应异常", null);
             }
-            var httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpResultBase<HttpMusicSearchResult>>(json);
+
+            HttpResultBase<HttpMusicSearchResult> httpResult;
+            try
+            {
+                httpResult = Newtonsoft.Json.JsonConvert.DeserializeObject<HttpResultBase<HttpMusicSearchResult>>(json);
+            }
+            catch (Exception ex)
+            {
+                await Logger.WriteAsync(LogTypeEnum.错误, $"解析酷狗搜索结果失败：{ex.Message}.{ex.StackTrace}");
+                return (false, "解析数据失败", null);
+            }
             if (httpResult == null)
             {
                 return (false, "请求服务器失败", null);

@@ -8,8 +8,12 @@
     <AssemblyName>MusicPlayerOnline.Win</AssemblyName>
     <RootNamespace>MusicPlayerOnline.Win</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CheckForUpdates.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Images\1.png" />
@@ -83,7 +87,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JiuLing.CommonLibs" Version="1.1.10" />
+    <PackageReference Include="JiuLing.AutoUpgrade" Version="1.2.0" />
+    <PackageReference Include="JiuLing.CommonLibs" Version="1.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

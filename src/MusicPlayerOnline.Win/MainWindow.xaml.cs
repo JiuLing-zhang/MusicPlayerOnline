@@ -132,33 +132,8 @@ namespace MusicPlayerOnline.Win
         }
         private void CheckUpdate()
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    var (isNewVersion, version, link) = new CheckForUpdates().Check();
-                    if (isNewVersion == false)
-                    {
-                        return;
-                    }
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Messages.ShowInfo($"发现新版本{version}{System.Environment.NewLine}点击确定查看");
-                    });
-                    using Process compiler = new Process();
-                    compiler.StartInfo.FileName = link;
-                    compiler.StartInfo.UseShellExecute = true;
-                    compiler.Start();
-                }
-                catch (Exception ex)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Messages.ShowInfo($"检查自动更新失败：{ex.Message}");
-                    });
-                }
-            });
+            var app = JiuLing.AutoUpgrade.Shell.AutoUpgradeFactory.Create();
+            app.UseHttpMode(Resource.AutoUpgradePath).Run();
         }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

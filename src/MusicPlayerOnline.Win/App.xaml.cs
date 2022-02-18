@@ -18,14 +18,6 @@ namespace MusicPlayerOnline.Win
             mutex = new System.Threading.Mutex(true, "MusicPlayerOnlineOnlyRun");
             if (mutex.WaitOne(0, false))
             {
-                if (!Directory.Exists(GlobalArgs.AppDataPath))
-                {
-                    Directory.CreateDirectory(GlobalArgs.AppDataPath);
-                }
-                if (!Directory.Exists(GlobalArgs.AppMusicCachePath))
-                {
-                    Directory.CreateDirectory(GlobalArgs.AppMusicCachePath);
-                }
                 DatabaseProvide.SetConnection(GlobalArgs.AppDbFileName);
                 GlobalMethods.ReadAppConfig();
 

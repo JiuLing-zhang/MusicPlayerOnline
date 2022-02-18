@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using MusicPlayerOnline.Model.Model;
 using SQLite;
@@ -22,6 +23,12 @@ namespace MusicPlayerOnline.Data
                     if (string.IsNullOrEmpty(_dbPath))
                     {
                         throw new Exception("非法的数据库路径");
+                    }
+
+                    var directory = Path.GetDirectoryName(_dbPath) ?? throw new ArgumentException("数据库路径异常");
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
                     }
 
                     _database = new SQLiteConnection(_dbPath);
