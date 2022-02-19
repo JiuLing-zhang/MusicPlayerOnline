@@ -91,7 +91,7 @@
 
                 <TabItem Header="常规" Style="{StaticResource TabItemTitle}">
                     <StackPanel Style="{StaticResource TabItemStackPanel}">
-                        <CheckBox x:Name="ChkAutoCheckUpdate" Click="ChkAutoCheckUpdate_Click" Margin="0" Style="{StaticResource SettingChk}">程序启动时检查更新（更新用的Github，访问不了就不要勾了）</CheckBox>
+                        <CheckBox x:Name="ChkAutoCheckUpdate" Click="ChkAutoCheckUpdate_Click" Margin="0" Style="{StaticResource SettingChk}">程序启动时检查更新</CheckBox>
                         <CheckBox x:Name="ChkHideWindowWhenMinimize" Click="ChkHideWindowWhenMinimize_Click" Style="{StaticResource SettingChk}">最小化时收缩到系统托盘</CheckBox>
                     </StackPanel>
                 </TabItem>

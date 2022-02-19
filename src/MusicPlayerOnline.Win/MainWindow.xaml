@@ -481,8 +481,8 @@
                 <Grid Grid.Column="1" Margin="10">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="6*"></ColumnDefinition>
-                            <ColumnDefinition Width="35*"></ColumnDefinition>
+                            <ColumnDefinition Width="8*"></ColumnDefinition>
+                            <ColumnDefinition Width="33*"></ColumnDefinition>
                             <ColumnDefinition Width="20*"></ColumnDefinition>
                             <ColumnDefinition Width="25*"></ColumnDefinition>
                             <ColumnDefinition Width="10*"></ColumnDefinition>

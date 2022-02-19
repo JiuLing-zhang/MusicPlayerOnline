@@ -30,7 +30,7 @@ namespace MusicPlayerOnline.Model.Model
         /// <summary>
         /// 是否自动检查更新
         /// </summary>
-        public bool IsAutoCheckUpdate { get; set; } = false;
+        public bool IsAutoCheckUpdate { get; set; } = true;
 
         /// <summary>
         /// 关闭时最小化到托盘
