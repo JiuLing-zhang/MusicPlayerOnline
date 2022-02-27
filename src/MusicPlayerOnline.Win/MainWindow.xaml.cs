@@ -133,6 +133,11 @@ namespace MusicPlayerOnline.Win
         private void CheckUpdate()
         {
             var app = JiuLing.AutoUpgrade.Shell.AutoUpgradeFactory.Create();
+            app.SetUpgrade(x =>
+            {
+                x.IsBackgroundCheck = true;
+                x.IsCheckSign = true;
+            });
             app.UseHttpMode(Resource.AutoUpgradePath).Run();
         }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
