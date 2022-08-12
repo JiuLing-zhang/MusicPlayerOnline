@@ -2,7 +2,7 @@
 ![](https://img.shields.io/github/license/JiuLing-zhang/MusicPlayerOnline)
 ![](https://img.shields.io/github/v/release/JiuLing-zhang/MusicPlayerOnline)   
 
-**该项目已停止维护。因为我正在努力的将这个项目迁移至 `MAUI`，敬请期待~~**
+**该项目已停止维护。新项目戳这里👉👉👉[`一起听`](https://github.com/JiuLing-zhang/ListenTogether)**  
 
 # 该项目禁止Fork
 因为该项目牵扯多家平台的协议分析，所以禁止Fork。  
